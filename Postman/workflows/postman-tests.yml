@@ -31,7 +31,7 @@ jobs:
       run: sed -i.bak -e 's/replacePassword/${{ secrets.POSTMAN_PASSWORD }}/g' './tests/postman/Dev Test.postman_environment.json'
 
     - name: View the env file
-      run: cat './tests/postman/removeTestData/Test Data Removal.postman_environment.json'
+      run: cat './tests/postman/Dev Test.postman_environment.json'
 
     - name: Run POSTMAN collection
       run: newman run "./tests/postman/Automation Tests.postman_collection.json" -e "./tests/postman/Dev Test.postman_environment.json" -r htmlextra --reporter-htmlextra-export testResults/lamplightreport1.html --reporter-htmlextra-darkTheme  > testResults/runreport1.html
