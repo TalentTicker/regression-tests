@@ -1,0 +1,796 @@
+{
+	"info": {
+		"_postman_id": "d275d32b-31c3-4ffe-b20f-3a9a23c92937",
+		"name": "Automation Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"access_token\", responseData.access_token);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", function () {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "{{auth0_client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{auth0_username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{auth0_password}}",
+									"type": "text"
+								},
+								{
+									"key": "scope",
+									"value": "{{auth0_scope}}",
+									"type": "text"
+								},
+								{
+									"key": "audience",
+									"value": "{{auth0_audience}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{auth0_url}}",
+							"host": [
+								"{{auth0_url}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GET",
+			"item": [
+				{
+					"name": "GET Organisation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", function () {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1-organisations/organisation",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1-organisations",
+								"organisation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Accounts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", function () {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1-email-integration/get_accounts",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1-email-integration",
+								"get_accounts"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{access_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "POST",
+			"item": [
+				{
+					"name": "POST Messages",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", function () {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"sort\":{\"order_by\":\"newest\",\"order_direction\":\"asc\"},\"pagination\":{\"limit\":15,\"skip\":0}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1-email-integration/messages",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1-email-integration",
+								"messages"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{access_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Schedule",
+			"item": [
+				{
+					"name": "404",
+					"item": [
+						{
+							"name": "GET Get Schedule 404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var responseData = JSON.parse(responseBody);\r",
+											"\r",
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response is not null\", function () {\r",
+											"    pm.expect(responseData).is.not.equal(null);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"json Content Type\", function () {\r",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains correct message\", function () {\r",
+											"    pm.expect(responseData.message).to.eql(\"Not Found\");\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Contains correct error\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"Could not find schedule\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1-sequencing/schedule/notascheduleid",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1-sequencing",
+										"schedule",
+										"notascheduleid"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PATCH Update Schedule 404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var responseData = JSON.parse(responseBody);\r",
+											"\r",
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response is not null\", function () {\r",
+											"    pm.expect(responseData).is.not.equal(null);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"json Content Type\", function () {\r",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains correct message\", function () {\r",
+											"    pm.expect(responseData.message).to.eql(\"Not Found\");\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Contains correct error\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"Could not find schedule\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schedule\": {\n        \"name\": \"example changed name schedule\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1-sequencing/schedule/notascheduleid",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1-sequencing",
+										"schedule",
+										"notascheduleid"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE Delete Schedule 404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var responseData = JSON.parse(responseBody);\r",
+											"\r",
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response is not null\", function () {\r",
+											"    pm.expect(responseData).is.not.equal(null);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"json Content Type\", function () {\r",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains correct message\", function () {\r",
+											"    pm.expect(responseData.message).to.eql(\"Not Found\");\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Contains correct error\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"Could not find schedule\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1-sequencing/schedule/{{schedule_id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1-sequencing",
+										"schedule",
+										"{{schedule_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "POST Create Schedule",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"schedule_id\", responseData.data.id);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", function () {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Success on scedule create\", function () {\r",
+									"    pm.expect(responseData.data.message).to.eql(\"Successfully created schedule\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"schedule\": {\r\n        \"name\": \"{{schedule_name}}\",\r\n        \"is_default\": true,\r\n        \"default_timezone\": \"Europe/London\",\r\n        \"use_prospect_timezone\": true,\r\n        \"schedule\": [{\r\n            \"day\": 1,\r\n            \"start_minute\": 100,\r\n            \"end_minute\": 200\r\n        }],\r\n        \"exclude_local_holidays\": true\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1-sequencing/schedule",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1-sequencing",
+								"schedule"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Get Schedule",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", function () {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Contains correct schedule name\", function () {\r",
+									"    pm.expect(responseData.data.schedule.name).to.eql(pm.environment.get(\"schedule_name\"));\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1-sequencing/schedule/{{schedule_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1-sequencing",
+								"schedule",
+								"{{schedule_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Get Schedules",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", function () {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Contains correct schedule name\", function () {\r",
+									"    pm.expect(responseData.data.schedules[0].name).to.eql(pm.environment.get(\"schedule_name\"));\r",
+									"})\r",
+									"\r",
+									"pm.test(\"json properties are present\", function () {\r",
+									"    pm.expect(responseData.data.schedules).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Success message\", function () {\r",
+									"    pm.expect(responseData.message).to.eql(\"OK\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/v1-sequencing/schedules",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1-sequencing",
+								"schedules"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH Update Schedule",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", function () {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Success on scedule create\", function () {\r",
+									"    pm.expect(responseData.data.message).to.eql(\"Successfully updated schedule\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"schedule\": {\n        \"name\": \"example changed name schedule\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1-sequencing/schedule/{{schedule_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1-sequencing",
+								"schedule",
+								"{{schedule_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Get Schedule after PATCH",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", function () {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Contains correct schedule name\", function () {\r",
+									"    pm.expect(responseData.data.schedule.name).to.eql(\"example changed name schedule\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1-sequencing/schedule/{{schedule_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1-sequencing",
+								"schedule",
+								"{{schedule_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Delete Schedule",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", function () {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Success on scedule create\", function () {\r",
+									"    pm.expect(responseData.data).to.eql(\"Successfully deleted schedule\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1-sequencing/schedule/{{schedule_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1-sequencing",
+								"schedule",
+								"{{schedule_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{access_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}
