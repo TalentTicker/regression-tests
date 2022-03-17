@@ -34,7 +34,7 @@ jobs:
       run: cat './tests/postman/Dev Test.postman_environment.json'
 
     - name: Run POSTMAN collection
-      run: newman run "./tests/postman/Automation Tests.postman_collection.json" -e "./tests/postman/Dev Test.postman_environment.json" -r htmlextra --reporter-htmlextra-export testResults/lamplightreport1.html --reporter-htmlextra-darkTheme  > testResults/runreport1.html
+      run: newman run "./tests/postman/Automation Tests.postman_collection.json" -e "./tests/postman/Dev Test.postman_environment.json" -r htmlextra --reporter-htmlextra-export testResults/ttreport1.html --reporter-htmlextra-darkTheme  > testResults/runreport1.html
       
       # Upload the contents of Test Results directory to workspace
     - name: Output the run Details
