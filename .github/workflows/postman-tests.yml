@@ -24,7 +24,7 @@ jobs:
     - name: Make Directory for results
       run: mkdir -p testResults
 
-      - name: Replace email
+    - name: Replace email
       run: sed -i.bak -e 's/replaceEmail/${{ secrets.POSTMAN_USERNAME }}/g' './tests/postman/Dev Test.postman_environment.json'
       
     - name: Replace password
