@@ -1,0 +1,21 @@
+{
+  "name": "new-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test-debug": "PWDEBUG=1 npx playwright test",
+    "test-debug-windows": "set PWDEBUG=1 && npx playwright test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.18.1",
+    "dotenv": "^16.0.0"
+  },
+  "dependencies": {
+    "mailosaur": "^8.1.1"
+  }
+}
