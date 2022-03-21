@@ -5,6 +5,16 @@ on:
   pull_request:
     branches: [ main, master ]
 jobs:
+  name: Replace Variables
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: '.env'
+        env:
+          LOGIN_USERNAME:
+          LOGIN_PASSWORD:
+          MAILOSAUR_SERVER:
+          MAILOSAUR_DOMAIN:
+          MAILOSAUR_PASSWORD:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
