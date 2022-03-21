@@ -437,14 +437,14 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{url}}/v1-sequencing/schedule/{{schedule_id}}",
+									"raw": "{{url}}/v1-sequencing/schedule/notascheduleid",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"v1-sequencing",
 										"schedule",
-										"{{schedule_id}}"
+										"notascheduleid"
 									]
 								}
 							},
