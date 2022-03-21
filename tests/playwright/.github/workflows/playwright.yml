@@ -5,16 +5,6 @@ on:
   pull_request:
     branches: [ main, master ]
 jobs:
-  name: Replace Variables
-        uses: microsoft/variable-substitution@v1
-        with:
-          files: '.env'
-        env:
-          LOGIN_USERNAME:
-          LOGIN_PASSWORD:
-          MAILOSAUR_SERVER:
-          MAILOSAUR_DOMAIN:
-          MAILOSAUR_PASSWORD:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
@@ -27,6 +17,16 @@ jobs:
       run: npm ci
     - name: Install Playwright
       run: npx playwright install --with-deps
+    - name: Replace Variables
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: '.env'
+        env:
+          LOGIN_USERNAME: ${{ secrets.PLAYWRIGHT_USERNAME }}
+          LOGIN_PASSWORD: ${{ secrets.PLAYWRIGHT_PASSWORD }}
+          MAILOSAUR_SERVER: ${{ secrets.MAILOSAUR_SERVER }}
+          MAILOSAUR_DOMAIN: ${{ secrets.MAILOSAUR_DOMAIN }}
+          MAILOSAUR_PASSWORD: ${{ secrets.MAILOSAUR_PASSWORD }}
     - name: Run Playwright tests
       run: npx playwright test
     - uses: actions/upload-artifact@v2
