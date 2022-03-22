@@ -4,6 +4,9 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+defaults:
+  run:
+    working-directory: playwright
 jobs:
   test:
     timeout-minutes: 60
@@ -15,15 +18,12 @@ jobs:
         node-version: '14.x'
     - name: Install dependencies
       run: npm ci
-      working-directory: playwright
     - name: Install Playwright
       run: npx playwright install --with-deps
-      working-directory: playwright
     - name: Replace Variables
       uses: microsoft/variable-substitution@v1
       with:
         files: '.env'
-        working-directory: playwright
       env:
         LOGIN_USERNAME: ${{ secrets.PLAYWRIGHT_USERNAME }}
         LOGIN_PASSWORD: ${{ secrets.PLAYWRIGHT_PASSWORD }}
@@ -32,11 +32,9 @@ jobs:
         MAILOSAUR_PASSWORD: ${{ secrets.MAILOSAUR_PASSWORD }}
     - name: Run Playwright tests
       run: npx playwright test
-      working-directory: playwright
     - uses: actions/upload-artifact@v2
       if: always()
       with:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
-        working-directory: playwright
