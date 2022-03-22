@@ -23,7 +23,7 @@ jobs:
     - name: Replace Variables
       uses: microsoft/variable-substitution@v1
       with:
-        files: '.env'
+        files: 'playwright/.env'
       env:
         LOGIN_USERNAME: ${{ secrets.PLAYWRIGHT_USERNAME }}
         LOGIN_PASSWORD: ${{ secrets.PLAYWRIGHT_PASSWORD }}
