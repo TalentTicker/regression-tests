@@ -7,7 +7,7 @@ const config = {
   globalSetup: require.resolve('./tests/global-setup.js'),
   use: {
     trace: 'on-first-retry',
-    baseURL: 'https://dev.talentticker.ai/en-GB/',
+    baseURL: 'https://staging.talentticker.ai/en-GB/',
     headless: true,
     viewport: { width: 1920, height: 1080 },
     ignoreHTTPSErrors: true,

@@ -13,7 +13,7 @@ test("Saved Search", async ({ page }) => {
   await expect(page).toHaveURL(config.use.baseURL + 'news');
   await page.click('[placeholder="Search"]');
   await page.type('[placeholder="Search"]', "Accounting");
-  await page.click("text=Accounting");
+  await page.click('li[role="option"]:has-text("Accounting")');
   await page.click('[data-test="searchSubmit"]');
   await page.click('[data-test="searchSave"]');
 
