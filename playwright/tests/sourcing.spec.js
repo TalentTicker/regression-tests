@@ -67,7 +67,7 @@ test("Talent Sourcing - Basic Filter Check", async ({ page }) => {
   await page.click("[data-testid=sourcing-company]");
   await page.click('[placeholder="e\\.g\\.\\ London\\,\\ Cardiff"]');
   await page.fill('[placeholder="e\\.g\\.\\ London\\,\\ Cardiff"]', "cardiff");
-  await page.click("text=Cardiff");
+  await page.click('li[role="option"]:has-text("Cardiff")');
   await page.click('[data-testid="search-btn"]');
   await expect(
     page.locator('[class*="styles__ContactControlsWrapper"]')

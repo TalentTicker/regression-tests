@@ -18,13 +18,11 @@ test("Contact Messaging From Event", async ({ page }) => {
     );
   
     // Search for User
-    await page.click("text=Clear all");
-    await page.fill(
-      '[placeholder="Search\\ by\\ name\\,\\ role\\ or\\ location"]',
-      "qa"
-    );
-    await page.click("text=workQA/Testing");
-    await page.click('div[role="combobox"] button:has-text("search")');
+    await page.click('[data-testid="news-page"] >> text=Clear all');
+    // Fill [placeholder="Search\ by\ name\,\ role\ or\ location"]
+    await page.fill('[placeholder="Search\\ by\\ name\\,\\ role\\ or\\ location"]', 'Senior Sales Representative');
+    // Click text=format_quoteName / Job title “Senior Sales Representative”…
+    await page.click('text=format_quoteName / Job title “Senior Sales Representative”…');
   
     // Send Message
     await page.check('input[type="checkbox"]');
