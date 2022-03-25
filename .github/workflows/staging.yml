@@ -1,0 +1,29 @@
+name: Playwright Staging Regression
+on: 
+  workflow_call:
+
+jobs:
+  front-end-regression:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+      with: 
+        path: |
+          ~/.cache/Playwright
+          node_modules
+        key: my-cache-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14.x"
+      - name: Install dependencies
+        run: yarn
+        env:
+          REGISTRY_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Install Playwright
+        run: npx playwright install --with-deps
+        env:
+          REGISTRY_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Run Playwright Tests 🎭
+        run: yarn playwright test 
