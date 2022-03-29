@@ -8,22 +8,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.cache/Playwright
-            node_modules
-          key: my-cache-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-      - uses: actions/setup-node@v2
+     - uses: actions/setup-node@v2
         with:
           node-version: "14.x"
       - name: Install dependencies
-        run: yarn
+        run: npm ci
         env:
           REGISTRY_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Install Playwright
         run: npx playwright install --with-deps
         env:
           REGISTRY_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Run Playwright Tests 🎭
-        run: yarn playwright test
+      - name: Create env file
+        run: |
+          touch .env
+          echo 'LOGIN_USERNAME="${{ secrets.PLAYWRIGHT_USERNAME }}"' >> .env
+          echo 'LOGIN_PASSWORD="${{ secrets.PLAYWRIGHT_PASSWORD }}"' >> .env
+          echo 'MAILOSAUR_SERVER="${{ secrets.MAILOSAUR_SERVER }}"' >> .env
+          echo 'MAILOSAUR_DOMAIN="${{ secrets.MAILOSAUR_DOMAIN }}"' >> .env
+          echo 'MAILOSAUR_PASSWORD="${{ secrets.MAILOSAUR_PASSWORD }}"' >> .env
+          cat .env
+      - name: Run Playwright tests
+        run: npx playwright test
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright/playwright-report/
+          retention-days: 30
