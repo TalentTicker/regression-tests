@@ -30,6 +30,8 @@ jobs:
           cat .env
       - name: Run Playwright tests
         run: npx playwright test
+        env:
+          REGISTRY_TOKEN: ${{ secrets.NPM_TOKEN }}
       - uses: actions/upload-artifact@v2
         if: always()
         with:
