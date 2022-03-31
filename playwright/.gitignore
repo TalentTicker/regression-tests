@@ -1,6 +1,0 @@
-node_modules/
-test-results/
-playwright-report/
-
-# Login state file
-tests/state.json

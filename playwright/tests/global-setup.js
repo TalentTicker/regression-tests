@@ -24,7 +24,7 @@ module.exports = async () => {
   ]);
 
   await expect(page).toHaveURL(config.use.baseURL + 'home');
-  expect(await page.innerText('h1')).toContain("Shaun TesterDev");
+  expect(await page.innerText('h1')).toContain("Team Manager");
 
   await page.context().storageState({ path: 'tests/state.json' });
   await browser.close();  
