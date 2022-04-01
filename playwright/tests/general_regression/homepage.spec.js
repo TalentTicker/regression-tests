@@ -1,4 +1,4 @@
-const config = require('../playwright.config.js');
+const config = require('../../playwright.config.js');
 const { test, expect } = require('@playwright/test');
 require('dotenv').config();
 
@@ -8,7 +8,7 @@ test('homepage', async ({ page }) => {
   await page.goto(config.use.baseURL + "home");
 
   await expect(page).toHaveURL(config.use.baseURL + 'home');
-  expect(await page.innerText('h1')).toContain("Shaun TesterDev");
+  expect(await page.innerText('h1')).toContain("Team Manager");
 
   // Click [data-test="newsNavButton"]
   await page.click('[data-test="newsNavButton"]');

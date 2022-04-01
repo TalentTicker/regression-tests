@@ -24,3 +24,10 @@ node_modules/
 
 # ignore the env file for playwright
 playwright/.env
+
+playwright/node_modules/
+playwright/test-results/
+playwright/playwright-report/
+
+# Login state file
+playwright/tests/state.json
