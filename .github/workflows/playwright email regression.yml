@@ -1,5 +1,9 @@
 name: Playwright Email Tests
 on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '0 8 * * *'
+    
   workflow_dispatch:
  
 defaults:
