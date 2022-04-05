@@ -1,0 +1,68 @@
+name: Build Regression Image 🎭 🍳
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-image:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cache/Cypress
+            node_modules
+          key: my-cache-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://npm.pkg.github.com/
+          scope: "@talentticker"
+        env:
+          REGISTRY_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+
+      - name: docker login
+        run: aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 334962147612.dkr.ecr.eu-west-1.amazonaws.com
+        env:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+
+      - name: Build Image
+        run: docker build --build-arg LOGIN_USERNAME=$LOGIN_USERNAME --build-arg LOGIN_PASSWORD=$LOGIN_PASSWORD --build-arg TEST_EMAIL=$TEST_EMAIL --build-arg MAILOSAUR_SERVER=$MAILOSAUR_SERVER --build-arg MAILOSAUR_API_KEY=$MAILOSAUR_API_KEY --build-arg MAILOSAUR_DOMAIN=$MAILOSAUR_DOMAIN --build-arg MAILOSAUR_PASSWORD=$MAILOSAUR_PASSWORD -t staging-regression-tests .
+        env:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+          LOGIN_USERNAME: ${{ secrets.LOGIN_USERNAME}}
+          LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD}}
+          TEST_EMAIL: ${{ secrets.TEST_EMAIL}}
+          MAILOSAUR_SERVER: ${{ secrets.MAILOSAUR_SERVER}}
+          MAILOSAUR_API_KEY: ${{ secrets.MAILOSAUR_API_KEY}}
+          MAILOSAUR_DOMAIN: ${{ secrets.MAILOSAUR_DOMAIN}}
+          MAILOSAUR_PASSWORD: ${{ secrets.MAILOSAUR_PASSWORD}}
+
+      - name: Tag Image
+        run: docker tag staging-regression-tests:latest 334962147612.dkr.ecr.eu-west-1.amazonaws.com/staging-regression-tests:latest
+        env:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+
+      - name: Push Image
+        run: docker push 334962147612.dkr.ecr.eu-west-1.amazonaws.com/staging-regression-tests:latest
+        env:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
