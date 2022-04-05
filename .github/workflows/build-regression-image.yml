@@ -1,4 +1,4 @@
-name: Build Regression Pack 🎭 🍳
+name: Build Regression Image 🎭 🍳
 on:
   push:
     branches:
@@ -6,10 +6,26 @@ on:
       - "tests/build-step"
 
 jobs:
-  regression-tests:
+  build-image:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cache/Cypress
+            node_modules
+          key: my-cache-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://npm.pkg.github.com/
+          scope: "@talentticker"
+        env:
+          REGISTRY_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
