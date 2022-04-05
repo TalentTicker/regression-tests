@@ -25,14 +25,7 @@ jobs:
           aws-region: eu-west-1
 
       - name: Build Image
-        run: docker build --build-arg LOGIN_USERNAME=${LOGIN_USERNAME} \
-          --build-arg LOGIN_PASSWORD=${LOGIN_PASSWORD} \
-          --build-arg TEST_EMAIL=${TEST_EMAIL} \
-          --build-arg MAILOSAUR_SERVER=${MAILOSAUR_SERVER} \
-          --build-arg MAILOSAUR_API_KEY=${MAILOSAUR_API_KEY} \
-          --build-arg MAILOSAUR_DOMAIN=${MAILOSAUR_DOMAIN} \
-          --build-arg MAILOSAUR_PASSWORD=${MAILOSAUR_PASSWORD} \
-          -t staging-regression-tests .
+        run: docker build --build-arg LOGIN_USERNAME=${LOGIN_USERNAME} --build-arg LOGIN_PASSWORD=${LOGIN_PASSWORD} --build-arg TEST_EMAIL=${TEST_EMAIL} \ --build-arg MAILOSAUR_SERVER=${MAILOSAUR_SERVER} --build-arg MAILOSAUR_API_KEY=${MAILOSAUR_API_KEY} --build-arg MAILOSAUR_DOMAIN=${MAILOSAUR_DOMAIN} --build-arg MAILOSAUR_PASSWORD=${MAILOSAUR_PASSWORD} -t staging-regression-tests .
         env:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
