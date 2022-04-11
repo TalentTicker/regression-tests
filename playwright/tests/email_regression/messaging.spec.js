@@ -55,7 +55,7 @@ test("Contact Messaging From Event", async ({ page }) => {
   
   // Click [data-test="contatcsNavButton"]
   await page.click('[data-test="contatcsNavButton"]');
-  await expect(page).toHaveURL('https://staging.talentticker.ai/en-GB/outbox');
+  await expect(page).toHaveURL('https://staging.talentticker.ai/outbox');
 
   expect(await page.innerText('h1')).toContain("Outbox");
 
