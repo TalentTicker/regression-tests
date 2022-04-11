@@ -80,6 +80,9 @@ test("Contact Messaging From Event", async ({ page }) => {
     page.locator(':nth-match(span[class="subject"], 1)')
   ).toContainText(randomName);
 
+  // Once we have a test user that we can check in Mailosaur (i.e. same as messaging.spec) uncomment below when user has been switched
+  // so we can check for mail delivery
+  
   // // Search for the email
   // const email = await mailosaur.messages.get(serverId, {
   //   sentTo: process.env.TEST_EMAIL
