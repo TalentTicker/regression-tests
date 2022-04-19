@@ -116,13 +116,21 @@ test("Talent Sourcing - Advanced Filter Check - Job Title with Company", async (
 
   await page.click('[data-testid="search-btn"]');
 
+  await page.pause();
+
   // Assert TT Candidates are returned
   expect(await page.innerText("h2")).toContain("2");
   expect(await page.innerText("h2")).toContain("Results");
-  expect(await page.locator('[data-testid*="contact-card-"]')).toContain(
-    "Shaun Lappin"
-  );
-  expect(await page.locator('[data-testid*="contact-card-"]')).toContain(
-    "Luke Silver"
-  );
+  expect(await page.isVisible("text='Shaun Lappin'"));
+  expect(await page.isVisible("text='Luke Silver'"));
+
+  // Ensure 'NOT INCLUDING' Filter is working
+  await page.click("text=QA");
+  await page.click("text=QA");
+  expect(await page.isVisible("text='-QA'"));
+
+  await page.click('[data-testid="search-btn"]');
+  const count = await page.innerText("h2").toString();
+  console.log(count);
+  expect(count.not.toContain("2 Results"));
 });
