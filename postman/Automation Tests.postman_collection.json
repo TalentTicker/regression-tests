@@ -27,7 +27,7 @@
 									"});\r",
 									"\r",
 									"pm.test(\"json Content Type\", function () {\r",
-									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');;\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -41,13 +41,18 @@
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
-									"key": "grant_type",
-									"value": "password",
+									"key": "audience",
+									"value": "https://auth.talentticker.ai",
 									"type": "text"
 								},
 								{
 									"key": "client_id",
 									"value": "{{auth0_client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{auth0_client_secret}}",
 									"type": "text"
 								},
 								{
@@ -61,13 +66,8 @@
 									"type": "text"
 								},
 								{
-									"key": "scope",
-									"value": "{{auth0_scope}}",
-									"type": "text"
-								},
-								{
-									"key": "audience",
-									"value": "{{auth0_audience}}",
+									"key": "grant_type",
+									"value": "client_credentials",
 									"type": "text"
 								}
 							]
@@ -87,82 +87,18 @@
 			"name": "GET",
 			"item": [
 				{
-					"name": "GET Organisation",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var responseData = JSON.parse(responseBody);\r",
-									"\r",
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Response is not null\", function () {\r",
-									"    pm.expect(responseData).is.not.equal(null);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"json Content Type\", function () {\r",
-									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');;\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
+					"name": "GET Ticker",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/v1-organisations/organisation",
+							"raw": "{{url}}/v2-events/ticker",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"v1-organisations",
-								"organisation"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET Accounts",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var responseData = JSON.parse(responseBody);\r",
-									"\r",
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Response is not null\", function () {\r",
-									"    pm.expect(responseData).is.not.equal(null);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"json Content Type\", function () {\r",
-									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');;\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/v1-email-integration/get_accounts",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"v1-email-integration",
-								"get_accounts"
+								"v2-events",
+								"ticker"
 							]
 						}
 					},
@@ -202,68 +138,7 @@
 		},
 		{
 			"name": "POST",
-			"item": [
-				{
-					"name": "POST Messages",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var responseData = JSON.parse(responseBody);\r",
-									"\r",
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Response is not null\", function () {\r",
-									"    pm.expect(responseData).is.not.equal(null);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"json Content Type\", function () {\r",
-									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');;\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"sort\":{\"order_by\":\"newest\",\"order_direction\":\"asc\"},\"pagination\":{\"limit\":15,\"skip\":0}}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/v1-email-integration/messages",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"v1-email-integration",
-								"messages"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"auth": {
-				"type": "bearer",
-				"bearer": [
-					{
-						"key": "token",
-						"value": "{{access_token}}",
-						"type": "string"
-					}
-				]
-			},
+			"item": [],
 			"event": [
 				{
 					"listen": "prerequest",
