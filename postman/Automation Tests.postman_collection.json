@@ -88,6 +88,37 @@
 			"item": [
 				{
 					"name": "GET Ticker",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", function () {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json properties are present\", function () {\r",
+									"    pm.expect(responseData.data).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Success message\", function () {\r",
+									"    pm.expect(responseData.message).to.eql(\"OK\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -137,8 +168,637 @@
 			]
 		},
 		{
-			"name": "POST",
-			"item": [],
+			"name": "Sequence",
+			"item": [
+				{
+					"name": "404",
+					"item": [
+						{
+							"name": "GET Get Sequence 404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var responseData = JSON.parse(responseBody);\r",
+											"\r",
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response is not null\", function () {\r",
+											"    pm.expect(responseData).is.not.equal(null);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"json Content Type\", function () {\r",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains correct message\", function () {\r",
+											"    pm.expect(responseData.message).to.eql(\"Not Found\");\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Contains correct error\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"Sequence notasequenceid not found for user\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1-sequencing/sequence/notasequenceid",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1-sequencing",
+										"sequence",
+										"notasequenceid"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PATCH Update Sequence 404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var responseData = JSON.parse(responseBody);\r",
+											"\r",
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response is not null\", function () {\r",
+											"    pm.expect(responseData).is.not.equal(null);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"json Content Type\", function () {\r",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains correct message\", function () {\r",
+											"    pm.expect(responseData.message).to.eql(\"Not Found\");\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Contains correct error\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"Sequence notasequenceid not found for user\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sequence\": {\n        \"name\": \"New Amended Postman Test Sequence\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1-sequencing/sequence/notasequenceid",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1-sequencing",
+										"sequence",
+										"notasequenceid"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE Delete Sequence 404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var responseData = JSON.parse(responseBody);\r",
+											"\r",
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response is not null\", function () {\r",
+											"    pm.expect(responseData).is.not.equal(null);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"json Content Type\", function () {\r",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains correct message\", function () {\r",
+											"    pm.expect(responseData.message).to.eql(\"Not Found\");\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Contains correct error\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"Sequence notasequenceid not found for user\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schedule\": {}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1-sequencing/sequence/notasequenceid",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1-sequencing",
+										"sequence",
+										"notasequenceid"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "POST Create Sequence",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"sequence_id\", responseData.data.id);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", function () {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Success on sequence create\", function () {\r",
+									"    pm.expect(responseData.data.message).to.eql(\"Successfully created sequence\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sequence\": {\n        \"name\": \"{{sequence_name}}\",\n        \"steps\": [{\n            \"id\": \"kjlkjlkjlkjlkjlkjl\",\n            \"days_after\": 1,\n            \"step_number\": 1,\n            \"step_type\": \"email\",\n            \"is_active\": true\n        }]\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1-sequencing/sequence",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1-sequencing",
+								"sequence"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Get Sequence",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", function () {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Contains correct sequence name\", function () {\r",
+									"    pm.expect(responseData.data.sequence.name).to.eql(pm.environment.get(\"sequence_name\"));\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1-sequencing/sequence/{{sequence_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1-sequencing",
+								"sequence",
+								"{{sequence_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Get Sequences",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is not null\", function () {",
+									"    pm.expect(responseData).is.not.equal(null);",
+									"});",
+									"",
+									"pm.test(\"json Content Type\", function () {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});",
+									"",
+									"pm.test(\"Contains correct sequence name\", function () {",
+									"    pm.expect(responseData.data.sequences[0].name).to.eql(pm.environment.get(\"sequence_name\"));",
+									"})",
+									"",
+									"pm.test(\"json properties are present\", function () {",
+									"    pm.expect(responseData.data.sequences).to.be.an(\"array\");",
+									"});",
+									"",
+									"pm.test(\"Success message\", function () {",
+									"    pm.expect(responseData.message).to.eql(\"OK\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1-sequencing/sequences",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1-sequencing",
+								"sequences"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH Update Sequence",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", function () {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Success on sequence update\", function () {\r",
+									"    pm.expect(responseData.data.message).to.eql(\"Successfully updated sequence\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sequence\": {\n        \"name\": \"New Amended Postman Test Sequence\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1-sequencing/sequence/{{sequence_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1-sequencing",
+								"sequence",
+								"{{sequence_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Get Sequence",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", function () {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Contains correct sequence name\", function () {\r",
+									"    pm.expect(responseData.data.sequence.name).to.eql(\"New Amended Postman Test Sequence\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1-sequencing/sequence/{{sequence_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1-sequencing",
+								"sequence",
+								"{{sequence_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Delete Sequence",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", function () {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Success on sequence delete\", function () {\r",
+									"    pm.expect(responseData.data).to.eql(\"Successfully deleted sequence\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"schedule\": {}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1-sequencing/sequence/{{sequence_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1-sequencing",
+								"sequence",
+								"{{sequence_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{access_token}}",
+						"type": "string"
+					}
+				]
+			},
 			"event": [
 				{
 					"listen": "prerequest",
@@ -349,7 +1009,7 @@
 									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Success on scedule create\", function () {\r",
+									"pm.test(\"Success on schedule create\", function () {\r",
 									"    pm.expect(responseData.data.message).to.eql(\"Successfully created schedule\");\r",
 									"})"
 								],
@@ -509,7 +1169,7 @@
 									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Success on scedule create\", function () {\r",
+									"pm.test(\"Success on schedule update\", function () {\r",
 									"    pm.expect(responseData.data.message).to.eql(\"Successfully updated schedule\");\r",
 									"})"
 								],
@@ -610,7 +1270,7 @@
 									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Success on scedule create\", function () {\r",
+									"pm.test(\"Success on schedule delete\", function () {\r",
 									"    pm.expect(responseData.data).to.eql(\"Successfully deleted schedule\");\r",
 									"})"
 								],
