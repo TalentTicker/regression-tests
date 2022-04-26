@@ -9,7 +9,7 @@ test.use({ storageState: 'tests/state.json' });
 // ** WHEN TOM JONES?JOHN GIBBS CAN BE EMAILED IN THIS WAY
 //    WE NEED TO ADD THE .SPEC. BACK INTO THE FILE TO
 //    CONTINUE TESTING THIS PART OF THE APP AND REMOVE
-//    THIS COMMENT
+//    THIS COMMENT **
 
 test("Contact Messaging From Event", async ({ page }) => {
   function Name_Alpha_Numeric() {
