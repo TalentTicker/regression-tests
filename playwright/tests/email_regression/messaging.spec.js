@@ -1,12 +1,14 @@
 const config = require('../../playwright.config.js');
 const { test, expect } = require('@playwright/test');
-const assert = require('chai').assert;
 const Mailosaur = require('mailosaur');
+const { assert } = require('chai');
 require('dotenv').config();
 
 test.use({ storageState: 'tests/state.json' });
 
 test("Contact Messaging From Event", async ({ page }) => {
+  test.setTimeout(120000);
+
   function Name_Alpha_Numeric() {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -29,7 +31,7 @@ test("Contact Messaging From Event", async ({ page }) => {
   await page.click('[data-test="talentSourcingNavButton"]');
   await expect(page).toHaveURL(config.use.baseURL + 'sourcing');
   
-    // Fill [placeholder="e\.g\.\ Digital\ Designer"]
+  // Fill [placeholder="e\.g\.\ Digital\ Designer"]
   await page.fill('[placeholder="e\\.g\\.\\ Digital\\ Designer"]', 'test account');
   // Click text=test account
   await page.click('text=test account');
@@ -52,26 +54,43 @@ test("Contact Messaging From Event", async ({ page }) => {
   await page.click('button:has-text("close")');
 
   await page.click('[data-test="pageTemplate"] >> text=Clear All');
-  
+
   // Click [data-test="contatcsNavButton"]
   await page.click('[data-test="contatcsNavButton"]');
   await expect(page).toHaveURL('https://staging.talentticker.ai/outbox');
 
   expect(await page.innerText('h1')).toContain("Outbox");
 
-  await page.reload();
+  await page.click('[data-test="contatcsNavButton"]');
+  await expect(page).toHaveURL('https://staging.talentticker.ai/outbox');
 
   expect(await page.innerText('h1')).toContain("Outbox");
 
-  await expect(
-    page.locator(':nth-match(span[class="subject"], 1)')
-  ).toContainText(randomName);
+  let i = 0;
+  let mailFound = false;
+  while (i < 10) {
+    if (mailFound == false){
+      try {        
+          await expect(page.locator(':nth-match(span[class="subject"], 1)')).toContainText(randomName);
+          mailFound = true;
+      } catch (e) {
+          i++;
+          await page.click('[data-testid="reload-list-btn"]');
+          if (i == 10){
+            throw e
+          }
+      }
+    }
+    else {
+      break;
+    } 
+  }
 
   // Search for the email
-  const email = await mailosaur.messages.get(serverId, {
+  let email = await mailosaur.messages.get(serverId, {
     sentTo: process.env.TEST_EMAIL
   });
 
   assert.equal(email.subject, randomName);
 
-  });
+});
