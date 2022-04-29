@@ -87,7 +87,7 @@ test("Contact Messaging From Event", async ({ page }) => {
   }
 
   // Search for the email
-  let email = await mailosaur.messages.get(serverId, {
+  const email = await mailosaur.messages.get(serverId, {
     sentTo: process.env.TEST_EMAIL
   });
 
