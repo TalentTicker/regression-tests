@@ -30,6 +30,12 @@ jobs:
     - name: Replace password
       run: sed -i.bak -e 's/replacePassword/${{ secrets.POSTMAN_PASSWORD }}/g' './postman/Dev Test.postman_environment.json'
 
+    - name: Replace secret
+      run: sed -i.bak -e 's/replaceSecret/${{ secrets.POSTMAN_AUTH0_SECRET }}/g' './postman/Dev Test.postman_environment.json'
+
+    - name: Replace client
+      run: sed -i.bak -e 's/replaceClient/${{ secrets.POSTMAN_AUTH0_CLIENT }}/g' './postman/Dev Test.postman_environment.json'
+
     - name: View the env file
       run: cat './postman/Dev Test.postman_environment.json'
 

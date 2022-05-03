@@ -6,6 +6,11 @@ require('dotenv').config();
 
 test.use({ storageState: 'tests/state.json' });
 
+// ** WHEN TOM JONES?JOHN GIBBS CAN BE EMAILED IN THIS WAY
+//    WE NEED TO ADD THE .SPEC. BACK INTO THE FILE TO
+//    CONTINUE TESTING THIS PART OF THE APP AND REMOVE
+//    THIS COMMENT **
+
 test("Contact Messaging From Event", async ({ page }) => {
   function Name_Alpha_Numeric() {
     var text = "";
@@ -43,9 +48,9 @@ test("Contact Messaging From Event", async ({ page }) => {
   await page.click('[data-testid="news-page"] >> text=Clear all');
 
   // Fill [placeholder="Search\ by\ name\,\ role\ or\ location"]
-  await page.fill('[placeholder="Search\\ by\\ name\\,\\ role\\ or\\ location"]', 'Tom Jones');
+  await page.fill('[placeholder="Search\\ by\\ name\\,\\ role\\ or\\ location"]', 'Senior Sales Representative');
   // Click text=“Tom Jones”
-  await page.click('text=“Tom Jones”');
+  await page.click('text=“Senior Sales Representative”');
   // Check input[type="checkbox"]
   await page.check('input[type="checkbox"]');
   // Click text=emailMessage (1)
