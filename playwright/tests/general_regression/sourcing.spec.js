@@ -1,5 +1,5 @@
 const config = require("../../playwright.config.js");
-const { test, expect } = require("@playwright/test");
+const { test, expect, request } = require("@playwright/test");
 require("dotenv").config();
 
 test.use({ storageState: "tests/state.json" });
@@ -116,21 +116,29 @@ test("Talent Sourcing - Advanced Filter Check - Job Title with Company", async (
 
   await page.click('[data-testid="search-btn"]');
 
-  await page.pause();
-
   // Assert TT Candidates are returned
-  expect(await page.innerText("h2")).toContain("2");
-  expect(await page.innerText("h2")).toContain("Results");
   expect(await page.isVisible("text='Shaun Lappin'"));
   expect(await page.isVisible("text='Luke Silver'"));
+  await expect(
+    page.locator('[class*="styles__StyledResultHeader"]')
+  ).toContainText("2");
+  await expect(
+    page.locator('[class*="styles__StyledResultHeader"]')
+  ).toContainText("Results");
 
   // Ensure 'NOT INCLUDING' Filter is working
   await page.click("text=QA");
   await page.click("text=QA");
   expect(await page.isVisible("text='-QA'"));
 
-  await page.click('[data-testid="search-btn"]');
-  const count = await page.innerText("h2").toString();
-  console.log(count);
-  expect(count.not.toContain("2 Results"));
+  // Check API Response after search
+  await Promise.all([
+    page.waitForResponse(
+      (resp) =>
+        resp.url().includes("/v4-powersearch/people-search") &&
+        resp.status() === 200
+    ),
+    page.click('[data-testid="search-btn"]'),
+  ]);
+  await expect(page).not.toContain("Shaun Lappin");
 });
