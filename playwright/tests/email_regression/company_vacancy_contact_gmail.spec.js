@@ -6,7 +6,7 @@ require('dotenv').config();
 
 test.use({ storageState: 'tests/state.json' });
 
-test("Contact Messaging From Event", async ({ page }) => {
+test("Contact Messaging From Vacancy Using Gmail Integration", async ({ page }) => {
   test.setTimeout(120000);
   
   function Name_Alpha_Numeric() {
@@ -58,14 +58,17 @@ test("Contact Messaging From Event", async ({ page }) => {
   // Click [data-test="vacanciesNavButton"]
   await page.click('[data-test="vacanciesNavButton"]');
   await expect(page).toHaveURL('https://staging.talentticker.ai/en-US/vacancies');
-  // Click [placeholder="Search"]
-  await page.click('[placeholder="Search"]');
-  // Fill [placeholder="Search"]
-  await page.fill('[placeholder="Search"]', 'Selligence');
-  // Click text=location_citySelligence
-  await page.click('text=Selligence');
-  // Click [data-test="searchSubmit"]
-  await page.click('[data-test="searchSubmit"]');
+  // Click text=Saved Searches
+  await page.click('text=Saved Searches');
+  await expect(page).toHaveURL('https://staging.talentticker.ai/en-US/saved-searches');
+  // Click text=Search Now
+  await Promise.all([
+    page.waitForNavigation(/*{ url: 'https://staging.talentticker.ai/en-GB/vacancies' }*/),
+    page.click(':nth-match(:text("Search Now"), 1)')
+  ]);
+  // Click [data-test="vacanciesTabButton"] >> text=Vacancies
+  await page.click('[data-test="vacanciesTabButton"] >> text=Vacancies');
+  await expect(page).toHaveURL('https://staging.talentticker.ai/en-US/vacancies');
 
   expect(await page.innerText('strong')).toContain("Selligence");
 
