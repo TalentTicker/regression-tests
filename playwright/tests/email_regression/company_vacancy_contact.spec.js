@@ -28,10 +28,10 @@ test("Contact Messaging From Vacancy Using Outlook Integration", async ({ page }
 
   // Click [data-test="vacanciesNavButton"]
   await page.click('[data-test="vacanciesNavButton"]');
-  await expect(page).toHaveURL('https://staging.talentticker.ai/en-US/vacancies');
+  await expect(page).toHaveURL('https://staging.talentticker.ai/vacancies');
   // Click text=Saved Searches
   await page.click('text=Saved Searches');
-  await expect(page).toHaveURL('https://staging.talentticker.ai/en-US/saved-searches');
+  await expect(page).toHaveURL('https://staging.talentticker.ai/saved-searches');
   // Click text=Search Now
   await Promise.all([
     page.waitForNavigation(/*{ url: 'https://staging.talentticker.ai/en-GB/vacancies' }*/),
@@ -39,7 +39,7 @@ test("Contact Messaging From Vacancy Using Outlook Integration", async ({ page }
   ]);
   // Click [data-test="vacanciesTabButton"] >> text=Vacancies
   await page.click('[data-test="vacanciesTabButton"] >> text=Vacancies');
-  await expect(page).toHaveURL('https://staging.talentticker.ai/en-US/vacancies');
+  await expect(page).toHaveURL('https://staging.talentticker.ai/vacancies');
 
   expect(await page.innerText('strong')).toContain("Selligence");
 
