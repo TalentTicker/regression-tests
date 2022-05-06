@@ -23,7 +23,7 @@ node_modules/
 *.sqlite
 
 # ignore the env file for playwright
-*.env
+playwright/.env
 
 playwright/node_modules/
 playwright/test-results/
