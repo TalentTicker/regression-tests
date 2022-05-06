@@ -7,8 +7,8 @@ test.use({ storageState: 'tests/state.json' });
 test('homepage', async ({ page }) => {
   await page.goto(config.use.baseURL + "home");
 
-    // Go to https://staging.talentticker.ai/en-GB/home
-    await page.goto('https://staging.talentticker.ai/en-GB/home');
+  // Go to https://staging.talentticker.ai/en-GB/home
+  await page.goto('https://staging.talentticker.ai/en-GB/home');
   // Click [data-test="contatcsNavButton"] svg
   await page.click('[data-test="contatcsNavButton"] svg');
   await expect(page).toHaveURL('https://staging.talentticker.ai/en-GB/outbox');
@@ -40,6 +40,9 @@ test('homepage', async ({ page }) => {
   // Click text=Sequencingbeta
   await page.click('text=Sequencingbeta');
   await expect(page).toHaveURL('https://staging.talentticker.ai/sequencing');
+
+  expect(await page.innerText('[class="scheduling"]')).toContain("Sequencing");
+  
   // Click text=Create your first Sequence
   await page.click('text=Create your first Sequence');
   await expect(page).toHaveURL('https://staging.talentticker.ai/sequencing/create');
