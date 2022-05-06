@@ -36,7 +36,7 @@ jobs:
         echo 'MAILOSAUR_PASSWORD="${{ secrets.MAILOSAUR_PASSWORD }}"' >> .env
         cat .env
     - name: Run Playwright tests
-      run: npx playwright test tests/email_regression/
+      run: npx playwright test tests/email_regression/ --workers=1
     - uses: actions/upload-artifact@v2
       if: always()
       with:
