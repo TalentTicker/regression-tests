@@ -58,17 +58,19 @@ test("Contact Messaging From Vacancy Using Gmail Integration", async ({ page }) 
   // Click [data-test="vacanciesNavButton"]
   await page.click('[data-test="vacanciesNavButton"]');
   await expect(page).toHaveURL('https://staging.talentticker.ai/en-US/vacancies');
-  // Click text=Saved Searches
-  await page.click('text=Saved Searches');
-  await expect(page).toHaveURL('https://staging.talentticker.ai/en-US/saved-searches');
-  // Click text=Search Now
-  await Promise.all([
-    page.waitForNavigation(/*{ url: 'https://staging.talentticker.ai/en-GB/vacancies' }*/),
-    page.click(':nth-match(:text("Search Now"), 1)')
-  ]);
-  // Click [data-test="vacanciesTabButton"] >> text=Vacancies
-  await page.click('[data-test="vacanciesTabButton"] >> text=Vacancies');
-  await expect(page).toHaveURL('https://staging.talentticker.ai/en-US/vacancies');
+
+   // Click [placeholder="Search"]
+   await page.click('[placeholder="Search"]');
+   // Click div[role="listbox"] >> text=Saved
+   await page.click('div[role="listbox"] >> text=Saved');
+   // Click [placeholder="Search"]
+   await page.click('[placeholder="Search"]');
+   // Click [data-test="pageTemplate"] >> text=Selligence
+   await page.click('[data-test="pageTemplate"] >> text=Selligence');
+   await expect(page).toHaveURL('https://staging.talentticker.ai/en-US/news');
+   // Click [data-test="vacanciesTabButton"] >> text=Vacancies
+   await page.click('[data-test="vacanciesTabButton"] >> text=Vacancies');
+   await expect(page).toHaveURL('https://staging.talentticker.ai/en-US/vacancies');
 
   expect(await page.innerText('strong')).toContain("Selligence");
 

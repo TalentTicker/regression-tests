@@ -138,3 +138,39 @@ test('homepage', async ({ page }) => {
   await page.click('[data-testid="confirm-modal-confirm"]');
 
 });
+
+test.afterEach(async ({ page }, testInfo) => {
+  console.log(`Finished ${testInfo.title} with status ${testInfo.status}`);
+
+  if (testInfo.status !== testInfo.expectedStatus)
+  try {        
+    // Click text=Sequencingbeta
+    await page.click('text=Sequencingbeta');
+    await expect(page).toHaveURL('https://staging.talentticker.ai/sequencing');
+    // Click [data-testid="delete-sequence-button"]
+    await page.click('[data-testid="delete-sequence-button"]');
+    // Click [data-testid="confirm-modal-confirm"]
+    await page.click('[data-testid="confirm-modal-confirm"]');
+  } catch (e) {
+  }
+  
+});
+
+test.afterEach(async ({ page }, testInfo) => {
+  console.log(`Finished ${testInfo.title} with status ${testInfo.status}`);
+
+  if (testInfo.status !== testInfo.expectedStatus)
+  try {        
+    // Click text=Schedulesbeta
+    await page.click('text=Schedulesbeta');
+    await expect(page).toHaveURL('https://staging.talentticker.ai/scheduling');
+    // Click [data-testid="edit-schedule-btn"]
+    await page.click('[data-testid="edit-schedule-btn"]');
+    // Click text=Delete
+    await page.click('text=Delete');
+    // Click [data-testid="confirm-modal-confirm"]
+    await page.click('[data-testid="confirm-modal-confirm"]');
+  } catch (e) {
+  }
+
+});
