@@ -4,7 +4,7 @@ require('dotenv').config();
 
 test.use({ storageState: 'tests/state.json' });
 
-test('homepage', async ({ page }) => {
+test('Add, edit and remove a Sequence', async ({ page }) => {
   await page.goto(config.use.baseURL + "home");
 
   // Go to https://staging.talentticker.ai/en-GB/home
