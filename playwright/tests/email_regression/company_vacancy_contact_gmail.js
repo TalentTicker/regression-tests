@@ -40,6 +40,7 @@ test("Contact Messaging From Vacancy Using Gmail Integration", async ({ page }) 
 
   // Click text=Log In
   await page.click('text=Log In');
+  expect(await page.innerText('h1')).toBe("Welcome to Talent Ticker");
   await expect(page).toHaveURL(new RegExp('https://auth.talentticker.ai'));
   expect(await page.innerText('[class="message"]')).toBe("Please log in to continue.");
   // Fill [placeholder="Your\ email"]
