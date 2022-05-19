@@ -60,14 +60,6 @@ test('Add, edit and remove a Sequence', async ({ page }) => {
   await page.click('div[role="button"]:has-text("​")');
   // Click li[role="option"]:has-text("Test")
   await page.click('li[role="option"]:has-text("Test")');
-  // Click input[name="daysAfter"]
-  await page.click('input[name="daysAfter"]');
-  // Click input[name="daysAfter"]
-  await page.click('input[name="daysAfter"]');
-  // Click input[name="daysAfter"]
-  await page.click('input[name="daysAfter"]');
-  // Click input[name="daysAfter"]
-  await page.click('input[name="daysAfter"]');
   // Click button:has-text("Save")
   await page.click('button:has-text("Save")');
   await expect(page).toHaveURL('https://staging.talentticker.ai/sequencing/create');
@@ -120,9 +112,30 @@ test('Add, edit and remove a Sequence', async ({ page }) => {
   await page.click('button:has-text("Save")');
   // Click button:has-text("Save")
   await Promise.all([
-    page.waitForNavigation(/*{ url: 'https://staging.talentticker.ai/sequencing' }*/),
+    page.waitForNavigation(/*{ url: 'https://staging.talentticker.ai/sequencing/templates' }*/),
     page.click('button:has-text("Save")')
   ]);
+
+  // Click button:has-text("Active Sequences")
+  await page.click('button:has-text("Active Sequences")');
+  await expect(page).toHaveURL('https://staging.talentticker.ai/sequencing/active');
+
+  // Expect Overall Stats
+  expect(await page.innerText('[data-testid="overall-stats"]')).toContain("Active");
+
+  // Expect Assigned
+  expect(await page.innerText('[data-testid="overall-stats"]')).toContain("Contacts Assigned");
+
+  // Expect Delivered
+  expect(await page.innerText('[data-testid="overall-stats"]')).toContain("Delivered");
+
+  // Expect Read
+  expect(await page.innerText('[data-testid="overall-stats"]')).toContain("Read");
+
+  // Click button:has-text("Sequence Templates")
+  await page.click('button:has-text("Sequence Templates")');
+  await expect(page).toHaveURL('https://staging.talentticker.ai/sequencing/templates');
+
   // Click [data-testid="delete-sequence-button"]
   await page.click('[data-testid="delete-sequence-button"]');
   // Click [data-testid="confirm-modal-confirm"]
