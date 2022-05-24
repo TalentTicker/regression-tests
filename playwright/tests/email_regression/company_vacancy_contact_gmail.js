@@ -75,7 +75,7 @@ test("Contact Messaging From Vacancy Using Gmail Integration", async ({ page }) 
   expect(await page.innerText('strong')).toContain("Selligence");
 
   // Click [data-testid="placed-event-title"]
-  await page.locator(':nth-match(:text("Customer Success Representative"), 1)').click();
+  await page.locator(':nth-match(h5[data-testid="placed-event-title"], 1)').click();
 
   // Click [data-testid="contacts-section"] >> text=Clear all
   await page.click('[data-testid="contacts-section"] >> text=Clear all');
