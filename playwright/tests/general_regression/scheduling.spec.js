@@ -4,7 +4,7 @@ require('dotenv').config();
 
 test.use({ storageState: 'tests/state.json' });
 
-test('homepage', async ({ page }) => {
+test('Add, Edit, Delete Schedule', async ({ page }) => {
   await page.goto(config.use.baseURL + "home");
 
     // Go to https://staging.talentticker.ai/en-GB/home
