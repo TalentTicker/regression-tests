@@ -9,30 +9,39 @@ test('Add, edit and remove a Sequence', async ({ page }) => {
 
   // Go to https://staging.talentticker.ai/en-GB/home
   await page.goto('https://staging.talentticker.ai/en-GB/home');
-  // Click [data-test="contatcsNavButton"] svg
-  await page.click('[data-test="contatcsNavButton"] svg');
+
+  // Click [data-test="contatcsNavButton"]
+  await page.click('[data-test="contatcsNavButton"]');
   await expect(page).toHaveURL('https://staging.talentticker.ai/en-GB/outbox');
   // Click text=Schedulesbeta
   await page.click('text=Schedulesbeta');
   await expect(page).toHaveURL('https://staging.talentticker.ai/scheduling');
   // Click text=Create your first Schedule
   await page.click('text=Create your first Schedule');
+  // Click [placeholder="Name\ your\ schedule\.\.\."]
+  await page.click('[placeholder="Name\\ your\\ schedule\\.\\.\\."]');
   // Fill [placeholder="Name\ your\ schedule\.\.\."]
   await page.fill('[placeholder="Name\\ your\\ schedule\\.\\.\\."]', 'Test Schedule');
   // Check text=​Use prospects timezone as defaultDefault Timezone​​Exclude UK & US federal holi >> input[type="checkbox"]
   await page.check('text=​Use prospects timezone as defaultDefault Timezone​​Exclude UK & US federal holi >> input[type="checkbox"]');
+  // Check text=Default Timezone​​Exclude UK & US federal holidays from schedule >> input[type="checkbox"]
+  await page.check('text=Default Timezone​​Exclude UK & US federal holidays from schedule >> input[type="checkbox"]');
+  // Click div[role="button"]:has-text("​")
+  await page.click('div[role="button"]:has-text("​")');
+  // Click text=(UTC) Western Europe Time, London, Lisbon, Casablanca
+  await page.click('text=(UTC) Western Europe Time, London, Lisbon, Casablanca');
   // Click [data-testid="submit-btn"]
   await page.click('[data-testid="submit-btn"]');
-  
   // Click text=Sequencingbeta
   await page.click('text=Sequencingbeta');
   await expect(page).toHaveURL('https://staging.talentticker.ai/sequencing');
-
-  expect(await page.innerText('[class="scheduling"]')).toContain("Sequencing");
-  
   // Click text=Create your first Sequence
   await page.click('text=Create your first Sequence');
   await expect(page).toHaveURL('https://staging.talentticker.ai/sequencing/create');
+  // Click [data-testid="sequence-name-input"]
+  await page.click('[data-testid="sequence-name-input"]');
+  // Fill [data-testid="sequence-name-input"]
+  await page.fill('[data-testid="sequence-name-input"]', 'TTest Sequence');
   // Click [data-testid="sequence-name-input"]
   await page.click('[data-testid="sequence-name-input"]');
   // Fill [data-testid="sequence-name-input"]
@@ -45,84 +54,53 @@ test('Add, edit and remove a Sequence', async ({ page }) => {
   await page.click('text=Teststar');
   // Click div[role="button"]:has-text("​")
   await page.click('div[role="button"]:has-text("​")');
-  // Click li[role="option"]:has-text("Test")
-  await page.click('li[role="option"]:has-text("Test")');
+  // Click text=Test Schedule
+  await page.click('text=Test Schedule');
   // Click button:has-text("Save")
   await page.click('button:has-text("Save")');
   await expect(page).toHaveURL('https://staging.talentticker.ai/sequencing/create');
-  // Uncheck input[type="checkbox"]
-  await page.uncheck('input[type="checkbox"]');
-  // Click [data-testid="add-step-btn"]
-  await page.click('[data-testid="add-step-btn"]');
+  // Click [data-testid="add-step-nav-btn"]
+  await page.click('[data-testid="add-step-nav-btn"]');
   // Click div[role="button"]:has-text("​")
   await page.click('div[role="button"]:has-text("​")');
   // Click text=Staging test
   await page.click('text=Staging test');
   // Click div[role="button"]:has-text("​")
   await page.click('div[role="button"]:has-text("​")');
-  // Click li[role="option"]:has-text("Test")
-  await page.click('li[role="option"]:has-text("Test")');
+  // Click text=Test Schedule
+  await page.click('text=Test Schedule');
   // Click button:has-text("Save")
   await page.click('button:has-text("Save")');
   await expect(page).toHaveURL('https://staging.talentticker.ai/sequencing/create');
-  // Click [data-testid="sequence-step-edit"]
-  await page.click('[data-testid="sequence-step-edit"]');
-  // Click button:has-text("Save")
-  await page.click('button:has-text("Save")');
-  await expect(page).toHaveURL('https://staging.talentticker.ai/sequencing/create');
-  // Click [data-testid="sequence-step-delete"]
-  await page.click('[data-testid="sequence-step-delete"]');
-  // Click [data-testid="confirm-modal-confirm"]
-  await page.click('[data-testid="confirm-modal-confirm"]');
-  // Click :nth-match(:text("Save"), 3)
-  await Promise.all([
-    page.waitForNavigation(/*{ url: 'https://staging.talentticker.ai/sequencing' }*/),
-    page.click(':nth-match(:text("Save"), 3)')
-  ]);
-  // Check input[type="checkbox"]
-  await page.check('input[type="checkbox"]');
   // Uncheck input[type="checkbox"]
   await page.uncheck('input[type="checkbox"]');
-  // Click [data-testid="edit-sequence-button"]
-  await page.click('[data-testid="edit-sequence-button"]');
-  // Click [data-testid="add-step-nav-btn"]
-  await page.click('[data-testid="add-step-nav-btn"]');
-  // Click div[role="button"]:has-text("​")
-  await page.click('div[role="button"]:has-text("​")');
+  // Check input[type="checkbox"]
+  await page.check('input[type="checkbox"]');
+  // Click [data-testid="sequence-step-edit"]
+  await page.click('[data-testid="sequence-step-edit"]');
   // Click text=Teststar
   await page.click('text=Teststar');
-  // Click div[role="button"]:has-text("​")
-  await page.click('div[role="button"]:has-text("​")');
-  // Click li[role="option"]:has-text("Test")
-  await page.click('li[role="option"]:has-text("Test")');
+  // Click text=Regression Tests
+  await page.click('text=Regression Tests');
   // Click button:has-text("Save")
   await page.click('button:has-text("Save")');
+  await expect(page).toHaveURL('https://staging.talentticker.ai/sequencing/create');
+  // Click text=Auto Email • Step 2Staging test Test email - please ignoreHi $firstname $lastnam >> [data-testid="sequence-step-delete"]
+  await page.click('text=Auto Email • Step 2Staging test Test email - please ignoreHi $firstname $lastnam >> [data-testid="sequence-step-delete"]');
+  // Click text=Auto Email • Step 2Staging test Test email - please ignoreHi $firstname $lastnam >> [data-testid="confirm-modal-confirm"]
+  await page.click('text=Auto Email • Step 2Staging test Test email - please ignoreHi $firstname $lastnam >> [data-testid="confirm-modal-confirm"]');
   // Click button:has-text("Save")
   await Promise.all([
     page.waitForNavigation(/*{ url: 'https://staging.talentticker.ai/sequencing/templates' }*/),
     page.click('button:has-text("Save")')
   ]);
-
-  // Click button:has-text("Active Sequences")
-  await page.click('button:has-text("Active Sequences")');
-  await expect(page).toHaveURL('https://staging.talentticker.ai/sequencing/active');
-
-  // Expect Overall Stats
-  expect(await page.innerText('[data-testid="overall-stats"]')).toContain("Active");
-
-  // Expect Assigned
-  expect(await page.innerText('[data-testid="overall-stats"]')).toContain("Contacts Assigned");
-
-  // Expect Delivered
-  expect(await page.innerText('[data-testid="overall-stats"]')).toContain("Delivered");
-
-  // Expect Read
-  expect(await page.innerText('[data-testid="overall-stats"]')).toContain("Read");
-
-  // Click button:has-text("Sequence Templates")
-  await page.click('button:has-text("Sequence Templates")');
-  await expect(page).toHaveURL('https://staging.talentticker.ai/sequencing/templates');
-
+  // Click [data-testid="edit-sequence-button"]
+  await page.click('[data-testid="edit-sequence-button"]');
+  // Click button:has-text("Save")
+  await Promise.all([
+    page.waitForNavigation(/*{ url: 'https://staging.talentticker.ai/sequencing/templates' }*/),
+    page.click('button:has-text("Save")')
+  ]);
   // Click [data-testid="delete-sequence-button"]
   await page.click('[data-testid="delete-sequence-button"]');
   // Click [data-testid="confirm-modal-confirm"]
