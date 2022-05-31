@@ -35,13 +35,13 @@ test('Add, edit and remove a Sequence', async ({ page }) => {
   // Click text=Sequencingbeta
   await page.click('text=Sequencingbeta');
   await expect(page).toHaveURL('https://staging.talentticker.ai/sequencing');
+
+  await page.reload();
+
+  await expect(page).toHaveURL('https://staging.talentticker.ai/sequencing');
   // Click text=Create your first Sequence
   await page.click('text=Create your first Sequence');
   await expect(page).toHaveURL('https://staging.talentticker.ai/sequencing/create');
-  // Click [data-testid="sequence-name-input"]
-  await page.click('[data-testid="sequence-name-input"]');
-  // Fill [data-testid="sequence-name-input"]
-  await page.fill('[data-testid="sequence-name-input"]', 'TTest Sequence');
   // Click [data-testid="sequence-name-input"]
   await page.click('[data-testid="sequence-name-input"]');
   // Fill [data-testid="sequence-name-input"]
@@ -84,6 +84,7 @@ test('Add, edit and remove a Sequence', async ({ page }) => {
   await page.click('text=Regression Tests');
   // Click button:has-text("Save")
   await page.click('button:has-text("Save")');
+
   await expect(page).toHaveURL('https://staging.talentticker.ai/sequencing/create');
   // Click text=Auto Email • Step 2Staging test Test email - please ignoreHi $firstname $lastnam >> [data-testid="sequence-step-delete"]
   await page.click('text=Auto Email • Step 2Staging test Test email - please ignoreHi $firstname $lastnam >> [data-testid="sequence-step-delete"]');
@@ -101,6 +102,27 @@ test('Add, edit and remove a Sequence', async ({ page }) => {
     page.waitForNavigation(/*{ url: 'https://staging.talentticker.ai/sequencing/templates' }*/),
     page.click('button:has-text("Save")')
   ]);
+
+  // Click button:has-text("Active Sequences")
+  await page.click('button:has-text("Active Sequences")');
+  await expect(page).toHaveURL('https://staging.talentticker.ai/sequencing/active');
+
+  // Expect Overall Stats
+  expect(await page.innerText('[data-testid="overall-stats"]')).toContain("Active");
+
+  // Expect Assigned
+  expect(await page.innerText('[data-testid="overall-stats"]')).toContain("Contacts Assigned");
+
+  // Expect Delivered
+  expect(await page.innerText('[data-testid="overall-stats"]')).toContain("Delivered");
+
+  // Expect Read
+  expect(await page.innerText('[data-testid="overall-stats"]')).toContain("Read");
+
+  // Click button:has-text("Sequence Templates")
+  await page.click('button:has-text("Sequence Templates")');
+  await expect(page).toHaveURL('https://staging.talentticker.ai/sequencing/templates');
+
   // Click [data-testid="delete-sequence-button"]
   await page.click('[data-testid="delete-sequence-button"]');
   // Click [data-testid="confirm-modal-confirm"]
