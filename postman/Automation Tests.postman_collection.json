@@ -1332,14 +1332,360 @@
 			"name": "Sourcing",
 			"item": [
 				{
-					"name": "POST Sourcing Search",
+					"name": "Sourcing Flow",
+					"item": [
+						{
+							"name": "POST 10k+ Sourcing Search - Developer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var responseData = JSON.parse(responseBody);\r",
+											"pm.environment.set(\"search_total\", 0);\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response is not null\", function () {\r",
+											"    pm.expect(responseData).is.not.equal(null);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"json Content Type\", function () {\r",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Count total correct\", function () {\r",
+											"    pm.expect(responseData.data.results.count).to.eql(13);\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Total correct\", function () {\r",
+											"    pm.expect(responseData.data.results.total).to.eql(10000);\r",
+											"})\r",
+											"\r",
+											"pm.environment.set(\"search_total\", responseData.data.results.total);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"applicability\": [\r\n        \"current\",\r\n        \"previous\"\r\n    ],\r\n    \"exclusion\": [],\r\n    \"input\": [\r\n        {\r\n            \"es_id\": \"78f42304-75f5-4678-8155-4d041d037ade\",\r\n            \"name\": \"Developer\",\r\n            \"type\": \"freetext\",\r\n            \"id\": \"c4d2a9bb-dbc1-46e7-871b-7e816ac5389f\",\r\n            \"boolean_operator\": \"or\"\r\n        }\r\n    ],\r\n    \"company_sizes\": [],\r\n    \"seniorities\": [],\r\n    \"distance_in_miles\": 1,\r\n    \"query_duplicate_names\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v4-powersearch/people-search?limit=13&skip=0",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v4-powersearch",
+										"people-search"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "13"
+										},
+										{
+											"key": "skip",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST <200 Sourcing Search - Developer Cardiff",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var responseData = JSON.parse(responseBody);\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response is not null\", function () {\r",
+											"    pm.expect(responseData).is.not.equal(null);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"json Content Type\", function () {\r",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Count total correct\", function () {\r",
+											"    pm.expect(responseData.data.results.count).to.eql(13);\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Total less than previous search\", function () {\r",
+											"    pm.expect(responseData.data.results.total).to.be.lessThan(pm.environment.get(\"search_total\"));\r",
+											"})\r",
+											"\r",
+											"pm.environment.set(\"search_total\", responseData.data.results.total);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"applicability\": [\r\n        \"current\"\r\n    ],\r\n    \"exclusion\": [],\r\n    \"input\": [\r\n        {\r\n            \"es_id\": \"76343144-1a66-489c-811b-62db834ec2b3\",\r\n            \"name\": \"Developer\",\r\n            \"type\": \"freetext\",\r\n            \"id\": \"ae5e6d07-d17a-4c55-bfa2-00a4795e2b7d\",\r\n            \"boolean_operator\": \"or\"\r\n        },\r\n        {\r\n            \"name\": \"Cardiff\",\r\n            \"es_id\": \"loc989415\",\r\n            \"id\": 989415,\r\n            \"type\": \"location\",\r\n            \"score\": 277120,\r\n            \"boolean_operator\": \"or\"\r\n        },\r\n        {\r\n            \"name\": \"Javascript\",\r\n            \"es_id\": \"skl5a3e4774-4eaf-4925-8f2c-0356e44219a9\",\r\n            \"id\": \"5a3e4774-4eaf-4925-8f2c-0356e44219a9\",\r\n            \"type\": \"skill\",\r\n            \"score\": 65520,\r\n            \"boolean_operator\": \"or\"\r\n        },\r\n        {\r\n            \"name\": \"Python\",\r\n            \"es_id\": \"skl457bf477-85c3-49d7-b963-87cfbf825600\",\r\n            \"id\": \"457bf477-85c3-49d7-b963-87cfbf825600\",\r\n            \"type\": \"skill\",\r\n            \"score\": 209580,\r\n            \"boolean_operator\": \"or\"\r\n        }\r\n    ],\r\n    \"company_sizes\": [],\r\n    \"seniorities\": [],\r\n    \"distance_in_miles\": 1,\r\n    \"query_duplicate_names\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v4-powersearch/people-search?limit=13&skip=0",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v4-powersearch",
+										"people-search"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "13"
+										},
+										{
+											"key": "skip",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST <100 Sourcing Search - Developer Cardiff Small Company",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var responseData = JSON.parse(responseBody);\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response is not null\", function () {\r",
+											"    pm.expect(responseData).is.not.equal(null);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"json Content Type\", function () {\r",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Count total correct\", function () {\r",
+											"    pm.expect(responseData.data.results.count).to.eql(13);\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Total less than previous search\", function () {\r",
+											"    pm.expect(responseData.data.results.total).to.be.lessThan(pm.environment.get(\"search_total\"));\r",
+											"})\r",
+											"\r",
+											"pm.environment.set(0, responseData.data.results.total);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"applicability\": [\r\n        \"current\"\r\n    ],\r\n    \"exclusion\": [],\r\n    \"input\": [\r\n        {\r\n            \"es_id\": \"76343144-1a66-489c-811b-62db834ec2b3\",\r\n            \"name\": \"Developer\",\r\n            \"type\": \"freetext\",\r\n            \"id\": \"ae5e6d07-d17a-4c55-bfa2-00a4795e2b7d\",\r\n            \"boolean_operator\": \"or\"\r\n        },\r\n        {\r\n            \"name\": \"Cardiff\",\r\n            \"es_id\": \"loc989415\",\r\n            \"id\": 989415,\r\n            \"type\": \"location\",\r\n            \"score\": 277120,\r\n            \"boolean_operator\": \"or\"\r\n        },\r\n        {\r\n            \"name\": \"Javascript\",\r\n            \"es_id\": \"skl5a3e4774-4eaf-4925-8f2c-0356e44219a9\",\r\n            \"id\": \"5a3e4774-4eaf-4925-8f2c-0356e44219a9\",\r\n            \"type\": \"skill\",\r\n            \"score\": 65520,\r\n            \"boolean_operator\": \"or\"\r\n        },\r\n        {\r\n            \"name\": \"Python\",\r\n            \"es_id\": \"skl457bf477-85c3-49d7-b963-87cfbf825600\",\r\n            \"id\": \"457bf477-85c3-49d7-b963-87cfbf825600\",\r\n            \"type\": \"skill\",\r\n            \"score\": 209580,\r\n            \"boolean_operator\": \"or\"\r\n        }\r\n    ],\r\n    \"company_sizes\": [\r\n        \"1-10\",\r\n        \"11-50\"\r\n    ],\r\n    \"seniorities\": [],\r\n    \"distance_in_miles\": 1,\r\n    \"query_duplicate_names\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v4-powersearch/people-search?limit=13&skip=0",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v4-powersearch",
+										"people-search"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "13"
+										},
+										{
+											"key": "skip",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "400",
+					"item": [
+						{
+							"name": "POST People Search 400 - Incorrect Parameters",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var responseData = JSON.parse(responseBody);\r",
+											"\r",
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response is not null\", function () {\r",
+											"    pm.expect(responseData).is.not.equal(null);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"json Content Type\", function () {\r",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Corrrect error messages\", function () {\r",
+											"    pm.expect(responseData.data.errors).contains(\"Param 'skip' is incorrect type; expected int\");\r",
+											"    pm.expect(responseData.data.errors).contains(\"Param 'limit' is incorrect type; expected int\");\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"applicability\": [\r\n        \"current\",\r\n        \"previous\"\r\n    ],\r\n    \"exclusion\": [],\r\n    \"input\": [\r\n        {\r\n            \"es_id\": \"78f42304-75f5-4678-8155-4d041d037ade\",\r\n            \"name\": \"QA\",\r\n            \"type\": \"freetext\",\r\n            \"id\": \"c4d2a9bb-dbc1-46e7-871b-7e816ac5389f\",\r\n            \"boolean_operator\": \"or\"\r\n        },\r\n        {\r\n            \"domain\": \"selligence.com\",\r\n            \"name\": \"Selligence\",\r\n            \"es_id\": \"com2255739\",\r\n            \"founded_on_date\": \"None\",\r\n            \"id\": 2255739,\r\n            \"type\": \"company\",\r\n            \"area_of_operations\": \"International\",\r\n            \"score\": 13090,\r\n            \"boolean_operator\": \"or\"\r\n        }\r\n    ],\r\n    \"company_sizes\": [],\r\n    \"seniorities\": [],\r\n    \"distance_in_miles\": 1,\r\n    \"query_duplicate_names\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v4-powersearch/people-search?limit=string&skip=string",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v4-powersearch",
+										"people-search"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "string"
+										},
+										{
+											"key": "skip",
+											"value": "string"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "POST Sourcing Search - Test User",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"var responseData = JSON.parse(responseBody);\r",
-									"pm.environment.set(\"schedule_id\", responseData.data.id);\r",
 									"\r",
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -1416,6 +1762,1188 @@
 								}
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST QA Selligence",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", function () {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Count total correct\", function () {\r",
+									"    pm.expect(responseData.data.results.count).to.eql(2);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Total correct\", function () {\r",
+									"    pm.expect(responseData.data.results.total).to.eql(2);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Correct named records returned\", () => {\r",
+									"    responseData.data.results.documents.forEach((document) => {\r",
+									"        pm.expect(document.first_name).to.be.oneOf([\r",
+									"            \"Shaun\",\r",
+									"            \"Luke\"\r",
+									"        ]);\r",
+									"    })\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"applicability\": [\r\n        \"current\",\r\n        \"previous\"\r\n    ],\r\n    \"exclusion\": [],\r\n    \"input\": [\r\n        {\r\n            \"es_id\": \"78f42304-75f5-4678-8155-4d041d037ade\",\r\n            \"name\": \"QA\",\r\n            \"type\": \"freetext\",\r\n            \"id\": \"c4d2a9bb-dbc1-46e7-871b-7e816ac5389f\",\r\n            \"boolean_operator\": \"or\"\r\n        },\r\n        {\r\n            \"domain\": \"selligence.com\",\r\n            \"name\": \"Selligence\",\r\n            \"es_id\": \"com2255739\",\r\n            \"founded_on_date\": \"None\",\r\n            \"id\": 2255739,\r\n            \"type\": \"company\",\r\n            \"area_of_operations\": \"International\",\r\n            \"score\": 13090,\r\n            \"boolean_operator\": \"or\"\r\n        }\r\n    ],\r\n    \"company_sizes\": [],\r\n    \"seniorities\": [],\r\n    \"distance_in_miles\": 1,\r\n    \"query_duplicate_names\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v4-powersearch/people-search?limit=13&skip=0",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v4-powersearch",
+								"people-search"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "13"
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Broad search using all search filters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", function () {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Count total correct\", function () {\r",
+									"    pm.expect(responseData.data.results.count).to.be.greaterThan(0, \"No results returned for this search - please update test or fix the broken data\");\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Total correct\", function () {\r",
+									"    pm.expect(responseData.data.results.total).to.be.greaterThan(0, \"No results returned for this search - please update test or fix the broken data\");\r",
+									"})\r",
+									"\r",
+									"// Cardiff (5 Mile search) so all response data should be Cardiff based\r",
+									"pm.test(\"Correct location returned\", () => {\r",
+									"    responseData.data.results.documents.forEach((document) => {\r",
+									"            pm.expect(document.location_name).to.contain([\r",
+									"                \"Cardiff\"\r",
+									"            ]);\r",
+									"    })\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"applicability\": [\r\n        \"current\",\r\n        \"previous\"\r\n    ],\r\n    \"exclusion\": [],\r\n    \"input\": [\r\n        {\r\n            \"es_id\": \"76343144-1a66-489c-811b-62db834ec2b3\",\r\n            \"name\": \"Developer\",\r\n            \"type\": \"freetext\",\r\n            \"id\": \"ae5e6d07-d17a-4c55-bfa2-00a4795e2b7d\",\r\n            \"boolean_operator\": \"or\"\r\n        },\r\n        {\r\n            \"name\": \"Software\",\r\n            \"es_id\": \"ind16\",\r\n            \"id\": 16,\r\n            \"type\": \"industry\",\r\n            \"score\": 1325700,\r\n            \"boolean_operator\": \"or\"\r\n        },\r\n        {\r\n            \"name\": \"Cardiff\",\r\n            \"es_id\": \"loc989415\",\r\n            \"id\": 989415,\r\n            \"type\": \"location\",\r\n            \"score\": 277120,\r\n            \"boolean_operator\": \"or\"\r\n        },\r\n        {\r\n            \"name\": \"Javascript\",\r\n            \"es_id\": \"skl5a3e4774-4eaf-4925-8f2c-0356e44219a9\",\r\n            \"id\": \"5a3e4774-4eaf-4925-8f2c-0356e44219a9\",\r\n            \"type\": \"skill\",\r\n            \"score\": 65520,\r\n            \"boolean_operator\": \"or\"\r\n        },\r\n        {\r\n            \"name\": \"Python\",\r\n            \"es_id\": \"skl457bf477-85c3-49d7-b963-87cfbf825600\",\r\n            \"id\": \"457bf477-85c3-49d7-b963-87cfbf825600\",\r\n            \"type\": \"skill\",\r\n            \"score\": 209580,\r\n            \"boolean_operator\": \"or\"\r\n        }\r\n    ],\r\n    \"company_sizes\": [\r\n        \"1-10\",\r\n        \"11-50\"\r\n    ],\r\n    \"months_exp_min\": 288,\r\n    \"months_in_role_min\": 6,\r\n    \"seniorities\": [\r\n        \"senior\"\r\n    ],\r\n    \"distance_in_miles\": 5,\r\n    \"query_duplicate_names\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v4-powersearch/people-search?limit=13&skip=0",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v4-powersearch",
+								"people-search"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "13"
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Market Mapping",
+			"item": [
+				{
+					"name": "POST Search for a CTO",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", () => {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", () => {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"// Broadness of search dictates 10 or more results should always be returned\r",
+									"pm.test(\"Overall total correct\", () => {\r",
+									"    pm.expect(responseData.data.results.total).to.be.greaterThan(10, \"Not enough results were returned - please check the data/test manually\");\r",
+									"})\r",
+									"\r",
+									"// All seniorty should be 'cxo'\r",
+									"pm.test(\"Correct search query seniority returned\", () => {\r",
+									"    responseData.data.results.groups.forEach((group) => {\r",
+									"        group.people.forEach((person) => {\r",
+									"            pm.expect(person.seniority).to.eq(\"cxo\", \"A none CTO level has been returned in the data - please check the data\")\r",
+									"        })\r",
+									"    })\r",
+									"}) "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"aggregation_field\": \"company_id\",\n    \"distance_in_miles\": 10,\n    \"exclusion\": [],\n    \"input\": [\n        {\n            \"id\": \"a7dbf07c-5376-4f91-aaab-90c8991025c4\",\n            \"name\": \"cto\",\n            \"es_id\": \"frtxt-10282bf8-481b-4f22-ae1a-c3c24d0cbd76\",\n            \"type\": \"freetext\"\n        }\n    ],\n    \"limit\": 10,\n    \"size_per_bucket\": 8\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v4-powersearch/market-mapping-search",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v4-powersearch",
+								"market-mapping-search"
+							]
+						},
+						"description": "Should return list of results containing CTOs if permission read:market_mapping is present on user"
+					},
+					"response": []
+				},
+				{
+					"name": "POST Search for a CTO based in Paris",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", () => {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", () => {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"// Broadness of this search dictates that 5 or more results should always be returned\r",
+									"pm.test(\"Overall total correct\", () => {\r",
+									"    pm.expect(responseData.data.results.total).to.be.greaterThan(5, \"Not enough results have been returned for this search - please investigate\");\r",
+									"})\r",
+									"\r",
+									"// High level seniority codes should be returned\r",
+									"pm.test(\"Correct search query seniority returned\", () => {\r",
+									"    responseData.data.results.groups.forEach((group) => {\r",
+									"        group.people.forEach((person) => {\r",
+									"            pm.expect(person.seniority).to.be.oneOf([\"cxo\", \"vp\", \"entry\"], \"Unexpected seniority outside of CTO level has been returned, or the data is incorrect - please investigate and act accordingly\")\r",
+									"        })\r",
+									"    })\r",
+									"}) \r",
+									"\r",
+									"// All Aliases for Paris included as per active_locations Mongo Collection\r",
+									"pm.test(\"Correct search query location returned\", () => {\r",
+									"    responseData.data.results.groups.forEach((group) => {\r",
+									"        group.people.forEach((person) => {\r",
+									"            pm.expect(person.location_name).to.be.oneOf([\r",
+									"                \"La Celle-Saint-Cloud\",\r",
+									"                \"PARIS 01\",\r",
+									"                \"Eaubonne\",\r",
+									"                \"Paray-Vieille-Poste\",\r",
+									"                \"19th Arrondissement\",\r",
+									"                \"Quartier Saint-Georges\",\r",
+									"                \"Le Bourget\",\r",
+									"                \"Bry-sur-Marne\",\r",
+									"                \"Choisy-le-Roi\",\r",
+									"                \"Montrouge\",\r",
+									"                \"Saint-Denis\",\r",
+									"                \"Fontenay-sous-Bois\",\r",
+									"                \"15th arrondissement of Paris\",\r",
+									"                \"Le Vesinet\",\r",
+									"                \"Quartier du Mail\",\r",
+									"                \"La Courneuve\",\r",
+									"                \"Bois-Colombes\",\r",
+									"                \"Verrieres-le-Buisson\",\r",
+									"                \"La Garenne-Colombes\",\r",
+									"                \"Massy\",\r",
+									"                \"Quartier de la Salpetriere\",\r",
+									"                \"Châtenay-Malabry\",\r",
+									"                \"Quartier d'Auteuil\",\r",
+									"                \"Bondy\",\r",
+									"                \"Neuilly-sur-Marne\",\r",
+									"                \"Quartier des Invalides\",\r",
+									"                \"Villiers-sur-Marne\",\r",
+									"                \"Bourg-la-Reine\",\r",
+									"                \"Nogent-sur-Marne\",\r",
+									"                \"Quartier Les Îles\",\r",
+									"                \"Carrières-sur-Seine\",\r",
+									"                \"13th Arrondissement\",\r",
+									"                \"Viroflay\",\r",
+									"                \"L'Hay-les-Roses\",\r",
+									"                \"Chatillon\",\r",
+									"                \"Quartier des Archives\",\r",
+									"                \"Saint-Maur-des-Fossés\",\r",
+									"                \"Puteaux\",\r",
+									"                \"Carrieres-sur-Seine\",\r",
+									"                \"Croissy\",\r",
+									"                \"Levallois-Perret\",\r",
+									"                \"Créteil\",\r",
+									"                \"Charenton-le-Pont\",\r",
+									"                \"Clamart\",\r",
+									"                \"paris\",\r",
+									"                \"Le Pre-Saint-Gervais\",\r",
+									"                \"Saint-Mandé\",\r",
+									"                \"svg\",\r",
+									"                \"Bobigny\",\r",
+									"                \"Sevres\",\r",
+									"                \"12th Arrondissement\",\r",
+									"                \"Dugny\",\r",
+									"                \"1st arrondissement of Paris\",\r",
+									"                \"8th arrondissement of Paris\",\r",
+									"                \"Issy-les-Moulineaux\",\r",
+									"                \"Gonesse\",\r",
+									"                \"Antony\",\r",
+									"                \"Quartier Sainte-Marguerite\",\r",
+									"                \"Deuil-la-Barre\",\r",
+									"                \"Villemomble\",\r",
+									"                \"Joinville-le-Pont\",\r",
+									"                \"Cachan\",\r",
+									"                \"Sannois\",\r",
+									"                \"Noisy-le-Sec\",\r",
+									"                \"Villiers-le-Bel\",\r",
+									"                \"Rungis\",\r",
+									"                \"Quartier de l'Europe\",\r",
+									"                \"Epinay-sur-Seine\",\r",
+									"                \"Chatenay-Malabry\",\r",
+									"                \"4th Arrondissement\",\r",
+									"                \"17th Arrondissement\",\r",
+									"                \"Paris\",\r",
+									"                \"16th arrondissement of Paris\",\r",
+									"                \"Drancy\",\r",
+									"                \"5th Arrondissement\",\r",
+									"                \"Ile de France\",\r",
+									"                \"Saint-Mande\",\r",
+									"                \"Rosny-sous-Bois\",\r",
+									"                \"Quartier d'Amérique\",\r",
+									"                \"Épinay-sur-Seine\",\r",
+									"                \"Montmagny\",\r",
+									"                \"Saint-Cloud\",\r",
+									"                \"Suresnes\",\r",
+									"                \"Le Pré-Saint-Gervais\",\r",
+									"                \"Courbevoie\",\r",
+									"                \"Pierrefitte-sur-Seine\",\r",
+									"                \"Arnouville\",\r",
+									"                \"Boulogne-Billancourt\",\r",
+									"                \"Saint-Brice-sous-Forêt\",\r",
+									"                \"Vitry-sur-Seine\",\r",
+									"                \"Quartier de la Roquette\",\r",
+									"                \"15th Arrondissement\",\r",
+									"                \"Centre-Ville - Gare\",\r",
+									"                \"Le Blanc-Mesnil\",\r",
+									"                \"Velizy-Villacoublay\",\r",
+									"                \"Garches\",\r",
+									"                \"Le Vésinet\",\r",
+									"                \"Vincennes\",\r",
+									"                \"Stains\",\r",
+									"                \"Le Perreux-sur-Marne\",\r",
+									"                \"Vienne\",\r",
+									"                \"Alfortville\",\r",
+									"                \"Saint-Ouen\",\r",
+									"                \"Aubervilliers\",\r",
+									"                \"Bonneuil-sur-Marne\",\r",
+									"                \"L'Haÿ-les-Roses\",\r",
+									"                \"Rueil-Malmaison\",\r",
+									"                \"Ivry-sur-Seine\",\r",
+									"                \"Gentilly\",\r",
+									"                \"Clichy-sous-Bois\",\r",
+									"                \"Thiais\",\r",
+									"                \"Chevilly-Larue\",\r",
+									"                \"Franconville\",\r",
+									"                \"Cormeilles-en-Parisis\",\r",
+									"                \"11th Arrondissement\",\r",
+									"                \"8th Arrondissement of Paris\",\r",
+									"                \"Villeneuve-la-Garenne\",\r",
+									"                \"Quartier de la Salpêtrière\",\r",
+									"                \"Creteil\",\r",
+									"                \"Clichy-la-Garenne\",\r",
+									"                \"Sevran\",\r",
+									"                \"Ermont\",\r",
+									"                \"The Defense\",\r",
+									"                \"hauts-de-seine\",\r",
+									"                \"Saint-Brice-sous-Foret\",\r",
+									"                \"Châtillon\",\r",
+									"                \"Quartier de Bercy\",\r",
+									"                \"Villetaneuse\",\r",
+									"                \"Arcueil\",\r",
+									"                \"Malakoff\",\r",
+									"                \"Garges-les-Gonesse\",\r",
+									"                \"Le Plessis-Robinson\",\r",
+									"                \"2nd arrondissement\",\r",
+									"                \"Plateau d'Avron\",\r",
+									"                \"Verrières-le-Buisson\",\r",
+									"                \"Champigny-sur-Marne\",\r",
+									"                \"Quartier Notre-Dame-des-Champs\",\r",
+									"                \"Soisy-sous-Montmorency\",\r",
+									"                \"10th arrondissement of Paris\",\r",
+									"                \"20th arrondissement of Paris\",\r",
+									"                \"Nanterre, Ile de France, 92000\",\r",
+									"                \"Gennevilliers\",\r",
+									"                \"Quartier du Faubourg-du-Roule\",\r",
+									"                \"France, Ile-de-France, HAUTS-DE-SEINE\",\r",
+									"                \"Île de France\",\r",
+									"                \"Gagny\",\r",
+									"                \"Quartier d'Amerique\",\r",
+									"                \"Nanterre, Île de France, 92000\",\r",
+									"                \"Orly\",\r",
+									"                \"Fontenay-aux-Roses\",\r",
+									"                \"Garges-lès-Gonesse\",\r",
+									"                \"Neuilly-sur-Seine\",\r",
+									"                \"9th arrondissement of Paris\",\r",
+									"                \"Sartrouville\",\r",
+									"                \"Chaville\",\r",
+									"                \"Meudon\",\r",
+									"                \"Pantin\",\r",
+									"                \"Les Pavillons-sous-Bois\",\r",
+									"                \"Villejuif\",\r",
+									"                \"Saint-Maur-des-Fosses\",\r",
+									"                \"Quartier Les Iles\",\r",
+									"                \"Houilles\",\r",
+									"                \"Bagnolet\",\r",
+									"                \"Enghien-les-Bains\",\r",
+									"                \"92-HAUTS-DE-SEINE, FRANCE\",\r",
+									"                \"Les Lilas\",\r",
+									"                \"Vélizy-Villacoublay\",\r",
+									"                \"Quartier des Batignolles\",\r",
+									"                \"7th Arrondissement\",\r",
+									"                \"Sarcelles\",\r",
+									"                \"9th Arrondissement\",\r",
+									"                \"13th arrondissement of Paris\",\r",
+									"                \"Maisons-Alfort\",\r",
+									"                \"Aulnay-sous-Bois\",\r",
+									"                \"Centre-ville\",\r",
+									"                \"Sèvres\",\r",
+									"                \"Clichy\",\r",
+									"                \"Noisy-le-Grand\",\r",
+									"            ], \"The results aren't all in Paris as explicitly requested - please check and act accordingly\")\r",
+									"        })\r",
+									"    })\r",
+									"}) "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"aggregation_field\": \"company_id\",\r\n    \"distance_in_miles\": 10,\r\n    \"exclusion\": [],\r\n    \"input\": [\r\n        {\r\n            \"id\": \"53ea26fe-df00-48f6-ad70-0845f9c2309a\",\r\n            \"name\": \"cto\",\r\n            \"es_id\": \"frtxt-78566373-7a5e-41d5-b473-6919f787fa0f\",\r\n            \"type\": \"freetext\"\r\n        },\r\n        {\r\n            \"name\": \"Paris\",\r\n            \"es_id\": \"loc962095\",\r\n            \"id\": 962095,\r\n            \"type\": \"location\",\r\n            \"score\": 126600\r\n        }\r\n    ],\r\n    \"limit\": 10,\r\n    \"size_per_bucket\": 8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v4-powersearch/market-mapping-search",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v4-powersearch",
+								"market-mapping-search"
+							]
+						},
+						"description": "Search for a 'CTO' level in the location 'France' and assert results are as expected. "
+					},
+					"response": []
+				},
+				{
+					"name": "POST Search for a Software Engineers with start-up exp. in London",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", () => {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", () => {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"// Broadness of this search dictates more than 5 results should be displayed\r",
+									"pm.test(\"Overall total correct\", () => {\r",
+									"    pm.expect(responseData.data.results.total).to.be.greaterThan(5, \"We are not returning enough data or it is incorrect - please investigate\");\r",
+									"})\r",
+									"\r",
+									"// Only Software Engineers should display from this search\r",
+									"pm.test(\"Correct search query prospect role returned\", () => {\r",
+									"    responseData.data.results.groups.forEach((group) => {\r",
+									"        group.people.forEach((person) => {\r",
+									"            pm.expect(person.projected_roles).to.include(\"Software Engineering\", \"Data returned is outside of what was searched for - please investigate\")\r",
+									"        })\r",
+									"    })\r",
+									"})\r",
+									"\r",
+									"// Start-ups are rarely above 50 people\r",
+									"pm.test(\"Correct search query company size returned\", () => {\r",
+									"    responseData.data.results.groups.forEach((group) => {\r",
+									"            pm.expect(group.num_employees_max).to.be.below(51, \"A non-start-up company may have been returned - please check the validity of the results\")\r",
+									"    })\r",
+									"}) \r",
+									"\r",
+									"// All Aliases for London included as per active_locations Mongo Collection\r",
+									"pm.test(\"Correct search query location returned\", () => {\r",
+									"    responseData.data.results.groups.forEach((group) => {\r",
+									"        group.people.forEach((person) => {\r",
+									"            pm.expect(person.location_name).to.be.oneOf([\r",
+									"            \"London, EC3\",\r",
+									"            \"Brook Green\",\r",
+									"            \"London, SE11\",\r",
+									"            \"Carshalton\",\r",
+									"            \"city of london\",\r",
+									"            \"Penge\",\r",
+									"            \"Brent Cross\",\r",
+									"            \"Dulwich\",\r",
+									"            \"Shortlands\",\r",
+									"            \"Thornton Heath\",\r",
+									"            \"Bickley\",\r",
+									"            \"Elephant and Castle\",\r",
+									"            \"West Kensington\",\r",
+									"            \"London Borough of Barnet\",\r",
+									"            \"Clerkenwell\",\r",
+									"            \"Manor Park\",\r",
+									"            \"Raynes Park\",\r",
+									"            \"London, South East, Hounslow\",\r",
+									"            \"Kensington\",\r",
+									"            \"Greater London\",\r",
+									"            \"North Woolwich\",\r",
+									"            \"North Kensington\",\r",
+									"            \"Perivale\",\r",
+									"            \"Ilford\",\r",
+									"            \"East Barnet\",\r",
+									"            \"Canonbury\",\r",
+									"            \"London, City of London\",\r",
+									"            \"Marylebone\",\r",
+									"            \"Enfield Highway\",\r",
+									"            \"Tufnell Park\",\r",
+									"            \"London Borough of Hackney\",\r",
+									"            \"Mitcham\",\r",
+									"            \"Somers Town\",\r",
+									"            \"Perry Vale\",\r",
+									"            \"Tower Hamlets\",\r",
+									"            \"Bayswater\",\r",
+									"            \"Bermondsey\",\r",
+									"            \"London Borough of Merton\",\r",
+									"            \"Hoxton\",\r",
+									"            \"Canning Town\",\r",
+									"            \"Clapham Junction\",\r",
+									"            \"West Green\",\r",
+									"            \"Streatham\",\r",
+									"            \"Forest Hill\",\r",
+									"            \"Upper Holloway\",\r",
+									"            \"Earl's Court\",\r",
+									"            \"London Borough of Lambeth\",\r",
+									"            \"Hampstead\",\r",
+									"            \"Haggerston\",\r",
+									"            \"London, SW1X7JF\",\r",
+									"            \"London\",\r",
+									"            \"Camden Town\",\r",
+									"            \"Crystal Palace\",\r",
+									"            \"Walthamstow\",\r",
+									"            \"Greenwich Peninsula\",\r",
+									"            \"Wembley Park\",\r",
+									"            \"Islington\",\r",
+									"            \"Brunswick Park\",\r",
+									"            \"london\",\r",
+									"            \"Holloway\",\r",
+									"            \"Whitechapel\",\r",
+									"            \"Ealing\",\r",
+									"            \"Woolwich\",\r",
+									"            \"Wembley\",\r",
+									"            \"Stratford\",\r",
+									"            \"Putney\",\r",
+									"            \"Becontree\",\r",
+									"            \"South West London, UK\",\r",
+									"            \"Bromley By Bow\",\r",
+									"            \"Walworth\",\r",
+									"            \"London, South East, Sunbury-On-Thames\",\r",
+									"            \"Redbridge\",\r",
+									"            \"North Finchley\",\r",
+									"            \"Welling\",\r",
+									"            \"London, EC2V 7NG\",\r",
+									"            \"Stamford Hill\",\r",
+									"            \"Sands End\",\r",
+									"            \"Colney Hatch\",\r",
+									"            \"Harringay\",\r",
+									"            \"London, South East, City of London\",\r",
+									"            \"South Hampstead\",\r",
+									"            \"London Borough of Waltham Forest\",\r",
+									"            \"Leytonstone\",\r",
+									"            \"Ladywell\",\r",
+									"            \"Hackney\",\r",
+									"            \"West Dulwich\",\r",
+									"            \"South Woodford\",\r",
+									"            \"London Borough of Enfield\",\r",
+									"            \"Southgate\",\r",
+									"            \"Creekmouth\",\r",
+									"            \"Lee\",\r",
+									"            \"Newbury Park\",\r",
+									"            \"London Borough of Tower Hamlets\",\r",
+									"            \"Bloomsbury\",\r",
+									"            \"Acton\",\r",
+									"            \"Brompton\",\r",
+									"            \"Greenwich\",\r",
+									"            \"Tulse Hill\",\r",
+									"            \"Royal Borough of Kensington and Chelsea\",\r",
+									"            \"The City, EC1A\",\r",
+									"            \"Richmond\",\r",
+									"            \"Deptford\",\r",
+									"            \"Merton\",\r",
+									"            \"Dollis Hill\",\r",
+									"            \"West London\",\r",
+									"            \"London, South East, Morden\",\r",
+									"            \"London Borough of Wandsworth\",\r",
+									"            \"Chalk Farm\",\r",
+									"            \"Royal Borough of Greenwich\",\r",
+									"            \"Homerton\",\r",
+									"            \"Chiswick\",\r",
+									"            \"St Pancras\",\r",
+									"            \"Woodford Green\",\r",
+									"            \"Leyton\",\r",
+									"            \"Morden\",\r",
+									"            \"City of Westminster\",\r",
+									"            \"Brondesbury\",\r",
+									"            \"Thames View\",\r",
+									"            \"London Borough of Camden\",\r",
+									"            \"Hammersmith\",\r",
+									"            \"New Beckenham\",\r",
+									"            \"Harlesden\",\r",
+									"            \"Battersea\",\r",
+									"            \"Poplar\",\r",
+									"            \"Finsbury\",\r",
+									"            \"Beckenham\",\r",
+									"            \"West Hampstead\",\r",
+									"            \"Finsbury Park\",\r",
+									"            \"Hackney Wick\",\r",
+									"            \"Broad Green\",\r",
+									"            \"New Cross\",\r",
+									"            \"Ponders End\",\r",
+									"            \"Herne Hill\",\r",
+									"            \"Edmonton\",\r",
+									"            \"Shadwell\",\r",
+									"            \"Brixton\",\r",
+									"            \"Vauxhall\",\r",
+									"            \"South Norwood\",\r",
+									"            \"Eltham\",\r",
+									"            \"Lewisham\",\r",
+									"            \"Upton Park\",\r",
+									"            \"West Ealing\",\r",
+									"            \"Croydon\",\r",
+									"            \"Woodford\",\r",
+									"            \"West Finchley\",\r",
+									"            \"London Borough of Lewisham\",\r",
+									"            \"Covent Garden\",\r",
+									"            \"Lambeth\",\r",
+									"            \"Mile End\",\r",
+									"            \"Seven Kings\",\r",
+									"            \"Blackwall\",\r",
+									"            \"Park Royal\",\r",
+									"            \"Stratford New Town\",\r",
+									"            \"Merton Park\",\r",
+									"            \"Barking\",\r",
+									"            \"Buckhurst Hill\",\r",
+									"            \"Gospel Oak\",\r",
+									"            \"Kennington\",\r",
+									"            \"Stockwell\",\r",
+									"            \"Wallington\",\r",
+									"            \"Holborn\",\r",
+									"            \"London UK\",\r",
+									"            \"Stratford Marsh\",\r",
+									"            \"West Ham\",\r",
+									"            \"Hampstead Garden Suburb\",\r",
+									"            \"South Kensington\",\r",
+									"            \"Fulham\",\r",
+									"            \"London Borough of Islington\",\r",
+									"            \"Bow\",\r",
+									"            \"Plumstead\",\r",
+									"            \"London Borough of Haringey\",\r",
+									"            \"Kew\",\r",
+									"            \"Colliers Wood\",\r",
+									"            \"Silvertown\",\r",
+									"            \"Victoria\",\r",
+									"            \"Wood Green\",\r",
+									"            \"Beckton\",\r",
+									"            \"Hackbridge\",\r",
+									"            \"London, South East, North West London\",\r",
+									"            \"Londres, England - Greater London, RM9\",\r",
+									"            \"London, UK\",\r",
+									"            \"London Borough of Croydon\",\r",
+									"            \"London Borough of Southwark\",\r",
+									"            \"City of London, United Kingdom\",\r",
+									"            \"Bromley\",\r",
+									"            \"England, London, North West London, England\",\r",
+									"            \"South Lambeth\",\r",
+									"            \"Snaresbrook\",\r",
+									"            \"Central London, E16JE\",\r",
+									"            \"London, South East, Enfield\",\r",
+									"            \"London Borough of Hounslow\",\r",
+									"            \"Clapton\",\r",
+									"            \"New Cross Gate\",\r",
+									"            \"Tooting\",\r",
+									"            \"London (Central)\",\r",
+									"            \"Parson's Green\",\r",
+									"            \"City of London, UK\",\r",
+									"            \"Belsize Park\",\r",
+									"            \"Temple Mills\",\r",
+									"            \"Cockfosters\",\r",
+									"            \"Southfields\",\r",
+									"            \"Elephant and Castle, United Kingdom\",\r",
+									"            \"Saint Helier\",\r",
+									"            \"Soho\",\r",
+									"            \"Wimbledon Park\",\r",
+									"            \"London Borough of Brent\",\r",
+									"            \"London Borough of Redbridge\",\r",
+									"            \"London Borough of Richmond upon Thames\",\r",
+									"            \"Westminster\",\r",
+									"            \"Camberwell\",\r",
+									"            \"Southwark\",\r",
+									"            \"London Borough of Newham\",\r",
+									"            \"Paddington\",\r",
+									"            \"Clapham\",\r",
+									"            \"St. John's Wood\",\r",
+									"            \"Hanwell\",\r",
+									"            \"Bethnal Green\",\r",
+									"            \"Brentford\",\r",
+									"            \"Central London, United Kingdom\",\r",
+									"            \"Greater London, United Kingdom\",\r",
+									"            \"Dagenham\",\r",
+									"            \"Preston\",\r",
+									"            \"New Barnet\",\r",
+									"            \"Isle of Dogs\",\r",
+									"            \"Southbury\",\r",
+									"            \"London, South East, Central London\",\r",
+									"            \"Sydenham\",\r",
+									"            \"Hammersmith and Fulham\",\r",
+									"            \"Willesden\",\r",
+									"            \"Maida Vale\",\r",
+									"            \"Kilburn\",\r",
+									"            \"London Borough of Hammersmith and Fulham\",\r",
+									"            \"London, United Kingdom\",\r",
+									"            \"Wimbledon , London\",\r",
+									"            \"Rotherhithe\",\r",
+									"            \"Tottenham\",\r",
+									"            \"Clapham Park\",\r",
+									"            \"Colindale\",\r",
+									"            \"East Ham\",\r",
+									"            \"London (Central), UK\",\r",
+									"            \"Wimbledon\",\r",
+									"            \"Shepherd's Bush\",\r",
+									"            \"City of London\",\r",
+									"            \"Alperton\",\r",
+									"            \"Wandsworth\",\r",
+									"            \"Enfield\",\r",
+									"            \"Millbank\",\r",
+									"            \"merton\",\r",
+									"            \"Leamouth\",\r",
+									"            \"West London, United Kingdom\",\r",
+									"            \"London, EC1V9JS\",\r",
+									"            \"Barkingside\",\r",
+									"            \"Well Hall\",\r",
+									"            \"Mayfair\"\r",
+									"            ], \"The result is not in London as expected. This means our aliases have been updated or the data is incorrect - please check and update accordingly\")\r",
+									"        })\r",
+									"    })\r",
+									"}) "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"aggregation_field\": \"company_id\",\r\n    \"distance_in_miles\": 10,\r\n    \"exclusion\": [],\r\n    \"input\": [\r\n        {\r\n            \"name\": \"London\",\r\n            \"id\": 996636,\r\n            \"type\": \"location\",\r\n            \"es_id\": \"loc996636\",\r\n            \"alias\": [\r\n                {\r\n                    \"input\": \"London\",\r\n                    \"weight\": 806750\r\n                },\r\n                {\r\n                    \"input\": \"london\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London, EC3\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Brook Green\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London, SE11\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Carshalton\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"city of london\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Penge\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Brent Cross\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Dulwich\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Shortlands\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Thornton Heath\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Bickley\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Elephant and Castle\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"West Kensington\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London Borough of Barnet\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Clerkenwell\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Manor Park\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Raynes Park\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London, South East, Hounslow\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Kensington\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Greater London\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"North Woolwich\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"North Kensington\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Perivale\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Ilford\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"East Barnet\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Canonbury\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London, City of London\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Marylebone\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Enfield Highway\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Tufnell Park\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London Borough of Hackney\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Mitcham\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Somers Town\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Perry Vale\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Tower Hamlets\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Bayswater\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Bermondsey\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London Borough of Merton\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Hoxton\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Canning Town\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Clapham Junction\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"West Green\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Streatham\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Forest Hill\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Upper Holloway\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Earl's Court\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London Borough of Lambeth\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Hampstead\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Haggerston\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London, SW1X7JF\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Camden Town\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Crystal Palace\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Walthamstow\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Greenwich Peninsula\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Wembley Park\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Islington\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Brunswick Park\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Holloway\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Whitechapel\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Ealing\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Woolwich\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Wembley\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Stratford\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Putney\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Becontree\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"South West London, UK\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Bromley By Bow\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Walworth\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London, South East, Sunbury-On-Thames\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Redbridge\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"North Finchley\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Welling\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London, EC2V 7NG\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Stamford Hill\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Sands End\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Colney Hatch\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Harringay\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London, South East, City of London\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"South Hampstead\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London Borough of Waltham Forest\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Leytonstone\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Ladywell\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Hackney\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"West Dulwich\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"South Woodford\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London Borough of Enfield\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Southgate\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Creekmouth\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Lee\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Newbury Park\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London Borough of Tower Hamlets\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Bloomsbury\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Acton\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Brompton\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Greenwich\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Tulse Hill\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Royal Borough of Kensington and Chelsea\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"The City, EC1A\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Richmond\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Deptford\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Merton\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Dollis Hill\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"West London\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London, South East, Morden\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London Borough of Wandsworth\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Chalk Farm\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Royal Borough of Greenwich\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Homerton\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Chiswick\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"St Pancras\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Woodford Green\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Leyton\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Morden\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"City of Westminster\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Brondesbury\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Thames View\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London Borough of Camden\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Hammersmith\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"New Beckenham\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Harlesden\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Battersea\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Poplar\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Finsbury\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Beckenham\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"West Hampstead\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Finsbury Park\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Hackney Wick\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Broad Green\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"New Cross\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Ponders End\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Herne Hill\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Edmonton\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Shadwell\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Brixton\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Vauxhall\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"South Norwood\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Eltham\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Lewisham\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Upton Park\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"West Ealing\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Croydon\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Woodford\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"West Finchley\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London Borough of Lewisham\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Covent Garden\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Lambeth\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Mile End\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Seven Kings\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Blackwall\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Park Royal\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Stratford New Town\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Merton Park\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Barking\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Buckhurst Hill\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Gospel Oak\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Kennington\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Stockwell\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Wallington\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Holborn\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London UK\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Stratford Marsh\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"West Ham\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Hampstead Garden Suburb\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"South Kensington\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Fulham\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London Borough of Islington\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Bow\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Plumstead\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London Borough of Haringey\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Kew\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Colliers Wood\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Silvertown\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Victoria\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Wood Green\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Beckton\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Hackbridge\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London, South East, North West London\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Londres, England - Greater London, RM9\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London, UK\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London Borough of Croydon\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London Borough of Southwark\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"City of London, United Kingdom\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Bromley\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"England, London, North West London, England\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"South Lambeth\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Snaresbrook\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Central London, E16JE\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London, South East, Enfield\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London Borough of Hounslow\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Clapton\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"New Cross Gate\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Tooting\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London (Central)\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Parson's Green\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"City of London, UK\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Belsize Park\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Temple Mills\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Cockfosters\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Southfields\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Elephant and Castle, United Kingdom\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Saint Helier\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Soho\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Wimbledon Park\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London Borough of Brent\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London Borough of Redbridge\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London Borough of Richmond upon Thames\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Westminster\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Camberwell\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Southwark\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London Borough of Newham\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Paddington\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Clapham\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"St. John's Wood\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Hanwell\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Bethnal Green\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Brentford\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Central London, United Kingdom\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Greater London, United Kingdom\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Dagenham\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Preston\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"New Barnet\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Isle of Dogs\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Southbury\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London, South East, Central London\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Sydenham\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Hammersmith and Fulham\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Willesden\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Maida Vale\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Kilburn\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London Borough of Hammersmith and Fulham\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London, United Kingdom\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Wimbledon , London\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Rotherhithe\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Tottenham\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Clapham Park\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Colindale\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"East Ham\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London (Central), UK\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Wimbledon\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Shepherd's Bush\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Alperton\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Wandsworth\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Enfield\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Millbank\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Leamouth\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"West London, United Kingdom\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"London, EC1V9JS\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Barkingside\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Well Hall\",\r\n                    \"weight\": 80675\r\n                },\r\n                {\r\n                    \"input\": \"Mayfair\",\r\n                    \"weight\": 80675\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"name\": \"Software Engineering\",\r\n            \"es_id\": \"rol808\",\r\n            \"id\": 808,\r\n            \"type\": \"role\",\r\n            \"score\": 5652600\r\n        }\r\n    ],\r\n    \"limit\": 10,\r\n    \"size_per_bucket\": 8,\r\n    \"company_sizes\": [\r\n        \"11-50\",\r\n        \"1-10\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v4-powersearch/market-mapping-search",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v4-powersearch",
+								"market-mapping-search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Search for someone with financial exp. from a specific company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", () => {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", () => {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"// Broadness of search should dictate more than 10 results \r",
+									"pm.test(\"Overall total correct\", () => {\r",
+									"    pm.expect(responseData.data.results.total).to.be.greaterThan(10, \"Not enough results returned - please investigate\");\r",
+									"})\r",
+									"\r",
+									"// Specific sector ids for finance should be returned\r",
+									"pm.test(\"Correct search query prospect role returned\", () => {\r",
+									"    responseData.data.results.groups.forEach((group) => {\r",
+									"        group.people.forEach((person) => {\r",
+									"            pm.expect(person.sector_ids[0]).to.be.oneOf([1,2], \"Finance related sector ids have either changed or been updated - please investigate\")\r",
+									"        })\r",
+									"    })\r",
+									"})\r",
+									"\r",
+									"// Retail banking should always return for anyone working for Barclays\r",
+									"pm.test(\"Correct search query prospect role returned\", () => {\r",
+									"    responseData.data.results.groups.forEach((group) => {\r",
+									"        group.people.forEach((person) => {\r",
+									"            pm.expect(person.industry_names).to.contains(\"Retail Banking\", \"Our industry data has changed - please investigate the reason for test failure\")\r",
+									"        })\r",
+									"    })\r",
+									"})\r",
+									"\r",
+									"// Assuming Barclays don't go bust, they should always employee a workforce larger than 1000!\r",
+									"pm.test(\"Correct search query company size returned\", () => {\r",
+									"    responseData.data.results.groups.forEach((group) => {\r",
+									"            pm.expect(group.num_employees_max).to.be.above(1000, \"Barclays have either gone out of business or our data is inconsitent/not being displayed correctly - please investigate\")\r",
+									"    })\r",
+									"}) \r",
+									"\r",
+									"// All aliases in companies include 'Barclays'\r",
+									"pm.test(\"Correct search query company returned\", () => {\r",
+									"    responseData.data.results.groups.forEach((group) => {\r",
+									"        group.people.forEach((person) => {\r",
+									"            pm.expect(person.company_display_name).to.include(\r",
+									"                \"Barclays\", \"The company has changed name - please update test or fix the broken data\"\r",
+									"            )\r",
+									"        })\r",
+									"    })\r",
+									"}) "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"aggregation_field\": \"company_id\",\r\n    \"distance_in_miles\": 10,\r\n    \"exclusion\": [],\r\n    \"input\": [\r\n        {\r\n            \"domain\": \"barclays.co.uk\",\r\n            \"name\": \"Barclays\",\r\n            \"es_id\": \"com111\",\r\n            \"founded_on_date\": \"None\",\r\n            \"id\": 111,\r\n            \"type\": \"company\",\r\n            \"area_of_operations\": \"International\",\r\n            \"score\": 11280\r\n        },\r\n        {\r\n            \"name\": \"All Financial Services\",\r\n            \"id\": 1,\r\n            \"type\": \"sector\",\r\n            \"es_id\": \"sec1\",\r\n            \"alias\": [\r\n                {\r\n                    \"input\": \"Financial Services\",\r\n                    \"weight\": 100\r\n                }\r\n            ],\r\n            \"isFamily\": true,\r\n            \"path\": [\r\n                1\r\n            ]\r\n        }\r\n    ],\r\n    \"limit\": 10,\r\n    \"size_per_bucket\": 8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v4-powersearch/market-mapping-search",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v4-powersearch",
+								"market-mapping-search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Search using all chips including free text",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", () => {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", () => {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"// Expect at least one result here, despite narrow search\r",
+									"pm.test(\"Overall total correct\", () => {\r",
+									"    pm.expect(responseData.data.results.total).to.be.greaterThan(1, \"No results returned - please investigate! \");\r",
+									"})\r",
+									"\r",
+									"// Multiple sector ids returned due to large spread of Google\r",
+									"pm.test(\"Correct search query prospect role returned\", () => {\r",
+									"     responseData.data.results.groups.forEach((group) => {\r",
+									"         group.people.forEach((person) => {\r",
+									"            pm.expect(person.sector_ids[0]).to.be.oneOf([1,2,3,4,5,6,7,8,9,10,11], \"Sector ids missing for Google - Please check results manually!\")\r",
+									"        })\r",
+									"    })\r",
+									"})\r",
+									"\r",
+									"// Info Tech should always be included for Google\r",
+									"pm.test(\"Correct search query prospect role returned\", () => {\r",
+									"    responseData.data.results.groups.forEach((group) => {\r",
+									"        group.people.forEach((person) => {\r",
+									"            pm.expect(person.industry_names).to.contains(\"Information Technology\", \"Expected industry of 'Information Technology' not found for Google\")\r",
+									"        })\r",
+									"    })\r",
+									"})\r",
+									"\r",
+									"// San Fran is search - Cali Aliases may come back\r",
+									"pm.test(\"Correct location returned\", () => {\r",
+									"    responseData.data.results.groups.forEach((group) => {\r",
+									"        group.people.forEach((person) => {\r",
+									"            pm.expect(person.location_name).to.be.oneOf([\r",
+									"                \"CA\",\r",
+									"                \"California\",\r",
+									"                \"California, USA\",\r",
+									"                \"california\",\r",
+									"                \"Baja California\",\r",
+									"                \"baja california\",\r",
+									"                \"B.C.\",\r",
+									"                \"Mountain View\",\r",
+									"                \"San Francisco\",\r",
+									"                \"Milpitas\"\r",
+									"            ], \"Location name not found for 'San Fransico' - this may be a new alias - please check and update accordingly\")\r",
+									"        })\r",
+									"    })\r",
+									"}) \r",
+									"\r",
+									"// Return Software Engineering prospects \r",
+									"pm.test(\"Correct search query prospect role returned\", () => {\r",
+									"    responseData.data.results.groups.forEach((group) => {\r",
+									"        group.people.forEach((person) => {\r",
+									"            pm.expect(person.projected_roles).to.include(\"Software Engineering\", \"Projected roles should include 'software engineering' as per the request - not found! \")\r",
+									"        })\r",
+									"    })\r",
+									"})\r",
+									"\r",
+									"// Free text search is Senior\r",
+									"pm.test(\"Correct search query seniority returned\", () => {\r",
+									"    responseData.data.results.groups.forEach((group) => {\r",
+									"        group.people.forEach((person) => {\r",
+									"            pm.expect(person.seniority).to.eq(\"senior\", \"Free text search expected 'senior' for all 'seniority' fields - not found! \")\r",
+									"        })\r",
+									"    })\r",
+									"}) \r",
+									"\r",
+									"// Assuming Google don't go bust, they should always employee a workforce larger than 1000!\r",
+									"pm.test(\"Correct search query company size returned\", () => {\r",
+									"    responseData.data.results.groups.forEach((group) => {\r",
+									"            pm.expect(group.num_employees_max).to.be.above(1000, \"Number of employees has decreased. Either Google have gone out of business or our data is wrong - please check! \")\r",
+									"    })\r",
+									"}) \r",
+									"\r",
+									"// All aliases in companies include 'Google'\r",
+									"pm.test(\"Correct search query company returned\", () => {\r",
+									"    responseData.data.results.groups.forEach((group) => {\r",
+									"        group.people.forEach((person) => {\r",
+									"            pm.expect(person.company_display_name).to.include(\r",
+									"                \"Google\", \"The company has changed name - please update test or fix the broken data\"\r",
+									"            )\r",
+									"        })\r",
+									"    })\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"aggregation_field\": \"company_id\",\r\n    \"distance_in_miles\": 10,\r\n    \"exclusion\": [],\r\n    \"input\": [\r\n        {\r\n            \"name\": \"Software Engineering\",\r\n            \"es_id\": \"rol808\",\r\n            \"id\": 808,\r\n            \"type\": \"role\",\r\n            \"score\": 4522080\r\n        },\r\n        {\r\n            \"domain\": \"google.com\",\r\n            \"name\": \"Google\",\r\n            \"es_id\": \"com10519\",\r\n            \"founded_on_date\": \"None\",\r\n            \"id\": 10519,\r\n            \"type\": \"company\",\r\n            \"area_of_operations\": \"International\",\r\n            \"score\": 4560\r\n        },\r\n        {\r\n            \"id\": \"b990512d-c117-463f-8d42-a70248b1b51b\",\r\n            \"name\": \"\\\"senior\\\"\",\r\n            \"es_id\": \"frtxt-e79e6c51-847b-497e-beba-5e5562a39bed\",\r\n            \"type\": \"freetext\"\r\n        },\r\n        {\r\n            \"name\": \"Software\",\r\n            \"id\": 16,\r\n            \"type\": \"industry\",\r\n            \"es_id\": \"ind16\",\r\n            \"alias\": [\r\n                {\r\n                    \"input\": \"Software\",\r\n                    \"weight\": 147300\r\n                },\r\n                {\r\n                    \"input\": \"Software\",\r\n                    \"weight\": 14730\r\n                }\r\n            ],\r\n            \"path\": [\r\n                2,\r\n                16\r\n            ]\r\n        },\r\n        {\r\n            \"name\": \"San Francisco, CA\",\r\n            \"es_id\": \"loc2922110\",\r\n            \"id\": 2922110,\r\n            \"type\": \"location\",\r\n            \"score\": 367532\r\n        }\r\n    ],\r\n    \"limit\": 10,\r\n    \"size_per_bucket\": 8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v4-powersearch/market-mapping-search",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v4-powersearch",
+								"market-mapping-search"
+							]
+						},
+						"description": "Search using Role, location, industry, company and free text"
+					},
+					"response": []
+				},
+				{
+					"name": "POST Search for Person at Company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", () => {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", () => {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"// This is an expected fail - BUG - https://t-ticker.atlassian.net/browse/TT5-2267?atlOrigin=eyJpIjoiMzQ0ZjRkNjBjODE1NDRkNzlkZjRlNjFlMTk1OTNhZTYiLCJwIjoiaiJ9\"\r",
+									"// pm.test(\"Overall total correct\", () => {\r",
+									"//     pm.expect(responseData.data.results.total).to.be.greaterThan(1, \"No results returned - please investigate! This is an expected fail - BUG - https://t-ticker.atlassian.net/browse/TT5-2267?atlOrigin=eyJpIjoiMzQ0ZjRkNjBjODE1NDRkNzlkZjRlNjFlMTk1OTNhZTYiLCJwIjoiaiJ9\");\r",
+									"// })\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"aggregation_field\": \"company_id\",\r\n    \"distance_in_miles\": 10,\r\n    \"exclusion\": [],\r\n    \"input\": [\r\n        {\r\n            \"id\": \"07c66923-d91e-4670-adf6-d2ad6d37e99f\",\r\n            \"name\": \"nick vaughan\",\r\n            \"es_id\": \"frtxt-d7e7985c-a860-4141-9ba4-d4cb3430f5fa\",\r\n            \"type\": \"freetext\"\r\n        },\r\n        {\r\n            \"domain\": \"selligence.com\",\r\n            \"name\": \"Selligence\",\r\n            \"es_id\": \"com2255739\",\r\n            \"founded_on_date\": \"None\",\r\n            \"id\": 2255739,\r\n            \"type\": \"company\",\r\n            \"area_of_operations\": \"International\",\r\n            \"score\": 52160\r\n        }\r\n    ],\r\n    \"limit\": 10,\r\n    \"size_per_bucket\": 8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v4-powersearch/market-mapping-search",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v4-powersearch",
+								"market-mapping-search"
+							]
+						},
+						"description": "This is currently broken and will fail!"
 					},
 					"response": []
 				}
