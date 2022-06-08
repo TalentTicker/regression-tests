@@ -41,7 +41,7 @@ test("Talent Sourcing - Basic Filter Check", async ({ page }) => {
   await Promise.all([
     page.waitForResponse(
       (resp) =>
-        resp.url().includes("/v4-powersearch/people-search") &&
+        resp.url().includes("/v5-powersearch/people-search") &&
         resp.status() === 200
     ),
     page.click('[data-testid="search-btn"]'),
@@ -59,7 +59,7 @@ test("Talent Sourcing - Basic Filter Check", async ({ page }) => {
   await Promise.all([
     page.waitForResponse(
       (resp) =>
-        resp.url().includes("/v4-powersearch/people-search") &&
+        resp.url().includes("/v5-powersearch/people-search") &&
         resp.status() === 200
     ),
     page.click('[data-testid="search-btn"]'),
@@ -74,7 +74,7 @@ test("Talent Sourcing - Basic Filter Check", async ({ page }) => {
   await Promise.all([
     page.waitForResponse(
       (resp) =>
-        resp.url().includes("/v4-powersearch/people-search") &&
+        resp.url().includes("/v5-powersearch/people-search") &&
         resp.status() === 200
     ),
     page.click('[data-testid="search-btn"]'),
@@ -93,7 +93,7 @@ test("Talent Sourcing - Basic Filter Check", async ({ page }) => {
   await Promise.all([
     page.waitForResponse(
       (resp) =>
-        resp.url().includes("/v4-powersearch/people-search") &&
+        resp.url().includes("/v5-powersearch/people-search") &&
         resp.status() === 200
     ),
     page.click('[data-testid="search-btn"]'),
@@ -145,7 +145,7 @@ test("Talent Sourcing - Advanced Filter Check - Job Title with Company", async (
   await Promise.all([
     page.waitForResponse(
       (resp) =>
-        resp.url().includes("/v4-powersearch/people-search") &&
+        resp.url().includes("/v5-powersearch/people-search") &&
         resp.status() === 200
     ),
     page.click('[data-testid="search-btn"]'),
@@ -172,7 +172,7 @@ test("Talent Sourcing - Advanced Filter Check - Job Title with Company and Locat
   await Promise.all([
     page.waitForResponse(
       (resp) =>
-        resp.url().includes("/v4-powersearch/people-search") &&
+        resp.url().includes("/v5-powersearch/people-search") &&
         resp.status() === 200
     ),
     page.click('[data-testid="search-btn"]'),
