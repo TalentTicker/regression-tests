@@ -38,6 +38,11 @@ test('homepage', async ({ page }) => {
   await expect(page).toHaveURL(config.use.baseURL + 'outbox');
   expect(await page.innerText('h1')).toContain("Outbox");
 
+  // Go to region based url
+  await page.goto(config.use.baseURL + "/en-GB/outbox");
+  // Expect the url to be redirected without the region tag
+  await expect(page).toHaveURL(config.use.baseURL + 'outbox');
+
    // Click [data-testid="styled-anchor-tag"] div:has-text("Home")
    await Promise.all([
     page.waitForNavigation(/*{ url: config.use.baseURL + 'home' }*/),
