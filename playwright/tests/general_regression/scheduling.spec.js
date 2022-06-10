@@ -7,11 +7,11 @@ test.use({ storageState: 'tests/state.json' });
 test('Add, Edit, Delete Schedule', async ({ page }) => {
   await page.goto(config.use.baseURL + "home");
 
-    // Go to https://staging.talentticker.ai/en-GB/home
-    await page.goto('https://staging.talentticker.ai/en-GB/home');
+    // Go to https://staging.talentticker.ai/home
+    await page.goto('https://staging.talentticker.ai/home');
   // Click [data-test="contatcsNavButton"] svg
   await page.click('[data-test="contatcsNavButton"] svg');
-  await expect(page).toHaveURL('https://staging.talentticker.ai/en-GB/outbox');
+  await expect(page).toHaveURL('https://staging.talentticker.ai/outbox');
   // Click text=Schedulesbeta
   await page.click('text=Schedulesbeta');
   await expect(page).toHaveURL('https://staging.talentticker.ai/scheduling');
