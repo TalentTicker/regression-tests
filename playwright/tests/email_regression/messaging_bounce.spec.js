@@ -89,6 +89,9 @@ test("Contact Messaging bounces emails containing [BOUNCE]", async ({ page }) =>
   // Search for the email
   const email = await mailosaur.messages.get(serverId, {
     sentTo: process.env.TEST_EMAIL
+    }, {
+    // overide the automatic 1 hour so we can run this in isolation locally
+    receivedAfter: new Date('2020-01-01T00:00:00Z')
   });
 
   assert.notEqual(email.subject, randomName);
