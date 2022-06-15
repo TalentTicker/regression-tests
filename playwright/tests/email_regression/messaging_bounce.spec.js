@@ -86,6 +86,10 @@ test("Contact Messaging bounces emails containing [BOUNCE]", async ({ page }) =>
     } 
   }
 
+  await expect(page.locator(':nth-match(span[data-testid="opened"], 2)')).toHaveClass(/Mui-disabled/)
+
+  await expect(page.locator(':nth-match(span[data-testid="sent"], 2)')).not.toHaveClass(/Mui-disabled/)
+
   // Search for the email
   const email = await mailosaur.messages.get(serverId, {
     sentTo: process.env.TEST_EMAIL
