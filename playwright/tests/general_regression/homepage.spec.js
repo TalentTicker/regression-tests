@@ -10,6 +10,8 @@ test('homepage', async ({ page }) => {
   await expect(page).toHaveURL(config.use.baseURL + 'home');
   expect(await page.innerText('h1')).toContain("Team Manager");
 
+  expect(await page.title()).toContain("Talent Ticker - Predictive Market Intelligence");
+
   // Click [data-test="newsNavButton"]
   await page.click('[data-test="newsNavButton"]');
   await expect(page).toHaveURL(config.use.baseURL + 'news');

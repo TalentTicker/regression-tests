@@ -86,11 +86,29 @@ test("Contact Messaging From Sourcing Using Outlook Integration", async ({ page 
     } 
   }
 
-  // Search for the email
+  // Search for the email in Mailosaur (Looped to slow this down in case the outbox is so fast that the Mailosaur check happens instantly) 
   const email = await mailosaur.messages.get(serverId, {
     sentTo: process.env.TEST_EMAIL
   });
 
-  assert.equal(email.subject, randomName);
+  let a = 0;
+  let mailosaurFound = false;
+  while (a < 10) {
+    if (mailosaurFound == false){
+      try {        
+        assert.equal(email.subject, randomName);
+          mailosaurFound = true;
+      } catch (e) {
+          a++;
+          await page.click('[data-testid="reload-list-btn"]');
+          if (a == 10){
+            throw e
+          }
+      }
+    }
+    else {
+      break;
+    } 
+  }
 
 });
