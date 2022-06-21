@@ -1,12 +1,12 @@
-const config = require('../../playwright.config.js');
+const config = require('../../../playwright.config.js');
 const { test, expect } = require('@playwright/test');
+const assert = require('chai').assert;
 const Mailosaur = require('mailosaur');
-const { assert } = require('chai');
 require('dotenv').config();
 
 test.use({ storageState: 'tests/state.json' });
 
-test("Contact Messaging From Sourcing Using Outlook Integration", async ({ page }) => {
+test("Contact Messaging From Sourcing Using Gmail Integration", async ({ page }) => {
   test.setTimeout(120000);
 
   function Name_Alpha_Numeric() {
@@ -27,6 +27,34 @@ test("Contact Messaging From Sourcing Using Outlook Integration", async ({ page 
   await page.goto(config.use.baseURL + "home");
 
   await expect(page).toHaveURL(config.use.baseURL + 'home');
+
+  // Click #profileImgWrap
+  await page.click('#profileImgWrap');
+  // Click text=Sign out
+  await Promise.all([
+    page.waitForNavigation(/*{ url: 'https://staging.talentticker.ai/logout' }*/),
+    page.click('text=Sign out')
+  ]);
+  // Go to https://staging.talentticker.ai/
+  await page.goto('https://staging.talentticker.ai/');
+
+  // Click text=Log In
+  await page.click('text=Log In');
+  expect(await page.innerText('h1')).toBe("Welcome to Talent Ticker");
+  await expect(page).toHaveURL(new RegExp('https://auth.talentticker.ai'));
+  expect(await page.innerText('[class="message"]')).toBe("Please log in to continue.");
+  // Fill [placeholder="Your\ email"]
+  await page.fill('input[type="email"]', process.env.GMAIL_USERNAME);
+  // Fill [placeholder="Your\ password"]
+  await page.fill('input[type="password"]', process.env.GMAIL_PASSWORD);
+  // Click button:has-text("Log In")
+  await Promise.all([
+    page.waitForNavigation(/*{ url: config.use.baseURL + 'home' }*/),
+    page.click('button:has-text("Log In")')
+  ]);
+
+  await expect(page).toHaveURL(config.use.baseURL + 'home');
+
   // Nav to Talent Sourcing
   await page.click('[data-test="talentSourcingNavButton"]');
   await expect(page).toHaveURL(config.use.baseURL + 'sourcing');
@@ -57,12 +85,12 @@ test("Contact Messaging From Sourcing Using Outlook Integration", async ({ page 
 
   // Click [data-test="contatcsNavButton"]
   await page.click('[data-test="contatcsNavButton"]');
-  await expect(page).toHaveURL('https://staging.talentticker.ai/outbox');
+  await expect(page).toHaveURL(config.use.baseURL + 'outbox');
 
   expect(await page.innerText('h1')).toContain("Outbox");
 
   await page.click('[data-test="contatcsNavButton"]');
-  await expect(page).toHaveURL('https://staging.talentticker.ai/outbox');
+  await expect(page).toHaveURL(config.use.baseURL + 'outbox');
 
   expect(await page.innerText('h1')).toContain("Outbox");
 
@@ -75,7 +103,7 @@ test("Contact Messaging From Sourcing Using Outlook Integration", async ({ page 
           mailFound = true;
       } catch (e) {
           i++;
-          await page.click('[data-testid="reload-list-btn"]');
+          await page.click('[id="reload-outbox"]');
           if (i == 10){
             throw e
           }
@@ -86,29 +114,11 @@ test("Contact Messaging From Sourcing Using Outlook Integration", async ({ page 
     } 
   }
 
-  // Search for the email in Mailosaur (Looped to slow this down in case the outbox is so fast that the Mailosaur check happens instantly) 
+  // Search for the email
   const email = await mailosaur.messages.get(serverId, {
     sentTo: process.env.TEST_EMAIL
   });
 
-  let a = 0;
-  let mailosaurFound = false;
-  while (a < 10) {
-    if (mailosaurFound == false){
-      try {        
-        assert.equal(email.subject, randomName);
-          mailosaurFound = true;
-      } catch (e) {
-          a++;
-          await page.click('[data-testid="reload-list-btn"]');
-          if (a == 10){
-            throw e
-          }
-      }
-    }
-    else {
-      break;
-    } 
-  }
+  assert.equal(email.subject, randomName);
 
-});
+  });

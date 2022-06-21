@@ -1,4 +1,4 @@
-name: Playwright Email Tests
+name: Playwright Email Tests - Talent Ticker
 on:
   schedule:
     # * is a special character in YAML so you have to quote this string
@@ -26,7 +26,7 @@ jobs:
       run: |
         touch .env
         echo 'LOGIN_USERNAME="${{ secrets.PLAYWRIGHT_USERNAME }}"' >> .env
-        echo 'LOGIN_PASSWORD="${{ secrets.PLAYWRIGHT_PASSWORD }}"' >> .env
+        echo 'LOGIN_PASSWORD="${{ secrets.PLAYWRIGHT_PASSWORD }}"' >> .env 
         echo 'GMAIL_USERNAME="${{ secrets.PLAYWRIGHT_GMAIL_USERNAME }}"' >> .env
         echo 'GMAIL_PASSWORD="${{ secrets.PLAYWRIGHT_GMAIL_PASSWORD }}"' >> .env
         echo 'TEST_EMAIL="${{ secrets.TEST_EMAIL }}"' >> .env

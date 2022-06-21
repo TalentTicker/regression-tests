@@ -1,4 +1,4 @@
-const config = require('../../playwright.config.js');
+const config = require('../../../playwright.config.js');
 const { test, expect } = require('@playwright/test');
 const Mailosaur = require('mailosaur');
 const { assert } = require('chai');
@@ -6,7 +6,7 @@ require('dotenv').config();
 
 test.use({ storageState: 'tests/state.json' });
 
-test("Contact Messaging bounces emails containing [BOUNCE]", async ({ page }) => {
+test("Contact Messaging From Sourcing Using Outlook Integration", async ({ page }) => {
   test.setTimeout(120000);
 
   function Name_Alpha_Numeric() {
@@ -47,7 +47,7 @@ test("Contact Messaging bounces emails containing [BOUNCE]", async ({ page }) =>
   await page.click('text=emailMessage (1)');
   const randomName = Name_Alpha_Numeric();
   // Fill [aria-label="subject"]
-  await page.fill('[aria-label="subject"]', "[BOUNCE]" + randomName);
+  await page.fill('[aria-label="subject"]', randomName);
   // Click text=Send Message
   await page.click('text=Send Message');
   // Click button:has-text("close")
@@ -71,7 +71,7 @@ test("Contact Messaging bounces emails containing [BOUNCE]", async ({ page }) =>
   while (i < 10) {
     if (mailFound == false){
       try {        
-          await expect(page.locator(':nth-match(span[class="subject"], 1)')).toContainText("[BOUNCE]" + randomName);
+          await expect(page.locator(':nth-match(span[class="subject"], 1)')).toContainText(randomName);
           mailFound = true;
       } catch (e) {
           i++;
@@ -86,18 +86,29 @@ test("Contact Messaging bounces emails containing [BOUNCE]", async ({ page }) =>
     } 
   }
 
-  await expect(page.locator(':nth-match(span[data-testid="opened"], 2)')).toHaveClass(/Mui-disabled/)
-
-  await expect(page.locator(':nth-match(span[data-testid="sent"], 2)')).not.toHaveClass(/Mui-disabled/)
-
-  // Search for the email
+  // Search for the email in Mailosaur (Looped to slow this down in case the outbox is so fast that the Mailosaur check happens instantly) 
   const email = await mailosaur.messages.get(serverId, {
     sentTo: process.env.TEST_EMAIL
-    }, {
-    // overide the automatic 1 hour so we can run this in isolation locally
-    receivedAfter: new Date('2020-01-01T00:00:00Z')
   });
 
-  assert.notEqual(email.subject, randomName);
+  let a = 0;
+  let mailosaurFound = false;
+  while (a < 10) {
+    if (mailosaurFound == false){
+      try {        
+        assert.equal(email.subject, randomName);
+          mailosaurFound = true;
+      } catch (e) {
+          a++;
+          await page.click('[data-testid="reload-list-btn"]');
+          if (a == 10){
+            throw e
+          }
+      }
+    }
+    else {
+      break;
+    } 
+  }
 
 });

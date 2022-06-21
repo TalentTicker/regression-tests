@@ -1,4 +1,4 @@
-const config = require('../../playwright.config.js');
+const config = require('../../../playwright.config.js');
 const { test, expect } = require('@playwright/test');
 require('dotenv').config();
 

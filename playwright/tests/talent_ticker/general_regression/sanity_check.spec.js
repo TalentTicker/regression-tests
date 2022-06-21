@@ -1,4 +1,4 @@
-const config = require('../../playwright.config.js');
+const config = require('../../../playwright.config.js');
 const { test, expect } = require('@playwright/test');
 require('dotenv').config();
 
@@ -41,7 +41,7 @@ test('homepage', async ({ page }) => {
   expect(await page.innerText('h1')).toContain("Outbox");
 
   // Go to region based url
-  await page.goto(config.use.baseURL + "/en-GB/outbox");
+  await page.goto(config.use.baseURL + "/outbox");
   // Expect the url to be redirected without the region tag
   await expect(page).toHaveURL(config.use.baseURL + 'outbox');
 
