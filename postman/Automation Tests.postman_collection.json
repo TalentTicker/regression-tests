@@ -1742,7 +1742,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"applicability\": [\r\n        \"current\"\r\n    ],\r\n    \"exclusion\": [],\r\n    \"input\": [\r\n        {\r\n            \"es_id\": \"c8367402-7982-41ef-ae2a-195229f9ba2c\",\r\n            \"name\": \"Developer\",\r\n            \"type\": \"freetext\",\r\n            \"id\": \"7fa45590-54eb-46d9-924b-c89efab7667a\",\r\n            \"boolean_operator\": \"or\"\r\n        }\r\n    ],\r\n    \"company_sizes\": [\r\n        \"11-50\",\r\n        \"1-10\",\r\n        \"51-200\",\r\n        \"201-500\",\r\n        \"501-1000\",\r\n        \"1001-5000\"\r\n    ],\r\n    \"seniorities\": [\r\n        \"cxo\"\r\n    ],\r\n    \"distance_in_miles\": 1,\r\n    \"phone_number_type\": [\r\n        \"MOBILE\"\r\n    ],\r\n    \"phone_number_score\": 40,\r\n    \"email_score\": 0,\r\n    \"query_duplicate_names\": true\r\n}",
+									"raw": "{\r\n    \"applicability\": [\r\n        \"current\"\r\n    ],\r\n    \"exclusion\": [],\r\n    \"input\": [\r\n        {\r\n            \"es_id\": \"c8367402-7982-41ef-ae2a-195229f9ba2c\",\r\n            \"name\": \"Developer\",\r\n            \"type\": \"freetext\",\r\n            \"id\": \"7fa45590-54eb-46d9-924b-c89efab7667a\",\r\n            \"boolean_operator\": \"or\"\r\n        }\r\n    ],\r\n    \"company_sizes\": [\r\n        \"11-50\",\r\n        \"1-10\",\r\n        \"51-200\",\r\n        \"201-500\",\r\n        \"501-1000\",\r\n        \"1001-5000\"\r\n    ],\r\n    \"seniorities\": [\r\n        \"cxo\"\r\n    ],\r\n    \"distance_in_miles\": 1,\r\n    \"phone_number_type\": [\r\n        \"MOBILE\"\r\n    ],\r\n    \"phone_number_score\": 20,\r\n    \"email_score\": 0,\r\n    \"query_duplicate_names\": true\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2020,7 +2020,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"applicability\": [\r\n        \"current\"\r\n    ],\r\n    \"exclusion\": [],\r\n    \"input\": [\r\n        {\r\n            \"es_id\": \"eb6737b0-30b5-47fa-a34f-f2b1089ad62b\",\r\n            \"name\": \"Developer\",\r\n            \"type\": \"freetext\",\r\n            \"id\": \"bd6b3dc1-d210-4348-943b-bd4251ca5852\",\r\n            \"boolean_operator\": \"or\"\r\n        }\r\n    ],\r\n    \"company_sizes\": [],\r\n    \"seniorities\": [],\r\n    \"distance_in_miles\": 1,\r\n    \"phone_number_type\": [\r\n        \"DIRECT_DIAL\",\r\n        \"MOBILE\",\r\n        \"COMPANY_SWITCHBOARD\"\r\n    ],\r\n    \"phone_number_score\": 40,\r\n    \"email_score\": 0,\r\n    \"query_duplicate_names\": true\r\n}",
+							"raw": "{\r\n    \"applicability\": [\r\n        \"current\"\r\n    ],\r\n    \"exclusion\": [],\r\n    \"input\": [\r\n        {\r\n            \"es_id\": \"eb6737b0-30b5-47fa-a34f-f2b1089ad62b\",\r\n            \"name\": \"Developer\",\r\n            \"type\": \"freetext\",\r\n            \"id\": \"bd6b3dc1-d210-4348-943b-bd4251ca5852\",\r\n            \"boolean_operator\": \"or\"\r\n        }\r\n    ],\r\n    \"company_sizes\": [],\r\n    \"seniorities\": [],\r\n    \"distance_in_miles\": 1,\r\n    \"phone_number_type\": [\r\n        \"DIRECT_DIAL\",\r\n        \"MOBILE\",\r\n        \"COMPANY_SWITCHBOARD\"\r\n    ],\r\n    \"phone_number_score\": 20,\r\n    \"email_score\": 0,\r\n    \"query_duplicate_names\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
