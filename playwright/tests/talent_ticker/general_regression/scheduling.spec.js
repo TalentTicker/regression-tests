@@ -15,14 +15,8 @@ test('Add, Edit, Delete Schedule', async ({ page }) => {
   // Click text=Schedulesbeta
   await page.click('text=Schedulesbeta');
   await expect(page).toHaveURL('https://staging.talentticker.ai/scheduling');
-  // Correct Method
-  await page.waitForSelector('[class="scheduling"]').then(() => {
-    // Click text=Create your first Schedule
-    page.click('text=Create your first Schedule');
-  }).catch(e => {
-    console.log('Failed to find create first schedule button');
-    throw (e);
-  });
+  // Click text=Create your first Schedule
+  await page.click('text=Create your first Schedule');
   
   // Click [placeholder="Name\ your\ schedule\.\.\."]
   await page.click('[placeholder="Name\\ your\\ schedule\\.\\.\\."]');
