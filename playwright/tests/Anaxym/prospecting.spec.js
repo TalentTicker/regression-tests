@@ -1,17 +1,29 @@
-const config = require("../../../playwright.config.js");
+const config = require("../../playwright.config.js");
 const { test, expect } = require("@playwright/test");
-const reliablePath = 'results.csv';
 require("dotenv").config();
 
-test.use({ storageState: "tests/state.json" });
+test("Talent Prospecting - Basic Filter Check", async ({ page }) => {
+  await page.goto(process.env.ANAXYM_BASE_URL);
 
-test("Talent Sourcing - Basic Filter Check", async ({ page }) => {
-  await page.goto(config.use.baseURL + "home");
-
-  await expect(page).toHaveURL(config.use.baseURL + "home");
-  // Nav to Talent Sourcing
+   // Click text=Log In
+   await page.click('text=Log In');
+   await expect(page).toHaveURL(new RegExp('https://auth.talentticker.ai'));
+   expect(await page.innerText('[class="message"]')).toBe("Please log in to continue.");
+   // Fill [placeholder="Your\ email"]
+   await page.fill('input[type="email"]', process.env.LOGIN_USERNAME);
+   // Fill [placeholder="Your\ password"]
+   await page.fill('input[type="password"]', process.env.LOGIN_PASSWORD);
+   // Click button:has-text("Log In")
+   await Promise.all([
+     page.waitForNavigation(/*{ url: process.env.ANAXYM_BASE_URL + 'home' }*/),
+     page.click('button:has-text("Log In")')
+   ]);
+ 
+   await expect(page).toHaveURL(process.env.ANAXYM_BASE_URL + 'home');
+   expect(await page.innerText('h1')).toContain("Team Manager");
+  // Nav to Talent Prospecting
   await page.click('[data-test="talentSourcingNavButton"]');
-  await expect(page).toHaveURL(config.use.baseURL + "sourcing");
+  await expect(page).toHaveURL(process.env.ANAXYM_BASE_URL + "prospecting");
 
   // Search via Job Title
   await page.click("[data-testid=sourcing-job-title]");
@@ -99,7 +111,6 @@ test("Talent Sourcing - Basic Filter Check", async ({ page }) => {
     ),
     page.click('[data-testid="search-btn"]'),
   ]);
-
   await page.click('[data-test="pageTemplate"] >> text=Clear All');
   await (await page.waitForSelector("#profile-image-wrapper")).click();
 
@@ -108,15 +119,31 @@ test("Talent Sourcing - Basic Filter Check", async ({ page }) => {
   await page.click("li:has-text('Sign out')");
 });
 
-test("Talent Sourcing - Advanced Filter Check - Job Title with Company", async ({
+test("Talent Prospecting - Advanced Filter Check - Job Title with Company", async ({
   page,
 }) => {
-  await page.goto(config.use.baseURL + "home");
-  await expect(page).toHaveURL(config.use.baseURL + "home");
+  await page.goto(process.env.ANAXYM_BASE_URL);
 
-  // Nav to Talent Sourcing
+   // Click text=Log In
+   await page.click('text=Log In');
+   await expect(page).toHaveURL(new RegExp('https://auth.talentticker.ai'));
+   expect(await page.innerText('[class="message"]')).toBe("Please log in to continue.");
+   // Fill [placeholder="Your\ email"]
+   await page.fill('input[type="email"]', process.env.LOGIN_USERNAME);
+   // Fill [placeholder="Your\ password"]
+   await page.fill('input[type="password"]', process.env.LOGIN_PASSWORD);
+   // Click button:has-text("Log In")
+   await Promise.all([
+     page.waitForNavigation(/*{ url: process.env.ANAXYM_BASE_URL + 'home' }*/),
+     page.click('button:has-text("Log In")')
+   ]);
+ 
+   await expect(page).toHaveURL(process.env.ANAXYM_BASE_URL + 'home');
+   expect(await page.innerText('h1')).toContain("Team Manager");
+
+  // Nav to Talent Prospecting
   await page.click('[data-test="talentSourcingNavButton"]');
-  await expect(page).toHaveURL(config.use.baseURL + "sourcing");
+  await expect(page).toHaveURL(process.env.ANAXYM_BASE_URL + "prospecting");
 
   // Search via Job Title and Company
   await page.click("[data-testid=sourcing-job-title]");
@@ -153,29 +180,31 @@ test("Talent Sourcing - Advanced Filter Check - Job Title with Company", async (
     page.click('[data-testid="search-btn"]'),
   ]);
   await expect(page).not.toContain("Shaun Lappin");
-
-  await page.click('[name="selectAll"]');
-
-  const [ download ] = await Promise.all([
-    page.waitForEvent('download'), // wait for download to start
-    page.click('button:has-text(" Export ")'),
-    page.click("text='Export to CSV'")
-  ]);
-
-  // save into the desired path
-  await download.saveAs(reliablePath);
-  // wait for the download and delete the temporary file
-  await download.delete()
-
 });
 
-test("Talent Sourcing - Advanced Filter Check - Job Title with Company and Location", async ({
+test("Talent Prospecting - Advanced Filter Check - Job Title with Company and Location", async ({
   page,
 }) => {
-  await page.goto(config.use.baseURL + "home");
-  await expect(page).toHaveURL(config.use.baseURL + "home");
+  await page.goto(process.env.ANAXYM_BASE_URL);
+
+   // Click text=Log In
+   await page.click('text=Log In');
+   await expect(page).toHaveURL(new RegExp('https://auth.talentticker.ai'));
+   expect(await page.innerText('[class="message"]')).toBe("Please log in to continue.");
+   // Fill [placeholder="Your\ email"]
+   await page.fill('input[type="email"]', process.env.LOGIN_USERNAME);
+   // Fill [placeholder="Your\ password"]
+   await page.fill('input[type="password"]', process.env.LOGIN_PASSWORD);
+   // Click button:has-text("Log In")
+   await Promise.all([
+     page.waitForNavigation(/*{ url: process.env.ANAXYM_BASE_URL + 'home' }*/),
+     page.click('button:has-text("Log In")')
+   ]);
+ 
+   await expect(page).toHaveURL(process.env.ANAXYM_BASE_URL + 'home');
+   expect(await page.innerText('h1')).toContain("Team Manager");
   await page.click('[data-test="talentSourcingNavButton"]');
-  await expect(page).toHaveURL(config.use.baseURL + "sourcing");
+  await expect(page).toHaveURL(process.env.ANAXYM_BASE_URL + "prospecting");
   await page.click("[data-testid=sourcing-job-title]");
   await page.fill('[placeholder="e\\.g\\.\\ Digital\\ Designer"]', "QA");
   await page.click("text=QA");
@@ -193,6 +222,5 @@ test("Talent Sourcing - Advanced Filter Check - Job Title with Company and Locat
     ),
     page.click('[data-testid="search-btn"]'),
   ]);
-  
   await page.click('[data-test="pageTemplate"] >> text=Clear All');
 });
