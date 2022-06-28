@@ -46,7 +46,7 @@ test('Add, edit and remove a Sequence', async ({ page }) => {
   await expect(page).toHaveURL(config.use.baseURL + 'sequencing');
   // Click text=Create your first Sequence
   await page.click('text=Create your first Sequence');
-  await expect(page).toHaveURL('config.use.baseURL + sequencing/create');
+  await expect(page).toHaveURL(config.use.baseURL + 'sequencing/create');
   // Click [data-testid="sequence-name-input"]
   await page.click('[data-testid="sequence-name-input"]');
   // Fill [data-testid="sequence-name-input"]
