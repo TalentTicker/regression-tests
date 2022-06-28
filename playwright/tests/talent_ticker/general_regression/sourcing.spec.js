@@ -1,5 +1,6 @@
 const config = require("../../../playwright.config.js");
 const { test, expect } = require("@playwright/test");
+const reliablePath = 'results.csv';
 require("dotenv").config();
 
 test.use({ storageState: "tests/state.json" });
@@ -98,6 +99,7 @@ test("Talent Sourcing - Basic Filter Check", async ({ page }) => {
     ),
     page.click('[data-testid="search-btn"]'),
   ]);
+
   await page.click('[data-test="pageTemplate"] >> text=Clear All');
   await (await page.waitForSelector("#profile-image-wrapper")).click();
 
@@ -151,6 +153,20 @@ test("Talent Sourcing - Advanced Filter Check - Job Title with Company", async (
     page.click('[data-testid="search-btn"]'),
   ]);
   await expect(page).not.toContain("Shaun Lappin");
+
+  await page.click('[name="selectAll"]');
+
+  const [ download ] = await Promise.all([
+    page.waitForEvent('download'), // wait for download to start
+    page.click('button:has-text(" Export ")'),
+    page.click("text='Export to CSV'")
+  ]);
+
+  // save into the desired path
+  await download.saveAs(reliablePath);
+  // wait for the download and delete the temporary file
+  await download.delete()
+
 });
 
 test("Talent Sourcing - Advanced Filter Check - Job Title with Company and Location", async ({
@@ -177,5 +193,6 @@ test("Talent Sourcing - Advanced Filter Check - Job Title with Company and Locat
     ),
     page.click('[data-testid="search-btn"]'),
   ]);
+  
   await page.click('[data-test="pageTemplate"] >> text=Clear All');
 });
