@@ -28,7 +28,7 @@ test("Saved Search", async ({ page }) => {
   await page.type('[placeholder="Search"]', "Accounting");
   await page.click('li[role="option"]:has-text("Accounting")');
   await page.click('[data-test="searchSubmit"]');
-  // Click [data-testid="search-results-container"] >> text=Accounting
+  // Expect text=Accounting
   expect (await page.innerText('[data-testid="search-results-container"]')).toContain("Accounting");
   await page.click('[data-test="searchSave"]');
 
