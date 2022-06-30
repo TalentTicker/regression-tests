@@ -34,8 +34,12 @@ test("Saved Search", async ({ page }) => {
 
   // Delete Saved Search
   await page.click('[data-test="savedSearchesNavButton"]');
-  // Click text=AccountingeditSearch Now >> :nth-match(button, 4)
-  await page.click('text=AccountingeditSearch Now >> :nth-match(button, 4)');
+  await page.click(
+    "text=AccountingeditNEWSVACANCIESBOTHSearch Now >> :nth-match(button, 4)"
+  );
+  await page.click(
+    "text=AccountingeditNEWSVACANCIESBOTHSearch Now >> :nth-match(button, 4)"
+  );
 
   // Sign Out
   await page.click("#profileImgWrap");
