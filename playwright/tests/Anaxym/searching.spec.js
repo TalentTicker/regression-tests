@@ -28,14 +28,16 @@ test("Saved Search", async ({ page }) => {
   await page.type('[placeholder="Search"]', "Accounting");
   await page.click('li[role="option"]:has-text("Accounting")');
   await page.click('[data-test="searchSubmit"]');
-  // Expect text=Accounting
-  expect (await page.innerText('[data-testid="search-results-container"]')).toContain("Accounting");
   await page.click('[data-test="searchSave"]');
 
   // Delete Saved Search
   await page.click('[data-test="savedSearchesNavButton"]');
-  // Click text=AccountingeditSearch Now >> :nth-match(button, 4)
-  await page.click('text=AccountingeditSearch Now >> :nth-match(button, 4)');
+  await page.click(
+    "text=AccountingeditNEWSVACANCIESBOTHSearch Now >> :nth-match(button, 4)"
+  );
+  await page.click(
+    "text=AccountingeditNEWSVACANCIESBOTHSearch Now >> :nth-match(button, 4)"
+  );
 
   // Sign Out
   await page.click("#profileImgWrap");
