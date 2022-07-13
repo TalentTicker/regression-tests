@@ -34,6 +34,8 @@ jobs:
         echo 'MAILOSAUR_API_KEY="${{ secrets.MAILOSAUR_API_KEY }}"' >> .env
         echo 'MAILOSAUR_DOMAIN="${{ secrets.MAILOSAUR_DOMAIN }}"' >> .env
         echo 'MAILOSAUR_PASSWORD="${{ secrets.MAILOSAUR_PASSWORD }}"' >> .env
+        echo 'EMAIL_USERNAME="${{ secrets.EMAIL_USERNAME }}"' >> .env
+        echo 'EMAIL_PASSWORD="${{ secrets.EMAIL_USERNAME }}"' >> .env
         cat .env
     - name: Run Playwright tests
       run: npx playwright test tests/talent_ticker/email_regression/ --workers=1

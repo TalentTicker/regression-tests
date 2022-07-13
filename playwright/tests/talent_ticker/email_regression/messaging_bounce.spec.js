@@ -27,6 +27,34 @@ test("Contact Messaging bounces emails containing [BOUNCE]", async ({ page }) =>
   await page.goto(config.use.baseURL + "home");
 
   await expect(page).toHaveURL(config.use.baseURL + 'home');
+
+  // Click #profileImgWrap
+  await page.click('#profileImgWrap');
+  // Click text=Sign out
+  await Promise.all([
+    page.waitForNavigation(/*{ url: 'https://staging.talentticker.ai/logout' }*/),
+    page.click('text=Sign out')
+  ]);
+  // Go to https://staging.talentticker.ai/
+  await page.goto(config.use.baseURL);
+
+  // Click text=Log In
+  await page.click('text=Log In');
+  expect(await page.innerText('h1')).toBe("Welcome to Talent Ticker");
+  await expect(page).toHaveURL(new RegExp('https://auth.talentticker.ai'));
+  expect(await page.innerText('[class="message"]')).toBe("Please log in to continue.");
+  // Fill [placeholder="Your\ email"]
+  await page.fill('input[type="email"]', process.env.EMAIL_USERNAME);
+  // Fill [placeholder="Your\ password"]
+  await page.fill('input[type="password"]', process.env.EMAIL_PASSWORD);
+  // Click button:has-text("Log In")
+  await Promise.all([
+    page.waitForNavigation(/*{ url: config.use.baseURL + 'home' }*/),
+    page.click('button:has-text("Log In")')
+  ]);
+
+  await expect(page).toHaveURL(config.use.baseURL + 'home');
+
   // Nav to Talent Sourcing
   await page.click('[data-test="talentSourcingNavButton"]');
   await expect(page).toHaveURL(config.use.baseURL + 'sourcing');
@@ -57,12 +85,12 @@ test("Contact Messaging bounces emails containing [BOUNCE]", async ({ page }) =>
 
   // Click [data-test="contatcsNavButton"]
   await page.click('[data-test="contatcsNavButton"]');
-  await expect(page).toHaveURL('https://staging.talentticker.ai/outbox');
+  await expect(page).toHaveURL(config.use.baseURL + 'outbox');
 
   expect(await page.innerText('h1')).toContain("Outbox");
 
   await page.click('[data-test="contatcsNavButton"]');
-  await expect(page).toHaveURL('https://staging.talentticker.ai/outbox');
+  await expect(page).toHaveURL(config.use.baseURL + 'outbox');
 
   expect(await page.innerText('h1')).toContain("Outbox");
 
