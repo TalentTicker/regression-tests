@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import config from '../../../playwright.config.js';
 import Mailosaur from 'mailosaur';
-import { assert } from 'chai';
+const { assert } = require('chai');
 
 require("dotenv").config();
 
@@ -55,8 +55,8 @@ test("Contact Messaging From Sourcing Using Outlook Integration", async ({
 
   // Click text=Log In
   await page.click("text=Log In");
-  expect(await page.innerText("h1")).toBe("Welcome to Talent Ticker");
   await expect(page).toHaveURL(new RegExp("https://auth.talentticker.ai"));
+  expect(await page.innerText("h1")).toBe("Welcome to Talent Ticker");
   expect(await page.innerText('[class="message"]')).toBe(
     "Please log in to continue."
   );
@@ -103,8 +103,8 @@ test("Contact Messaging From Sourcing Using Outlook Integration", async ({
   await page.click(
     '[data-testid="template-select-dropdown"] div[role="button"]:has-text("​")'
   );
-  // Click :nth-match(li[role="option"]:has-text("Test"), 2)
-  await page.click(':nth-match(li[role="option"]:has-text("Test"), 2)');
+  // Click (li[role="option"]:has-text("Test"))
+  await page.click('li[role="option"]:has-text("Test")');
 
   // Fill [aria-label="subject"]
   await page.fill('[aria-label="subject"]', randomName);
@@ -115,14 +115,8 @@ test("Contact Messaging From Sourcing Using Outlook Integration", async ({
 
   await page.click('[data-test="pageTemplate"] >> text=Clear All');
 
-  // Click [data-test="contatcsNavButton"]
   await page.click('[data-test="contatcsNavButton"]');
-  await expect(page).toHaveURL(config.use?.baseURL + "/outbox");
-
-  expect(await page.innerText("h1")).toContain("Outbox");
-
-  await page.click('[data-test="contatcsNavButton"]');
-  await expect(page).toHaveURL(config.use?.baseURL + "/outbox");
+  await expect(page).toHaveURL(config.use?.baseURL + "outbox");
 
   expect(await page.innerText("h1")).toContain("Outbox");
 
@@ -147,6 +141,13 @@ test("Contact Messaging From Sourcing Using Outlook Integration", async ({
     }
   }
 
+  // Sign Out
+  await page.click("#profileImgWrap");
+  await Promise.all([
+    page.waitForNavigation(/*{ url: config.use.baseURL }*/),
+    page.click("text=Sign out"),
+  ]);
+
   // Search for the email in Mailosaur (Looped to slow this down in case the outbox is so fast that the Mailosaur check happens instantly)
   const email = await mailosaur.messages.get(serverId, {
     sentTo: process.env.TEST_EMAIL,
@@ -161,7 +162,7 @@ test("Contact Messaging From Sourcing Using Outlook Integration", async ({
         mailosaurFound = true;
       } catch (e) {
         a++;
-        await page.click('[data-testid="reload-list-btn"]');
+        await page.reload();
         if (a == 10) {
           throw e;
         }

@@ -40,8 +40,8 @@ test("Contact Messaging From Vacancy Using Outlook Integration", async ({ page }
 
   // Click text=Log In
   await page.click('text=Log In');
-  expect(await page.innerText('h1')).toBe("Welcome to Talent Ticker");
   await expect(page).toHaveURL(new RegExp('https://auth.talentticker.ai'));
+  expect(await page.innerText('h1')).toBe("Welcome to Talent Ticker");
   expect(await page.innerText('[class="message"]')).toBe("Please log in to continue.");
   // Fill [placeholder="Your\ email"]
   await page.fill('input[type="email"]', process.env.EMAIL_USERNAME);
@@ -89,6 +89,18 @@ test("Contact Messaging From Vacancy Using Outlook Integration", async ({ page }
   // Click text=emailMessage (1)
   await page.click('text=emailMessage (1)');
 
+  // we need to wait for the code to initialize in the background.. its using a state machine that does some shit. 
+  // basically artifical wait. 5 seconds is prob too much but to be safe..
+  // 2 clicks as they are always flake
+  page.click('button:has-text("Next")', { delay: 5000, clickCount: 2 });
+  // need to wait here  for the get_accounts request.. this test has exposed shitty frontend code
+  // Click [data-testid="template-select-dropdown"] div[role="button"]:has-text("​")
+  await page.click(
+    '[data-testid="template-select-dropdown"] div[role="button"]:has-text("​")'
+  );
+  // Click :nth-match(li[role="option"]:has-text("Test"), 2)
+  await page.click('li[role="option"]:has-text("Test")');
+
   const randomName = Name_Alpha_Numeric();
   // Fill [aria-label="subject"]
   await page.fill('[aria-label="subject"]', randomName);
@@ -134,6 +146,13 @@ test("Contact Messaging From Vacancy Using Outlook Integration", async ({ page }
       break;
     } 
   }
+
+  // Sign Out
+  await page.click("#profileImgWrap");
+  await Promise.all([
+    page.waitForNavigation(/*{ url: config.use.baseURL }*/),
+    page.click("text=Sign out"),
+  ]);
 
   // Search for the email in Mailosaur (Looped to slow this down in case the outbox is so fast that the Mailosaur check happens instantly) 
   const email = await mailosaur.messages.get(serverId, {
