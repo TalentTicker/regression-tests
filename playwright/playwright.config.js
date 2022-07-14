@@ -8,7 +8,7 @@ const config = {
   use: {
     trace: "on-first-retry",
     baseURL: "https://staging.talentticker.ai/",
-    headless: false,
+    headless: true,
     viewport: { width: 1920, height: 1080 },
     ignoreHTTPSErrors: true,
     screenshot: "only-on-failure",
