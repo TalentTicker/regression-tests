@@ -3,7 +3,7 @@
 		"_postman_id": "d275d32b-31c3-4ffe-b20f-3a9a23c92937",
 		"name": "Automation Tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "17600629"
+		"_exporter_id": "5389581"
 	},
 	"item": [
 		{
@@ -2442,7 +2442,7 @@
 									"pm.test(\"Correct search query seniority returned\", () => {\r",
 									"    responseData.data.results.groups.forEach((group) => {\r",
 									"        group.people.forEach((person) => {\r",
-									"            pm.expect(person.seniority).to.eq(\"cxo\", \"A none CTO level has been returned in the data - please check the data\")\r",
+									"            pm.expect(person.seniority).to.be.oneOf([\"cxo\", null], \"A none CTO level has been returned in the data - please check the data\")\r",
 									"        })\r",
 									"    })\r",
 									"}) "
@@ -2466,7 +2466,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"aggregation_field\": \"company_id\",\n    \"distance_in_miles\": 10,\n    \"exclusion\": [],\n    \"input\": [\n        {\n            \"id\": \"a7dbf07c-5376-4f91-aaab-90c8991025c4\",\n            \"name\": \"cto\",\n            \"es_id\": \"frtxt-10282bf8-481b-4f22-ae1a-c3c24d0cbd76\",\n            \"type\": \"freetext\"\n        }\n    ],\n    \"limit\": 10,\n    \"size_per_bucket\": 8\n}",
+							"raw": "{\n    \"aggregation_field\": \"company_id\",\n    \"distance_in_miles\": 10,\n    \"exclusion\": [],\n    \"input\": [\n        {\n            \"name\": \"United Kingdom\",\n            \"id\": 4000235,\n            \"type\": \"location\",\n            \"es_id\": \"loc4000235\",\n            \"alias\": [\n                {\n                    \"input\": \"United Kingdom\",\n                    \"weight\": 565730\n                },\n                {\n                    \"input\": \"united kingdom\",\n                    \"weight\": 56573\n                },\n                {\n                    \"input\": \"Great Britain\",\n                    \"weight\": 56573\n                },\n                {\n                    \"input\": \"GB\",\n                    \"weight\": 56573\n                },\n                {\n                    \"input\": \"U.K.\",\n                    \"weight\": 56573\n                },\n                {\n                    \"input\": \"UK\",\n                    \"weight\": 56573\n                },\n                {\n                    \"input\": \"United Kingdom of Great Britain and Ireland\",\n                    \"weight\": 56573\n                }\n            ]\n        },\n        {\n            \"id\": \"e5ec15ea-8178-4117-8d08-ee1cce220eea\",\n            \"name\": \"\\\"cto\\\"\",\n            \"es_id\": \"frtxt-5e03e486-7560-45ce-8e89-ff1fdd174649\",\n            \"type\": \"freetext\"\n        }\n    ],\n    \"limit\": 10,\n    \"size_per_bucket\": 8,\n    \"email_types\": [\n        \"work_current\",\n        null\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3401,6 +3401,240 @@
 							]
 						},
 						"description": "This is currently broken and will fail!"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Personal Emails",
+			"item": [
+				{
+					"name": "Sourcing - No Permissions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", () => {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", () => {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"// Loop through all email types returned and check they are work_current\r",
+									"// Sourcing also uses the same end-point as Events, so this test covers Event/Vacancy/Job Profile Contacts too\r",
+									"pm.test(\"Correct Email Types Returned - No Permission for Personal Emails\", () => {\r",
+									"    responseData.data.results.documents.forEach((document) => {\r",
+									"      document.emails.forEach((email) => {\r",
+									"        if(email.type) {\r",
+									"          pm.expect(email.type).to.eql(\"work_current\", \"Something other than work_current has been returned in the results - Please review\")\r",
+									"          pm.expect(email.type).to.not.equal(\"personal\", \"This user does not have permission to view personal emails - Please review\")\r",
+									"        }  \r",
+									"      })\r",
+									"    })\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"applicability\": [\r\n        \"current\",\r\n        \"previous\"\r\n    ],\r\n    \"exclusion\": [],\r\n    \"input\": [\r\n        {\r\n            \"name\": \"Selligence\",\r\n            \"es_id\": \"com2255739\",\r\n            \"id\": 2255739,\r\n            \"type\": \"company\",\r\n            \"score\": 264810,\r\n            \"boolean_operator\": \"or\"\r\n        }\r\n    ],\r\n    \"company_sizes\": [],\r\n    \"seniorities\": [],\r\n    \"distance_in_miles\": 1,\r\n    \"phone_number_type\": [],\r\n    \"phone_number_score\": 0,\r\n    \"email_score\": 0,\r\n    \"query_duplicate_names\": true,\r\n    \"email_types\": [\r\n        \"work_current\",\r\n        null\r\n    ],\r\n    \"email_limit\": 4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v5-powersearch/people-search?limit=100&skip=0",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v5-powersearch",
+								"people-search"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "100",
+									"description": "Currently the amount of results returned for this search is between 60-80 - this limit ensures all data returned is checked"
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Market Mapping - No Permissions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", () => {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", () => {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"// Loop through all email types returned and check they are work_current\r",
+									"pm.test(\"Correct Email Types Returned - No Permission for Personal Emails\", () => {\r",
+									"    responseData.data.results.groups.forEach((group) => {\r",
+									"      group.people.forEach((person) => {\r",
+									"        person.emails.forEach((email) => {\r",
+									"           if(email.type) {\r",
+									"          pm.expect(email.type).to.eql(\"work_current\", \"Something other than work_current has been returned in the results - Please review\")\r",
+									"          pm.expect(email.type).to.not.equal(\"personal\", \"This user does not have permission to view personal emails - Please review\")\r",
+									"        } \r",
+									"        }) \r",
+									"      })\r",
+									"    })\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"aggregation_field\": \"company_id\",\r\n    \"distance_in_miles\": 10,\r\n    \"exclusion\": [],\r\n    \"input\": [\r\n        {\r\n            \"name\": \"Selligence\",\r\n            \"es_id\": \"com2255739\",\r\n            \"id\": 2255739,\r\n            \"type\": \"company\",\r\n            \"score\": 141100\r\n        }\r\n    ],\r\n    \"limit\": 10,\r\n    \"size_per_bucket\": 8,\r\n    \"email_types\": [\r\n        \"work_current\",\r\n        null\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v5-powersearch/market-mapping-search",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v5-powersearch",
+								"market-mapping-search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sourcing Refresh - No Permissions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is not null\", () => {\r",
+									"    pm.expect(responseData).is.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"json Content Type\", () => {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"// Loop through all email types returned and check they are work_current\r",
+									"// Sourcing also uses the same end-point as Events, so this test covers Event/Vacancy/Job Profile Contacts too\r",
+									"pm.test(\"Correct Email Types Returned - No Permission for Personal Emails\", () => {\r",
+									"    responseData.data.person.emails.forEach((email => {\r",
+									"        pm.expect(email.type).to.eql(\"work_current\", \"Something other than work_current has been returned in the results - Please review\")\r",
+									"        pm.expect(email.type).to.not.equal(\"personal\", \"This user does not have permission to view personal emails - Please review\")\r",
+									"    }))\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email_types\":[\"work\",null]}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1-people/reveal-contact/3f3adf59-4f64-4424-805b-e2db5dabad99",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1-people",
+								"reveal-contact",
+								"3f3adf59-4f64-4424-805b-e2db5dabad99"
+							]
+						}
 					},
 					"response": []
 				}
