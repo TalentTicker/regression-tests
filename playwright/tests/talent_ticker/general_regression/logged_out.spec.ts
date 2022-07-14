@@ -13,7 +13,7 @@ test('Logged out checks', async ({ page }) => {
   await page.click('li[role="option"]:has-text("Accounting")');
   await page.click('[data-test="searchSubmit"]');
 
-  await page.click('button:has-text("Book A Demo")');
+  await page.click('button:has-text("Book a demo")');
 
   await expect(page).toHaveURL('https://www.selligence.com/tt-demo/');
 
