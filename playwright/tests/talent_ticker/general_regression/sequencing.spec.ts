@@ -1,13 +1,12 @@
-const config = require('../../../playwright.config.js');
-const { test, expect } = require('@playwright/test');
+import { test, expect } from '@playwright/test';
 require('dotenv').config();
 
 test.use({ storageState: 'tests/state.json' });
 
 test('Add, edit and remove a Sequence', async ({ page }) => {
-  await page.goto(config.use.baseURL + "home");
+  await page.goto(process.env.BASE_URL + "home");
 
-  await expect(page).toHaveURL(config.use.baseURL + 'home');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'home');
 
   // Click #profileImgWrap
   await page.click('#profileImgWrap');
@@ -30,23 +29,23 @@ test('Add, edit and remove a Sequence', async ({ page }) => {
   await page.fill('input[type="password"]', process.env.GMAIL_PASSWORD);
   // Click button:has-text("Log In")
   await Promise.all([
-    page.waitForNavigation(/*{ url: config.use.baseURL + 'home' }*/),
+    page.waitForNavigation(/*{ url: process.env.BASE_URL + 'home' }*/),
     page.click('button:has-text("Log In")')
   ]);
 
-  await expect(page).toHaveURL(config.use.baseURL + 'home');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'home');
 
   // Click [data-test="contatcsNavButton"]
   await page.click('[data-test="contatcsNavButton"]');
-  await expect(page).toHaveURL(config.use.baseURL + 'outbox');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'outbox');
   
   // Click text=Sequencingbeta
   await page.click('text=Sequencingbeta');
 
-  await expect(page).toHaveURL(config.use.baseURL + 'sequencing');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'sequencing');
   // Click text=Create your first Sequence
   await page.click('text=Create your first Sequence');
-  await expect(page).toHaveURL(config.use.baseURL + 'sequencing/create');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'sequencing/create');
   // Click [data-testid="sequence-name-input"]
   await page.click('[data-testid="sequence-name-input"]');
   // Fill [data-testid="sequence-name-input"]
@@ -65,7 +64,7 @@ test('Add, edit and remove a Sequence', async ({ page }) => {
   await page.click('text=Test Schedule');
   // Click button:has-text("Save")
   await page.click('button:has-text("Save")');
-  await expect(page).toHaveURL(config.use.baseURL + 'sequencing/create');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'sequencing/create');
   // Uncheck [data-testid="sequence-step-item"] input[type="checkbox"]
   await page.uncheck('[data-testid="sequence-step-item"] input[type="checkbox"]');
   // Check [data-testid="sequence-step-item"] input[type="checkbox"]
@@ -74,7 +73,7 @@ test('Add, edit and remove a Sequence', async ({ page }) => {
   await page.click('[data-testid="sequence-step-edit"]');
   // Click button:has-text("Save")
   await page.click('button:has-text("Save")');
-  await expect(page).toHaveURL(config.use.baseURL + 'sequencing/create');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'sequencing/create');
   // Click [data-testid="add-step-btn"]
   await page.click('[data-testid="add-step-btn"]');
   // Click div[role="button"]:has-text("​")
@@ -87,14 +86,14 @@ test('Add, edit and remove a Sequence', async ({ page }) => {
   await page.click('text=Test Schedule');
   // Click button:has-text("Save")
   await page.click('button:has-text("Save")');
-  await expect(page).toHaveURL(config.use.baseURL + 'sequencing/create');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'sequencing/create');
   // Click [data-testid="sequence-step-delete"]
   await page.click('[data-testid="sequence-step-delete"]');
   // Click [data-testid="confirm-modal-confirm"]
   await page.click('[data-testid="confirm-modal-confirm"]');
   // Click button:has-text("Save")
   await Promise.all([
-    page.waitForNavigation(/*{ url: config.use.baseURL + 'sequencing/templates' }*/),
+    page.waitForNavigation(/*{ url: process.env.BASE_URL + 'sequencing/templates' }*/),
     page.click('button:has-text("Save")')
   ]);
   // Click [data-testid="edit-sequence-button"]
@@ -113,13 +112,13 @@ test('Add, edit and remove a Sequence', async ({ page }) => {
   await page.click('button:has-text("Save")');
   // Click button:has-text("Save")
   await Promise.all([
-    page.waitForNavigation(/*{ url: config.use.baseURL + 'sequencing/templates' }*/),
+    page.waitForNavigation(/*{ url: process.env.BASE_URL + 'sequencing/templates' }*/),
     page.click('button:has-text("Save")')
   ]);
 
   // Click button:has-text("Active Sequences")
   await page.click('button:has-text("Active Sequences")');
-  await expect(page).toHaveURL(config.use.baseURL + 'sequencing/active');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'sequencing/active');
 
   // Expect Overall Stats
   expect(await page.innerText('[data-testid="overall-stats"]')).toContain("Active");
@@ -135,7 +134,7 @@ test('Add, edit and remove a Sequence', async ({ page }) => {
 
   // Click button:has-text("Sequence Templates")
   await page.click('button:has-text("Sequence Templates")');
-  await expect(page).toHaveURL(config.use.baseURL + 'sequencing/templates');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'sequencing/templates');
 
   // Click [data-testid="delete-sequence-button"]
   await page.click('[data-testid="delete-sequence-button"]');
@@ -147,7 +146,7 @@ test('Add, edit and remove a Sequence', async ({ page }) => {
   // Click text=Sequencingbeta
   await page.click('text=Sequencingbeta');
 
-  await expect(page).toHaveURL(config.use.baseURL + 'sequencing');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'sequencing');
   // Expect button with text=Create your first Sequence
   expect (await page.locator('button', { hasText: 'Create your first Sequence' }));
   
@@ -160,7 +159,7 @@ test.afterEach(async ({ page }, testInfo) => {
   try {        
     // Click text=Sequencingbeta
     await page.click('text=Sequencingbeta');
-    await expect(page).toHaveURL(config.use.baseURL + 'sequencing');
+    await expect(page).toHaveURL(process.env.BASE_URL + 'sequencing');
     // Click [data-testid="delete-sequence-button"]
     await page.click('[data-testid="delete-sequence-button"]');
     // Click [data-testid="confirm-modal-confirm"]

@@ -1,11 +1,10 @@
-const config = require('../../../playwright.config.js');
-const { test, expect } = require('@playwright/test');
+import { test, expect } from '@playwright/test';
 require('dotenv').config();
 
 test.use({ storageState: 'tests/state.json' });
 
 test('Add, Edit, Delete Schedule', async ({ page }) => {
-  await page.goto(config.use.baseURL + "home");
+  await page.goto(process.env.BASE_URL + "home");
 
     // Go to https://staging.talentticker.ai/home
     await page.goto('https://staging.talentticker.ai/home');

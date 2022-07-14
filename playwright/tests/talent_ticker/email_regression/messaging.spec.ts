@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import config from '../../../playwright.config.js';
 import Mailosaur from 'mailosaur';
 const { assert } = require('chai');
 
@@ -39,9 +38,9 @@ test("Contact Messaging From Sourcing Using Outlook Integration", async ({
   const mailosaur = new Mailosaur(apiKey);
 
 
-  await page.goto(config.use?.baseURL + "home");
+  await page.goto(process.env.BASE_URL + "home");
 
-  await expect(page).toHaveURL(config.use?.baseURL + "home");
+  await expect(page).toHaveURL(process.env.BASE_URL + "home");
 
   // Click #profileImgWrap
   await page.click("#profileImgWrap");
@@ -51,7 +50,7 @@ test("Contact Messaging From Sourcing Using Outlook Integration", async ({
     page.click("text=Sign out"),
   ]);
   // Go to https://staging.talentticker.ai/
-  await page.goto(config.use?.baseURL as string);
+  await page.goto(process.env.BASE_URL as string);
 
   // Click text=Log In
   await page.click("text=Log In");
@@ -67,11 +66,11 @@ test("Contact Messaging From Sourcing Using Outlook Integration", async ({
   // Click button:has-text("Log In")
   await page.click('button:has-text("Log In")'),
 
-  await expect(page).toHaveURL(config.use?.baseURL + "home");
+  await expect(page).toHaveURL(process.env.BASE_URL + "home");
 
   // Nav to Talent Sourcing
   await page.click('[data-test="talentSourcingNavButton"]');
-  await expect(page).toHaveURL(config.use?.baseURL + "sourcing");
+  await expect(page).toHaveURL(process.env.BASE_URL + "sourcing");
 
   // Fill [placeholder="e\.g\.\ Digital\ Designer"]
   await page.fill(
@@ -113,7 +112,7 @@ test("Contact Messaging From Sourcing Using Outlook Integration", async ({
   await page.click('[data-test="pageTemplate"] >> text=Clear All');
 
   await page.click('[data-test="contatcsNavButton"]');
-  await expect(page).toHaveURL(config.use?.baseURL + "outbox");
+  await expect(page).toHaveURL(process.env.BASE_URL + "outbox");
 
   expect(await page.innerText("h1")).toContain("Outbox");
 
@@ -141,7 +140,7 @@ test("Contact Messaging From Sourcing Using Outlook Integration", async ({
   // Sign Out
   await page.click("#profileImgWrap");
   await Promise.all([
-    page.waitForNavigation(/*{ url: config.use.baseURL }*/),
+    page.waitForNavigation(/*{ url: process.env.BASE_URL }*/),
     page.click("text=Sign out"),
   ]);
 

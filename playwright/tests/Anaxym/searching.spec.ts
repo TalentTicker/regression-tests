@@ -1,5 +1,4 @@
-const config = require('../../playwright.config.js');
-const { test, expect } = require('@playwright/test');
+import { test, expect } from '@playwright/test';
 require('dotenv').config();
 
 test("Saved Search", async ({ page }) => {

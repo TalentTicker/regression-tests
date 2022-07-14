@@ -1,12 +1,11 @@
-const config = require('../playwright.config.js');
-const { chromium, expect } = require('@playwright/test');
+import { chromium, expect } from '@playwright/test';
 require('dotenv').config();
 
 module.exports = async () => {
   const browser = await chromium.launch();
   const page = await browser.newPage();
 
-  await page.goto(config.use.baseURL);
+  await page.goto(process.env.BASE_URL);
 
   // Click text=Log In
   await page.click('text=Log In');
@@ -18,11 +17,11 @@ module.exports = async () => {
   await page.fill('input[type="password"]', process.env.LOGIN_PASSWORD);
   // Click button:has-text("Log In")
   await Promise.all([
-    page.waitForNavigation(/*{ url: config.use.baseURL + 'home' }*/),
+    page.waitForNavigation(/*{ url: process.env.BASE_URL + 'home' }*/),
     page.click('button:has-text("Log In")')
   ]);
 
-  await expect(page).toHaveURL(config.use.baseURL + 'home');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'home');
   expect(await page.innerText('h1')).toContain("Team Manager");
 
   await page.context().storageState({ path: 'tests/state.json' });
