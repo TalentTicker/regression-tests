@@ -1,7 +1,6 @@
-const config = require('../../../playwright.config.js');
-const { test, expect } = require('@playwright/test');
+import { test, expect } from '@playwright/test';
+import Mailosaur from 'mailosaur';
 const assert = require('chai').assert;
-const Mailosaur = require('mailosaur');
 require('dotenv').config();
 
 test.use({ storageState: 'tests/state.json' });
@@ -24,9 +23,9 @@ test("Contact Messaging From Vacancy Using Outlook Integration", async ({ page }
 
   const serverId = process.env.MAILOSAUR_SERVER;
 
-  await page.goto(config.use.baseURL + "home");
+  await page.goto(process.env.BASE_URL + "home");
 
-  await expect(page).toHaveURL(config.use.baseURL + 'home');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'home');
 
   // Click #profileImgWrap
   await page.click('#profileImgWrap');
@@ -36,7 +35,7 @@ test("Contact Messaging From Vacancy Using Outlook Integration", async ({ page }
     page.click('text=Sign out')
   ]);
   // Go to https://staging.talentticker.ai/
-  await page.goto(config.use.baseURL);
+  await page.goto(process.env.BASE_URL);
 
   // Click text=Log In
   await page.click('text=Log In');
@@ -50,11 +49,11 @@ test("Contact Messaging From Vacancy Using Outlook Integration", async ({ page }
   // Click button:has-text("Log In")
   await page.click('button:has-text("Log In")'),
 
-  await expect(page).toHaveURL(config.use.baseURL + 'home');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'home');
 
   // Click [data-test="vacanciesNavButton"]
   await page.click('[data-test="vacanciesNavButton"]');
-  await expect(page).toHaveURL(config.use.baseURL + 'vacancies');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'vacancies');
   
   // Click [placeholder="Search"]
   await page.click('[placeholder="Search"]');
@@ -64,10 +63,10 @@ test("Contact Messaging From Vacancy Using Outlook Integration", async ({ page }
   await page.click('[placeholder="Search"]');
   // Click [data-test="pageTemplate"] >> text=Selligence
   await page.click('[data-test="pageTemplate"] >> text=Selligence');
-  await expect(page).toHaveURL(config.use.baseURL + 'news');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'news');
   // Click [data-test="vacanciesTabButton"] >> text=Vacancies
   await page.click('[data-test="vacanciesTabButton"] >> text=Vacancies');
-  await expect(page).toHaveURL(config.use.baseURL + 'vacancies');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'vacancies');
 
   expect(await page.innerText('strong')).toContain("Selligence");
 
@@ -115,12 +114,12 @@ test("Contact Messaging From Vacancy Using Outlook Integration", async ({ page }
   
   // Click [data-test="contatcsNavButton"]
   await page.click('[data-test="contatcsNavButton"]');
-  await expect(page).toHaveURL(config.use.baseURL + 'outbox');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'outbox');
 
   expect(await page.innerText('h1')).toContain("Outbox");
 
   await page.click('[data-test="contatcsNavButton"]');
-  await expect(page).toHaveURL(config.use.baseURL + 'outbox');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'outbox');
 
   expect(await page.innerText('h1')).toContain("Outbox");
 
@@ -147,7 +146,7 @@ test("Contact Messaging From Vacancy Using Outlook Integration", async ({ page }
   // Sign Out
   await page.click("#profileImgWrap");
   await Promise.all([
-    page.waitForNavigation(/*{ url: config.use.baseURL }*/),
+    page.waitForNavigation(/*{ url: process.env.BASE_URL }*/),
     page.click("text=Sign out"),
   ]);
 

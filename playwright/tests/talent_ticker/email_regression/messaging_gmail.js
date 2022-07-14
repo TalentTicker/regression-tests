@@ -24,9 +24,9 @@ test("Contact Messaging From Sourcing Using Gmail Integration", async ({ page })
 
   const serverId = process.env.MAILOSAUR_SERVER;
 
-  await page.goto(config.use.baseURL + "home");
+  await page.goto(process.env.BASE_URL + "home");
 
-  await expect(page).toHaveURL(config.use.baseURL + 'home');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'home');
 
   // Click #profileImgWrap
   await page.click('#profileImgWrap');
@@ -49,15 +49,15 @@ test("Contact Messaging From Sourcing Using Gmail Integration", async ({ page })
   await page.fill('input[type="password"]', process.env.GMAIL_PASSWORD);
   // Click button:has-text("Log In")
   await Promise.all([
-    page.waitForNavigation(/*{ url: config.use.baseURL + 'home' }*/),
+    page.waitForNavigation(/*{ url: process.env.BASE_URL + 'home' }*/),
     page.click('button:has-text("Log In")')
   ]);
 
-  await expect(page).toHaveURL(config.use.baseURL + 'home');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'home');
 
   // Nav to Talent Sourcing
   await page.click('[data-test="talentSourcingNavButton"]');
-  await expect(page).toHaveURL(config.use.baseURL + 'sourcing');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'sourcing');
   
   // Fill [placeholder="e\.g\.\ Digital\ Designer"]
   await page.fill('[placeholder="e\\.g\\.\\ Digital\\ Designer"]', 'test account');
@@ -85,12 +85,12 @@ test("Contact Messaging From Sourcing Using Gmail Integration", async ({ page })
 
   // Click [data-test="contatcsNavButton"]
   await page.click('[data-test="contatcsNavButton"]');
-  await expect(page).toHaveURL(config.use.baseURL + 'outbox');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'outbox');
 
   expect(await page.innerText('h1')).toContain("Outbox");
 
   await page.click('[data-test="contatcsNavButton"]');
-  await expect(page).toHaveURL(config.use.baseURL + 'outbox');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'outbox');
 
   expect(await page.innerText('h1')).toContain("Outbox");
 

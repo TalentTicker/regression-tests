@@ -4,12 +4,12 @@ require('dotenv').config();
 
 test('jobseeker signup', async ({ page }) => {
 
-  await page.goto(config.use.baseURL);
+  await page.goto(process.env.BASE_URL);
   // Click [data-test="profileWrapper"] >> :nth-match(span, 3)
   await page.click('[data-test="profileWrapper"] >> :nth-match(span, 3)');
   // Click text=Job Seekers
   await page.click('text=Job Seekers');
-  await expect(page).toHaveURL(config.use.baseURL + 'job-seeker');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'job-seeker');
   // Click text=Create Your Profile
   const [page1] = await Promise.all([
     page.waitForEvent('popup'),

@@ -24,9 +24,9 @@ test("Contact Messaging From Vacancy Using Gmail Integration", async ({ page }) 
 
   const serverId = process.env.MAILOSAUR_SERVER;
 
-  await page.goto(config.use.baseURL + "home");
+  await page.goto(process.env.BASE_URL + "home");
 
-  await expect(page).toHaveURL(config.use.baseURL + 'home');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'home');
 
   // Click #profileImgWrap
   await page.click('#profileImgWrap');
@@ -49,11 +49,11 @@ test("Contact Messaging From Vacancy Using Gmail Integration", async ({ page }) 
   await page.fill('input[type="password"]', process.env.GMAIL_PASSWORD);
   // Click button:has-text("Log In")
   await Promise.all([
-    page.waitForNavigation(/*{ url: config.use.baseURL + 'home' }*/),
+    page.waitForNavigation(/*{ url: process.env.BASE_URL + 'home' }*/),
     page.click('button:has-text("Log In")')
   ]);
 
-  await expect(page).toHaveURL(config.use.baseURL + 'home');
+  await expect(page).toHaveURL(process.env.BASE_URL + 'home');
 
   // Click [data-test="vacanciesNavButton"]
   await page.click('[data-test="vacanciesNavButton"]');

@@ -25,6 +25,7 @@ jobs:
     - name: Create env file
       run: |
         touch .env
+        echo 'BASE_URL="${{ secrets.PLAYWRIGHT_BASE_URL }}"' >> .env
         echo 'LOGIN_USERNAME="${{ secrets.PLAYWRIGHT_USERNAME }}"' >> .env
         echo 'LOGIN_PASSWORD="${{ secrets.PLAYWRIGHT_PASSWORD }}"' >> .env 
         echo 'GMAIL_USERNAME="${{ secrets.PLAYWRIGHT_GMAIL_USERNAME }}"' >> .env
