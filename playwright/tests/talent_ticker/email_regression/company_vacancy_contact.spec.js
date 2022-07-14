@@ -26,9 +26,38 @@ test("Contact Messaging From Vacancy Using Outlook Integration", async ({ page }
 
   await page.goto(config.use.baseURL + "home");
 
+  await expect(page).toHaveURL(config.use.baseURL + 'home');
+
+  // Click #profileImgWrap
+  await page.click('#profileImgWrap');
+  // Click text=Sign out
+  await Promise.all([
+    page.waitForNavigation(/*{ url: 'https://staging.talentticker.ai/logout' }*/),
+    page.click('text=Sign out')
+  ]);
+  // Go to https://staging.talentticker.ai/
+  await page.goto(config.use.baseURL);
+
+  // Click text=Log In
+  await page.click('text=Log In');
+  await expect(page).toHaveURL(new RegExp('https://auth.talentticker.ai'));
+  expect(await page.innerText('h1')).toBe("Welcome to Talent Ticker");
+  expect(await page.innerText('[class="message"]')).toBe("Please log in to continue.");
+  // Fill [placeholder="Your\ email"]
+  await page.fill('input[type="email"]', process.env.EMAIL_USERNAME);
+  // Fill [placeholder="Your\ password"]
+  await page.fill('input[type="password"]', process.env.EMAIL_PASSWORD);
+  // Click button:has-text("Log In")
+  await Promise.all([
+    page.waitForNavigation(/*{ url: config.use.baseURL + 'home' }*/),
+    page.click('button:has-text("Log In")')
+  ]);
+
+  await expect(page).toHaveURL(config.use.baseURL + 'home');
+
   // Click [data-test="vacanciesNavButton"]
   await page.click('[data-test="vacanciesNavButton"]');
-  await expect(page).toHaveURL('https://staging.talentticker.ai/vacancies');
+  await expect(page).toHaveURL(config.use.baseURL + 'vacancies');
   
   // Click [placeholder="Search"]
   await page.click('[placeholder="Search"]');
@@ -38,10 +67,10 @@ test("Contact Messaging From Vacancy Using Outlook Integration", async ({ page }
   await page.click('[placeholder="Search"]');
   // Click [data-test="pageTemplate"] >> text=Selligence
   await page.click('[data-test="pageTemplate"] >> text=Selligence');
-  await expect(page).toHaveURL('https://staging.talentticker.ai/news');
+  await expect(page).toHaveURL(config.use.baseURL + 'news');
   // Click [data-test="vacanciesTabButton"] >> text=Vacancies
   await page.click('[data-test="vacanciesTabButton"] >> text=Vacancies');
-  await expect(page).toHaveURL('https://staging.talentticker.ai/vacancies');
+  await expect(page).toHaveURL(config.use.baseURL + 'vacancies');
 
   expect(await page.innerText('strong')).toContain("Selligence");
 
@@ -60,6 +89,18 @@ test("Contact Messaging From Vacancy Using Outlook Integration", async ({ page }
   // Click text=emailMessage (1)
   await page.click('text=emailMessage (1)');
 
+  // we need to wait for the code to initialize in the background.. its using a state machine that does some shit. 
+  // basically artifical wait. 5 seconds is prob too much but to be safe..
+  // 2 clicks as they are always flake
+  page.click('button:has-text("Next")', { delay: 5000, clickCount: 2 });
+  // need to wait here  for the get_accounts request.. this test has exposed shitty frontend code
+  // Click [data-testid="template-select-dropdown"] div[role="button"]:has-text("​")
+  await page.click(
+    '[data-testid="template-select-dropdown"] div[role="button"]:has-text("​")'
+  );
+  // Click :nth-match(li[role="option"]:has-text("Test"), 2)
+  await page.click('li[role="option"]:has-text("Test")');
+
   const randomName = Name_Alpha_Numeric();
   // Fill [aria-label="subject"]
   await page.fill('[aria-label="subject"]', randomName);
@@ -77,12 +118,12 @@ test("Contact Messaging From Vacancy Using Outlook Integration", async ({ page }
   
   // Click [data-test="contatcsNavButton"]
   await page.click('[data-test="contatcsNavButton"]');
-  await expect(page).toHaveURL('https://staging.talentticker.ai/outbox');
+  await expect(page).toHaveURL(config.use.baseURL + 'outbox');
 
   expect(await page.innerText('h1')).toContain("Outbox");
 
   await page.click('[data-test="contatcsNavButton"]');
-  await expect(page).toHaveURL('https://staging.talentticker.ai/outbox');
+  await expect(page).toHaveURL(config.use.baseURL + 'outbox');
 
   expect(await page.innerText('h1')).toContain("Outbox");
 
@@ -105,6 +146,13 @@ test("Contact Messaging From Vacancy Using Outlook Integration", async ({ page }
       break;
     } 
   }
+
+  // Sign Out
+  await page.click("#profileImgWrap");
+  await Promise.all([
+    page.waitForNavigation(/*{ url: config.use.baseURL }*/),
+    page.click("text=Sign out"),
+  ]);
 
   // Search for the email in Mailosaur (Looped to slow this down in case the outbox is so fast that the Mailosaur check happens instantly) 
   const email = await mailosaur.messages.get(serverId, {
@@ -132,3 +180,4 @@ test("Contact Messaging From Vacancy Using Outlook Integration", async ({ page }
   }
 
   });
+  

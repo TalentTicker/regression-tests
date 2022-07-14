@@ -16,7 +16,7 @@ test('Logged out checks', async ({ page }) => {
 
   await page.click('button:has-text("Book A Demo")');
 
-  await expect(page).toHaveURL('https://www.talentticker.ai/contact');
+  await expect(page).toHaveURL('https://www.selligence.com/tt-demo/');
 
   await page.goto(config.use.baseURL);
 

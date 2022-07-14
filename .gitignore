@@ -31,3 +31,4 @@ playwright/playwright-report/
 
 # Login state file
 playwright/tests/state.json
+.DS_Store
