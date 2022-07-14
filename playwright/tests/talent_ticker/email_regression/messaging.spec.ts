@@ -65,10 +65,7 @@ test("Contact Messaging From Sourcing Using Outlook Integration", async ({
   // Fill [placeholder="Your\ password"]
   await page.fill('input[type="password"]', process.env.EMAIL_PASSWORD as string);
   // Click button:has-text("Log In")
-  await Promise.all([
-    page.waitForNavigation(/*{ url: config.use.baseURL + 'home' }*/),
-    page.click('button:has-text("Log In")'),
-  ]);
+  await page.click('button:has-text("Log In")'),
 
   await expect(page).toHaveURL(config.use?.baseURL + "home");
 
