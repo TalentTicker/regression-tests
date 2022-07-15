@@ -1,7 +1,7 @@
 name: Postman Test Run
 on:
   pull_request:
-  branches: [ main ]
+    branches: [ main ]
 
   workflow_dispatch:
   
