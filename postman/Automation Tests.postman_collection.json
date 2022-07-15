@@ -3,7 +3,7 @@
 		"_postman_id": "d275d32b-31c3-4ffe-b20f-3a9a23c92937",
 		"name": "Automation Tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "5389581"
+		"_exporter_id": "17600629"
 	},
 	"item": [
 		{
@@ -1838,7 +1838,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"applicability\": [\r\n        \"current\"\r\n    ],\r\n    \"exclusion\": [],\r\n    \"input\": [\r\n        {\r\n            \"es_id\": \"c8367402-7982-41ef-ae2a-195229f9ba2c\",\r\n            \"name\": \"Developer\",\r\n            \"type\": \"freetext\",\r\n            \"id\": \"7fa45590-54eb-46d9-924b-c89efab7667a\",\r\n            \"boolean_operator\": \"or\"\r\n        }\r\n    ],\r\n    \"company_sizes\": [\r\n        \"11-50\",\r\n        \"1-10\",\r\n        \"51-200\",\r\n        \"201-500\",\r\n        \"501-1000\",\r\n        \"1001-5000\"\r\n    ],\r\n    \"seniorities\": [\r\n        \"cxo\"\r\n    ],\r\n    \"distance_in_miles\": 1,\r\n    \"phone_number_type\": [\r\n        \"MOBILE\"\r\n    ],\r\n    \"phone_number_score\": 70,\r\n    \"email_score\": 0,\r\n    \"query_duplicate_names\": true\r\n}",
+									"raw": "{\r\n    \"applicability\": [\r\n        \"current\"\r\n    ],\r\n    \"exclusion\": [],\r\n    \"input\": [\r\n        {\r\n            \"es_id\": \"c8367402-7982-41ef-ae2a-195229f9ba2c\",\r\n            \"name\": \"Developer\",\r\n            \"type\": \"freetext\",\r\n            \"id\": \"7fa45590-54eb-46d9-924b-c89efab7667a\",\r\n            \"boolean_operator\": \"or\"\r\n        }\r\n    ],\r\n    \"company_sizes\": [\r\n        \"11-50\",\r\n        \"1-10\",\r\n        \"51-200\",\r\n        \"201-500\",\r\n        \"501-1000\",\r\n        \"1001-5000\"\r\n    ],\r\n    \"seniorities\": [\r\n        \"cxo\"\r\n    ],\r\n    \"distance_in_miles\": 1,\r\n    \"phone_number_type\": [\r\n        \"MOBILE\"\r\n    ],\r\n    \"phone_number_score\": 60,\r\n    \"email_score\": 0,\r\n    \"query_duplicate_names\": true\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1904,10 +1904,11 @@
 											"    })\r",
 											"})\r",
 											"\r",
-											"// Need to add this back in if/whent he filter actually reduces the number down\r",
-											"// pm.test(\"Total less than previous filter\", function () {\r",
-											"//     pm.expect(responseData.data.results.total).to.be.lessThan(pm.environment.get(\"filter_total\"));\r",
-											"// })\r",
+											"pm.test(\"Total less than previous filter\", function () {\r",
+											"    pm.expect(responseData.data.results.total).to.be.lessThan(pm.environment.get(\"filter_total\"));\r",
+											"})\r",
+											"\r",
+											"pm.environment.set(\"filter_total\", 0);\r",
 											""
 										],
 										"type": "text/javascript"
@@ -1935,6 +1936,393 @@
 								"body": {
 									"mode": "raw",
 									"raw": "{\r\n    \"applicability\": [\r\n        \"current\"\r\n    ],\r\n    \"exclusion\": [],\r\n    \"input\": [\r\n        {\r\n            \"es_id\": \"c8367402-7982-41ef-ae2a-195229f9ba2c\",\r\n            \"name\": \"Developer\",\r\n            \"type\": \"freetext\",\r\n            \"id\": \"7fa45590-54eb-46d9-924b-c89efab7667a\",\r\n            \"boolean_operator\": \"or\"\r\n        }\r\n    ],\r\n    \"company_sizes\": [\r\n        \"11-50\",\r\n        \"1-10\",\r\n        \"51-200\",\r\n        \"201-500\",\r\n        \"501-1000\",\r\n        \"1001-5000\"\r\n    ],\r\n    \"seniorities\": [\r\n        \"cxo\"\r\n    ],\r\n    \"distance_in_miles\": 1,\r\n    \"phone_number_type\": [\r\n        \"MOBILE\"\r\n    ],\r\n    \"phone_number_score\": 70,\r\n    \"email_score\": 0,\r\n    \"query_duplicate_names\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v5-powersearch/people-search?limit=13&skip=0",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v5-powersearch",
+										"people-search"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "13"
+										},
+										{
+											"key": "skip",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Sourcing Filter Flow Email",
+					"item": [
+						{
+							"name": "POST Sourcing Search - Email ALL",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var responseData = JSON.parse(responseBody);\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response is not null\", function () {\r",
+											"    pm.expect(responseData).is.not.equal(null);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"json Content Type\", function () {\r",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Count total correct\", function () {\r",
+											"    pm.expect(responseData.data.results.count).to.eql(13);\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Total correct\", function () {\r",
+											"    pm.expect(responseData.data.results.total).to.be.greaterThan(0);\r",
+											"})\r",
+											"\r",
+											"// All email fields should not be empty\r",
+											"pm.test(\"Returns email for all results\", () => {\r",
+											"    responseData.data.results.documents.forEach((result) => {\r",
+											"        pm.expect(responseData.data.results.documents[0].email).to.not.equal(\"\");\r",
+											"    })\r",
+											"})\r",
+											"\r",
+											"pm.environment.set(\"filter_total\", responseData.data.results.total);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"applicability\": [\r\n        \"current\"\r\n    ],\r\n    \"exclusion\": [],\r\n    \"input\": [\r\n        {\r\n            \"es_id\": \"c8367402-7982-41ef-ae2a-195229f9ba2c\",\r\n            \"name\": \"Developer\",\r\n            \"type\": \"freetext\",\r\n            \"id\": \"7fa45590-54eb-46d9-924b-c89efab7667a\",\r\n            \"boolean_operator\": \"or\"\r\n        }\r\n    ],\r\n    \"company_sizes\": [\r\n        \"11-50\",\r\n        \"1-10\",\r\n        \"51-200\",\r\n        \"201-500\",\r\n        \"501-1000\",\r\n        \"1001-5000\"\r\n    ],\r\n    \"seniorities\": [\r\n        \"cxo\"\r\n    ],\r\n    \"distance_in_miles\": 1,\r\n    \"phone_number_type\": [\r\n        \"MOBILE\"\r\n    ],\r\n    \"phone_number_score\": 0,\r\n    \"email_score\": 0,\r\n    \"query_duplicate_names\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v5-powersearch/people-search?limit=13&skip=0",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v5-powersearch",
+										"people-search"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "13"
+										},
+										{
+											"key": "skip",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Sourcing Search - Email Medium",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var responseData = JSON.parse(responseBody);\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response is not null\", function () {\r",
+											"    pm.expect(responseData).is.not.equal(null);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"json Content Type\", function () {\r",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Count total correct\", function () {\r",
+											"    pm.expect(responseData.data.results.count).to.eql(13);\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Total correct\", function () {\r",
+											"    pm.expect(responseData.data.results.total).to.be.greaterThan(0);\r",
+											"})\r",
+											"\r",
+											"// All email fields should not be empty\r",
+											"pm.test(\"Returns email for all results\", () => {\r",
+											"    responseData.data.results.documents.forEach((result) => {\r",
+											"        pm.expect(responseData.data.results.documents[0].email).to.not.equal(\"\");\r",
+											"    })\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Total less than previous filter\", function () {\r",
+											"    pm.expect(responseData.data.results.total).to.be.lessThan(pm.environment.get(\"filter_total\"));\r",
+											"})\r",
+											"\r",
+											"pm.environment.set(\"filter_total\", responseData.data.results.total);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"applicability\": [\r\n        \"current\"\r\n    ],\r\n    \"exclusion\": [],\r\n    \"input\": [\r\n        {\r\n            \"es_id\": \"c8367402-7982-41ef-ae2a-195229f9ba2c\",\r\n            \"name\": \"Developer\",\r\n            \"type\": \"freetext\",\r\n            \"id\": \"7fa45590-54eb-46d9-924b-c89efab7667a\",\r\n            \"boolean_operator\": \"or\"\r\n        }\r\n    ],\r\n    \"company_sizes\": [\r\n        \"11-50\",\r\n        \"1-10\",\r\n        \"51-200\",\r\n        \"201-500\",\r\n        \"501-1000\",\r\n        \"1001-5000\"\r\n    ],\r\n    \"seniorities\": [\r\n        \"cxo\"\r\n    ],\r\n    \"distance_in_miles\": 1,\r\n    \"phone_number_type\": [\r\n        \"MOBILE\"\r\n    ],\r\n    \"phone_number_score\": 0,\r\n    \"email_score\": 45,\r\n    \"query_duplicate_names\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v5-powersearch/people-search?limit=13&skip=0",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v5-powersearch",
+										"people-search"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "13"
+										},
+										{
+											"key": "skip",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Sourcing Search - Email High",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var responseData = JSON.parse(responseBody);\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response is not null\", function () {\r",
+											"    pm.expect(responseData).is.not.equal(null);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"json Content Type\", function () {\r",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Count total correct\", function () {\r",
+											"    pm.expect(responseData.data.results.count).to.eql(13);\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Total correct\", function () {\r",
+											"    pm.expect(responseData.data.results.total).to.be.greaterThan(0);\r",
+											"})\r",
+											"\r",
+											"// All email fields should not be empty\r",
+											"pm.test(\"Returns email for all results\", () => {\r",
+											"    responseData.data.results.documents.forEach((result) => {\r",
+											"        pm.expect(responseData.data.results.documents[0].email).to.not.equal(\"\");\r",
+											"    })\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Total less than previous filter\", function () {\r",
+											"    pm.expect(responseData.data.results.total).to.be.lessThan(pm.environment.get(\"filter_total\"));\r",
+											"})\r",
+											"\r",
+											"pm.environment.set(\"filter_total\", responseData.data.results.total);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"applicability\": [\r\n        \"current\"\r\n    ],\r\n    \"exclusion\": [],\r\n    \"input\": [\r\n        {\r\n            \"es_id\": \"c8367402-7982-41ef-ae2a-195229f9ba2c\",\r\n            \"name\": \"Developer\",\r\n            \"type\": \"freetext\",\r\n            \"id\": \"7fa45590-54eb-46d9-924b-c89efab7667a\",\r\n            \"boolean_operator\": \"or\"\r\n        }\r\n    ],\r\n    \"company_sizes\": [\r\n        \"11-50\",\r\n        \"1-10\",\r\n        \"51-200\",\r\n        \"201-500\",\r\n        \"501-1000\",\r\n        \"1001-5000\"\r\n    ],\r\n    \"seniorities\": [\r\n        \"cxo\"\r\n    ],\r\n    \"distance_in_miles\": 1,\r\n    \"phone_number_type\": [\r\n        \"MOBILE\"\r\n    ],\r\n    \"phone_number_score\": 0,\r\n    \"email_score\": 80,\r\n    \"query_duplicate_names\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v5-powersearch/people-search?limit=13&skip=0",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v5-powersearch",
+										"people-search"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "13"
+										},
+										{
+											"key": "skip",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Sourcing Search - Email Very High",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var responseData = JSON.parse(responseBody);\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response is not null\", function () {\r",
+											"    pm.expect(responseData).is.not.equal(null);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"json Content Type\", function () {\r",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Count total correct\", function () {\r",
+											"    pm.expect(responseData.data.results.count).to.be.lessThan(14);\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Total correct\", function () {\r",
+											"    pm.expect(responseData.data.results.total).to.be.greaterThan(0);\r",
+											"})\r",
+											"\r",
+											"// All email fields should not be empty\r",
+											"pm.test(\"Returns email for all results\", () => {\r",
+											"    responseData.data.results.documents.forEach((result) => {\r",
+											"        pm.expect(responseData.data.results.documents[0].email).to.not.equal(\"\");\r",
+											"    })\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Total less than previous filter\", function () {\r",
+											"    pm.expect(responseData.data.results.total).to.be.lessThan(pm.environment.get(\"filter_total\"));\r",
+											"})\r",
+											"\r",
+											"pm.environment.set(\"filter_total\", 0);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"applicability\": [\r\n        \"current\"\r\n    ],\r\n    \"exclusion\": [],\r\n    \"input\": [\r\n        {\r\n            \"es_id\": \"c8367402-7982-41ef-ae2a-195229f9ba2c\",\r\n            \"name\": \"Developer\",\r\n            \"type\": \"freetext\",\r\n            \"id\": \"7fa45590-54eb-46d9-924b-c89efab7667a\",\r\n            \"boolean_operator\": \"or\"\r\n        }\r\n    ],\r\n    \"company_sizes\": [\r\n        \"11-50\",\r\n        \"1-10\",\r\n        \"51-200\",\r\n        \"201-500\",\r\n        \"501-1000\",\r\n        \"1001-5000\"\r\n    ],\r\n    \"seniorities\": [\r\n        \"cxo\"\r\n    ],\r\n    \"distance_in_miles\": 1,\r\n    \"phone_number_type\": [\r\n        \"MOBILE\"\r\n    ],\r\n    \"phone_number_score\": 0,\r\n    \"email_score\": 90,\r\n    \"query_duplicate_names\": true\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
