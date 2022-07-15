@@ -4,6 +4,13 @@ require('dotenv').config();
 test('Logged out checks', async ({ page }) => {
   await page.goto(process.env.BASE_URL);
 
+  // Sign Out
+  await page.click("#profileImgWrap");
+  await Promise.all([
+    page.waitForNavigation(/*{ url: process.env.BASE_URL }*/),
+    page.click("text=Sign out"),
+  ]);
+
   // Click [data-test="newsNavButton"]
   await page.click('[data-test="newsNavButton"]');
   await expect(page).toHaveURL(process.env.BASE_URL + 'news');
@@ -13,7 +20,7 @@ test('Logged out checks', async ({ page }) => {
   await page.click('li[role="option"]:has-text("Accounting")');
   await page.click('[data-test="searchSubmit"]');
 
-  await page.click('button:has-text("Book A Demo")');
+  await page.click('button:has-text("Book a demo")');
 
   await expect(page).toHaveURL('https://www.selligence.com/tt-demo/');
 

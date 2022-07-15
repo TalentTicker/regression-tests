@@ -1,11 +1,13 @@
-import { chromium, expect } from '@playwright/test';
+// global-setup.ts
+import { chromium, FullConfig, expect } from '@playwright/test';
 require('dotenv').config();
 
-module.exports = async () => {
+async function globalSetup(config: FullConfig) {
+  const { baseURL, storageState } = config.projects[0].use;
   const browser = await chromium.launch();
   const page = await browser.newPage();
 
-  await page.goto(process.env.BASE_URL);
+  await page.goto(baseURL);
 
   // Click text=Log In
   await page.click('text=Log In');
@@ -17,13 +19,15 @@ module.exports = async () => {
   await page.fill('input[type="password"]', process.env.LOGIN_PASSWORD);
   // Click button:has-text("Log In")
   await Promise.all([
-    page.waitForNavigation(/*{ url: process.env.BASE_URL + 'home' }*/),
+    page.waitForNavigation(/*{ url: baseURL + 'home' }*/),
     page.click('button:has-text("Log In")')
   ]);
 
-  await expect(page).toHaveURL(process.env.BASE_URL + 'home');
+  await expect(page).toHaveURL(baseURL + 'home');
   expect(await page.innerText('h1')).toContain("Team Manager");
 
-  await page.context().storageState({ path: 'tests/state.json' });
+  await page.context().storageState({ path: storageState as string });
   await browser.close();  
-};
+}
+
+export default globalSetup;
