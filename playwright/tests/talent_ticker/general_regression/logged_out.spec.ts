@@ -4,13 +4,6 @@ require('dotenv').config();
 test('Logged out checks', async ({ page }) => {
   await page.goto(process.env.BASE_URL);
 
-  // Sign Out
-  await page.click("#profileImgWrap");
-  await Promise.all([
-    page.waitForNavigation(/*{ url: process.env.BASE_URL }*/),
-    page.click("text=Sign out"),
-  ]);
-
   // Click [data-test="newsNavButton"]
   await page.click('[data-test="newsNavButton"]');
   await expect(page).toHaveURL(process.env.BASE_URL + 'news');
