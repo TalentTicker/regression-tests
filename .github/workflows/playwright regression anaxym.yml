@@ -1,8 +1,5 @@
 name: Playwright Tests - Anaxym
 on:
-  pull_request:
-    branches: [ main ]
-    
   workflow_dispatch:
  
 defaults:
@@ -25,7 +22,7 @@ jobs:
       run: |
         touch .env
         echo 'BASE_URL="${{ secrets.PLAYWRIGHT_BASE_URL }}"' >> .env
-        echo 'ANAXYM_BASE_URL="https://staging.anaxym.com/"' >> .env
+        echo 'ANAXYM_BASE_URL="${{ secrets.PLAYWRIGHT_ANAXYM_BASE_URL }}"' >> .env
         echo 'LOGIN_USERNAME="${{ secrets.PLAYWRIGHT_USERNAME }}"' >> .env
         echo 'LOGIN_PASSWORD="${{ secrets.PLAYWRIGHT_PASSWORD }}"' >> .env
         echo 'GMAIL_USERNAME="${{ secrets.PLAYWRIGHT_GMAIL_USERNAME }}"' >> .env
