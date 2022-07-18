@@ -3,6 +3,8 @@ import { type PlaywrightTestConfig, devices } from '@playwright/test';
 const config: PlaywrightTestConfig = {
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
+  // Limit the number of workers on CI, use default locally
+  workers: process.env.CI ? 3 : undefined,
   globalSetup: require.resolve('./tests/global-setup'),
   use: {
     baseURL: "https://staging.talentticker.ai/",
