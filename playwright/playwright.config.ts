@@ -7,7 +7,7 @@ const config: PlaywrightTestConfig = {
   use: {
     baseURL: "https://staging.talentticker.ai/",
     trace: 'on-first-retry',
-    storageState: './tests/state.json',
+    // storageState: './tests/state.json',
     headless: true,
     viewport: { width: 1920, height: 1080 },
     ignoreHTTPSErrors: true,

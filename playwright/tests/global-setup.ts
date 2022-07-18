@@ -26,7 +26,7 @@ async function globalSetup(config: FullConfig) {
   await expect(page).toHaveURL(baseURL + 'home');
   expect(await page.innerText('h1')).toContain("Team Manager");
 
-  await page.context().storageState({ path: storageState as string });
+  await page.context().storageState({ path: "./tests/state.json" });
   await browser.close();  
 }
 
