@@ -170,4 +170,13 @@ test("Contact Messaging From Sourcing Using Outlook Integration", async ({
       break;
     }
   }
+
+  const firstLink = email.html.links[0]
+
+  await page.goto(firstLink.href);
+
+  await expect(page).toHaveURL(new RegExp("https://staging.talentticker.ai/message-unsubscribe?"));
+
+  expect(await page.innerText('h1')).toContain("Selligence");
+  expect(await page.innerText('h2')).toContain("Please confirm that you want to unsubscribe");
 });
