@@ -29,6 +29,7 @@ test("Contact Messaging From Vacancy Using Outlook Integration", async ({ page }
 
   // Click #profileImgWrap
   await page.click('#profileImgWrap');
+  
   // Click text=Sign out
   await page.click("text=Sign out");
 

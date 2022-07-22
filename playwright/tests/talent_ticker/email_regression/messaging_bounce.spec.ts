@@ -29,6 +29,7 @@ test("Contact Messaging bounces emails containing [BOUNCE]", async ({ page }) =>
 
   // Click #profileImgWrap
   await page.click('#profileImgWrap');
+  
   // Click text=Sign out
   await page.click("text=Sign out");
 

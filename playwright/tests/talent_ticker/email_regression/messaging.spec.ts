@@ -44,6 +44,7 @@ test("Contact Messaging From Sourcing Using Outlook Integration", async ({
 
   // Click #profileImgWrap
   await page.click("#profileImgWrap");
+  
   // Click text=Sign out
   await page.click("text=Sign out");
 
